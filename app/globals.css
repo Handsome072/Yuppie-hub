@@ -1,0 +1,98 @@
+*,
+html,
+body {
+  /* variables */
+
+  --green: #badf5b;
+  --blue: #036eff;
+  --blue-loading: rgba(3, 108, 255, 0.5);
+  --blue-8: rgba(3, 108, 255, 0.8);
+  --red: #ff5757;
+  --white: #fff;
+  --gris: #b9b9b9;
+  --gris-text: #888;
+  --gris-v-1: #c9c9c9;
+  --gris-v-2: #d1d1d1;
+  --gris-v-3: #e8e8e8;
+  --gris-v-4: #ebebeb;
+  --black-input: #000000f2;
+  --black-input-7: rgba(0, 0, 0, 0.7);
+  --box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+    rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+  --box-shadow-middle: -20px 0 10px -20px rgba(0, 0, 0, 0.4) inset,
+    20px 0 10px -20px rgba(0, 0, 0, 0.4) inset;
+  --box-shadow-btn: 2px 3px 5px -1px hsla(0, 0%, 0%, 0.4);
+  --box-shadow-value-btn: 2px 3px 5px -1px;
+  --box-shadow-form: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+  --bold: 700;
+  --medium: 500;
+  --regular: 300;
+  --linear-gradient: linear-gradient(135deg, var(--green), var(--blue))
+    var(--green);
+  --linear-gradient-reverse: linear-gradient(135deg, var(--blue), var(--green))
+    var(--green);
+  --black-25: rgb(0, 0, 0, 0.3);
+
+  /* variables */
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+  color: inherit;
+  text-overflow: ellipsis;
+  text-decoration: inherit;
+  border: inherit;
+  outline: inherit;
+  /* font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif; */
+}
+*::selection {
+  background: rgba(186, 223, 91, 0.25);
+  color: var(--blue);
+}
+button::-moz-focus-inner {
+  border: 0;
+}
+
+.df {
+  display: flex;
+}
+.jcc {
+  justify-content: center;
+}
+.aic {
+  align-items: center;
+}
+.wf {
+  width: 100%;
+}
+.hf {
+  height: 100%;
+}
+.fc {
+  flex-direction: column;
+}
+.fr {
+  flex-direction: row;
+}
+i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+input,
+textarea {
+  color: var(--black-input-7);
+  font-weight: var(--medium);
+  font-family: "Archivo", sans-serif;
+}
+textarea {
+  font-size: 0.8rem;
+}
+@media (max-height: 600px) {
+  *,
+  body,
+  html {
+    font-size: 14px;
+  }
+}

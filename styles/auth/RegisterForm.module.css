@@ -1,0 +1,294 @@
+.container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-align: center;
+  flex-wrap: wrap;
+  box-shadow: var(--box-shadow);
+}
+.container.ov {
+  overflow: hidden;
+}
+
+@keyframes h {
+  100% {
+    opacity: 1;
+  }
+}
+.formContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 95%;
+}
+.container form {
+  padding: 3%;
+  width: 72%;
+  min-width: 475px;
+  height: 100%;
+  min-height: max-content;
+  background: var(--white);
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  box-shadow: var(--box-shadow-form);
+}
+
+.switchBtn {
+  display: flex;
+  position: relative;
+  height: max-content;
+  align-self: flex-start;
+}
+.contenu {
+  width: 90%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 6%;
+  height: 92%;
+}
+.rtgh {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+}
+.link:focus .switchIcon,
+.link:hover .switchIcon {
+  box-shadow: var(--box-shadow);
+}
+.switchIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: var(--gris-v-3);
+  height: 2rem;
+  width: 2rem;
+  cursor: pointer;
+  transition: 0.1s;
+}
+.switchIcon:hover {
+  background: var(--gris-v-2);
+}
+.switchIcon i {
+  font-size: 1.5rem;
+  color: var(--white);
+  text-shadow: 1px 2px 2px var(--gris-v-2);
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.5rem;
+  position: relative;
+}
+.inputs > div {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.35rem;
+}
+.inputs > div input {
+  position: relative;
+  width: 100%;
+  border: 2px solid var(--gris);
+  padding: 0.65rem 2rem 0.65rem 1rem;
+  border-radius: 0.35rem;
+  font-size: 0.95rem;
+  color: var(--black-input);
+  text-align: center;
+  transition: 0.1s;
+}
+.inputs > div input.red {
+  border-color: var(--red);
+}
+.inputs > div input:focus,
+.inputs > div input:hover {
+  box-shadow: 0 0 0 1px var(--gris-v-2);
+  border-color: var(--gris);
+}
+
+.remember {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--gris);
+  gap: 0.25rem;
+  padding: 0;
+  user-select: none;
+}
+.remember span {
+  font-size: 0.9rem;
+}
+.remember input {
+  cursor: pointer;
+  appearance: none;
+  color: var(--white);
+  border-radius: 4px;
+  border: 2px solid var(--gris);
+  transform: scale(0.75);
+}
+.remember input::before {
+  content: "";
+  border-radius: 4px;
+  width: 0.65rem;
+  height: 0.65rem;
+  font-size: 0.7rem;
+  padding: 0.1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  transform-origin: bottom center;
+  transform: translate(-50%, 15%) scale(0);
+  transition: transform 0.2s ease-in;
+}
+
+.remember input:hover,
+.remember input:focus {
+  box-shadow: var(--box-shadow);
+}
+.remember input:checked {
+  border-color: transparent;
+  transform: scale(1);
+  box-shadow: none;
+}
+.remember input:checked:before {
+  background-color: var(--blue);
+  content: "\2713";
+  transform: translate(0) scale(1);
+}
+.btn {
+  width: 100%;
+  position: relative;
+  border-radius: 0.25rem;
+}
+.btn.red {
+  border: 1px solid var(--red);
+  box-shadow: var(--box-shadow);
+  padding: 0.1rem 0;
+}
+.btn.red * {
+  border: none;
+}
+.registerChoice {
+  width: 100%;
+  color: var(--blue);
+  font-size: 1rem;
+  font-weight: var(--medium);
+}
+.submit {
+  width: 100%;
+}
+
+.submit button {
+  padding: 0.65rem;
+  width: 100%;
+  background: var(--blue);
+  color: var(--white);
+  font-weight: bold;
+  border: none;
+  border-radius: 0.45rem;
+  cursor: pointer;
+  transition: 0.1s;
+  box-shadow: var(--box-shadow);
+}
+.submit button:hover,
+.submit button:focus {
+  box-shadow: var(--box-shadow-btn);
+}
+.submit.submitLoading button {
+  filter: blur(0.25px);
+  background: var(--blue-loading);
+  pointer-events: none;
+}
+@media (max-width: 1000px) {
+  .container {
+    box-shadow: none;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+  }
+  .container.ov {
+    overflow: visible;
+  }
+  .container form {
+    border-radius: 1.5rem 2.5rem 1.25rem 1.25rem;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 445px;
+    width: 49%;
+  }
+  .contenu {
+    padding: 0;
+    width: 88%;
+  }
+  .remember {
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+  }
+  .switchBtn {
+    position: absolute;
+    top: -3%;
+    left: -3%;
+    background: var(--white);
+    height: max-content;
+    border-radius: 50%;
+    z-index: 0;
+  }
+  .switchIcon {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+  .switchIcon i {
+    font-size: 2rem;
+  }
+  .inputs > div input {
+    padding: 0.65rem 2rem 0.65rem 1rem;
+    font-size: 0.9rem;
+  }
+  .btn div button {
+    padding: 0.5rem;
+  }
+  .registerChoice {
+    padding: 0.5rem 0;
+  }
+}
+@media (max-width: 600px) {
+  .formContainer {
+    height: 99%;
+  }
+  .switchBtn {
+    z-index: 6;
+  }
+}
+@media (max-width: 450px) {
+  .container form {
+    padding: 0 0.75rem;
+    min-width: inherit;
+    width: 90%;
+  }
+  .switchBtn {
+    left: -2.5%;
+  }
+}

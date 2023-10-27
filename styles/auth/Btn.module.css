@@ -1,0 +1,58 @@
+.container {
+  width: 100%;
+  position: relative;
+}
+.btn {
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+.btn > div {
+  width: 100%;
+  position: relative;
+}
+.btn div div {
+  font-weight: var(--regular);
+  color: var(--white);
+  font-size: 0.9rem;
+  background: rgba(186, 223, 91, 0.9);
+  z-index: 6;
+  border-radius: 0.8rem;
+  line-height: 1.25;
+  width: 400px;
+  padding: 0.5rem 1rem;
+  opacity: 0;
+  animation: enterAnim 0.3s forwards;
+}
+@keyframes enterAnim {
+  100% {
+    opacity: 1;
+  }
+}
+
+.btc {
+  padding: 0.55rem 0.65rem;
+  width: 100%;
+  background: var(--white);
+  color: var(--gris);
+  font-weight: var(--bold);
+  border: 2px solid var(--gris);
+  width: 100%;
+  border-radius: 4px;
+  transition: 0.1s;
+  text-align: center;
+  cursor: default;
+}
+.btc:hover,
+.btc:active,
+.btc:focus {
+  box-shadow: var(--box-shadow);
+}
+
+.container div.active .btc {
+  color: var(--blue);
+  background: var(--green);
+  border-color: var(--green);
+}

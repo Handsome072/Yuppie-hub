@@ -1,0 +1,108 @@
+.container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-align: center;
+  flex-wrap: wrap;
+  box-shadow: var(--box-shadow);
+}
+
+.container form {
+  width: 72%;
+  height: 95%;
+  background: var(--white);
+  padding: 3%;
+  gap: 1.5rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: var(--box-shadow-form);
+}
+
+.switchBtn {
+  display: flex;
+  position: relative;
+  align-self: flex-start;
+}
+.switchIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: var(--gris-v-3);
+  height: 2rem;
+  width: 2rem;
+  cursor: pointer;
+  transition: 0.1s;
+}
+.switchIcon:hover {
+  background: var(--gris-v-2);
+}
+.switchIcon i {
+  font-size: 1.5rem;
+  color: var(--white);
+  text-shadow: 1px 2px 2px var(--gris-v-2);
+}
+.contenu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-direction: column;
+}
+.contenu label {
+  color: var(--blue);
+  font-weight: var(--medium);
+}
+.contenu p {
+  color: var(--gris-text);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 1000px) {
+  .container {
+    box-shadow: none;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+  }
+  .container form {
+    max-width: 425px;
+    border-radius: 2.5rem 2.5rem 1.25rem 1.25rem;
+    padding: 0 3rem;
+    height: 97%;
+  }
+  .switchBtn {
+    position: absolute;
+    top: -6%;
+    left: -5%;
+    background: var(--white);
+    height: max-content;
+    border-radius: 50%;
+    z-index: 0;
+  }
+  .switchIcon {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+  .switchIcon i {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 450px) {
+  .container form {
+    padding: 0 2rem;
+  }
+  .switchIcon {
+    height: 2rem;
+    width: 2rem;
+  }
+  .switchIcon i {
+    font-size: 1.5rem;
+  }
+}

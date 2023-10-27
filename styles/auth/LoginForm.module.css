@@ -1,0 +1,317 @@
+.container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-align: center;
+  flex-wrap: wrap;
+  box-shadow: var(--box-shadow);
+  text-overflow: ellipsis;
+}
+.formContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  height: 95%;
+}
+.container form {
+  background: var(--white);
+  padding: 4% 3rem;
+  width: 80%;
+  min-width: 475px;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  justify-content: space-between;
+  height: 100%;
+  box-shadow: var(--box-shadow-form);
+}
+.formMiddle {
+  width: 100%;
+  height: 87.5%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.formMiddle * {
+  user-select: none;
+}
+.title {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.title label {
+  font-size: 2rem;
+  color: var(--blue);
+  width: 100%;
+  max-width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  padding: 2% 0 0 0;
+  overflow: hidden;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.inputs > div {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.35rem;
+}
+.inputs > div input {
+  position: relative;
+  width: 100%;
+  border: 2px solid var(--gris);
+  padding: 0.65rem 2rem 0.65rem 1rem;
+  border-radius: 0.35rem;
+  font-size: 0.95rem;
+  color: var(--black-input);
+  text-align: center;
+}
+
+.inputs > div input:focus,
+.inputs > div input:hover {
+  outline: 1px solid var(--gris-v-2);
+}
+.inputs div button {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+}
+
+.inputs div button i {
+  padding: 0.5rem 0.7rem;
+  cursor: pointer;
+  color: var(--gris);
+  color: rgba(0, 0, 0, 0.5);
+}
+.inputs div button i:hover,
+.inputs div button:focus i {
+  text-shadow: 1px 0px 0px var(--gris);
+}
+
+.forgot {
+  width: 100%;
+  height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.forgot .link span {
+  color: var(--gris-text);
+  font-weight: var(--regular);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.1s;
+}
+
+.forgot .link:hover span:first-child,
+.forgot .link:focus span:first-child {
+  text-decoration: underline;
+}
+
+.btn {
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.submit {
+  width: 100%;
+  position: relative;
+}
+
+.submit button {
+  padding: 0.65rem;
+  background: var(--blue);
+  max-width: 100%;
+  border: none;
+  width: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.1s;
+  overflow: hidden;
+  color: var(--white);
+}
+.submit.submitLoading button {
+  filter: blur(0.25px);
+  background: var(--blue-loading);
+  pointer-events: none;
+}
+.submit button span {
+  font-weight: var(--bold);
+  white-space: nowrap;
+}
+.submit button:hover,
+.submit button:focus {
+  box-shadow: var(--box-shadow-btn);
+}
+.btn div:last-child button {
+  padding: 0.65rem;
+  width: 100%;
+  color: var(--green);
+  font-weight: var(--bold);
+  border: 2px solid var(--green);
+  border-radius: 4px;
+  background: transparent;
+  transition: 0.1s;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.btn div:last-child button:hover,
+.btn div:last-child button:focus {
+  box-shadow: var(--box-shadow);
+}
+.hr {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.hr::before {
+  content: "";
+  width: 100%;
+  height: 2px;
+  position: absolute;
+  background: var(--gris-v-3);
+}
+.notRegistered {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+.notRegistered label {
+  color: var(--blue);
+  font-size: 0.95rem;
+  font-weight: var(--medium);
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+}
+.register {
+  padding: 0.65rem;
+  position: relative;
+  width: 100%;
+  background: var(--green);
+  color: var(--white);
+  font-weight: var(--bold);
+  border: none;
+  width: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.1s;
+  box-shadow: var(--box-shadow);
+}
+.container .register {
+  user-select: auto;
+}
+.register:hover,
+.register:focus {
+  box-shadow: var(--box-shadow-btn);
+}
+
+@media (max-width: 1000px) {
+  .container {
+    box-shadow: none;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+  .container form {
+    width: 50%;
+    min-width: 445px;
+    padding: 1.5rem 3rem 2rem 3rem;
+  }
+  .formContainer {
+    height: 96%;
+  }
+  .forgot {
+    height: auto;
+  }
+}
+@media (max-width: 600px) {
+  .formContainer {
+    height: 99%;
+  }
+}
+
+@media (max-width: 360px) {
+  .container {
+    align-items: center;
+  }
+  .container form {
+    padding: 2rem;
+    border-radius: 0.75rem 0.75rem;
+  }
+  .title {
+    font-size: 1.9rem;
+  }
+  .btn div:last-child button {
+    font-size: 0.8rem;
+  }
+}
+@media (max-width: 325px) {
+  .inputs > div input {
+    border: 2px solid var(--gris);
+    padding: 0.5rem 2rem 0.5rem 0.5rem;
+    font-size: 0.9rem;
+  }
+  .title {
+    font-size: 1.75rem;
+  }
+  .register button {
+    padding: 0.5rem;
+  }
+  .btn div:first-child button,
+  .btn div:last-child {
+    padding: 0.5rem 0;
+  }
+  .btn div:last-child button {
+    font-size: 0.8rem;
+  }
+}
+@media (max-width: 305px) {
+  .title {
+    font-size: 1.5rem;
+  }
+  .forgot {
+    font-size: 0.8rem;
+  }
+  .notRegistered {
+    font-size: 0.8rem;
+  }
+  .register button {
+    padding: 0.5rem;
+  }
+  .btn div:last-child {
+    padding: 0.2rem 0;
+  }
+}

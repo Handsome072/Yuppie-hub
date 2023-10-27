@@ -1,0 +1,231 @@
+.container {
+  width: 100%;
+  height: 100%;
+  border-left: 2px solid var(--gris-v-2);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2% 5%;
+}
+.container * {
+  border: none;
+}
+
+.btn {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+  max-width: 100%;
+  height: 12%;
+}
+.btn div {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+.btn label {
+  width: 100%;
+  min-width: 100%;
+  min-height: max-content;
+  overflow: hidden;
+  padding: 0.5rem 4%;
+  border-radius: 0.65rem;
+  font-weight: var(--medium);
+  color: var(--white);
+  background: var(--blue);
+  box-shadow: var(--box-shadow-value-btn) var(--gris-v-2);
+  font-size: 0.9rem;
+  text-align: center;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.1;
+  max-width: 100%;
+}
+.btn input {
+  display: none;
+}
+.info {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: max-content;
+  height: 60%;
+}
+.suppr {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5% 0;
+  min-height: max-content;
+  min-width: 100%;
+  max-width: 100%;
+  width: 100%;
+}
+.suppr.dis {
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.suppr label {
+  max-width: 90%;
+  min-width: 90%;
+  width: 90%;
+  text-align: center;
+  overflow: hidden;
+  padding: 0.325rem 3%;
+  border-radius: 0.5rem;
+  font-weight: var(--medium);
+  color: var(--white);
+  background: var(--gris-v-2);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  box-shadow: var(--box-shadow-value-btn) var(--gris-v-2);
+  user-select: none;
+  transition: 0.1s;
+  cursor: pointer;
+}
+.suppr label:hover,
+.btn label:hover {
+  box-shadow: var(--box-shadow-btn);
+}
+.photo {
+  width: 100%;
+  height: 100%;
+  padding: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.photo div {
+  position: relative;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+}
+.photoImg {
+  object-fit: cover;
+}
+
+.choose {
+  width: 100%;
+  padding: 5% 0;
+  position: relative;
+}
+.choose label {
+  display: flex;
+  text-transform: uppercase;
+  color: var(--gris);
+  font-weight: var(--medium);
+  font-size: 0.75rem;
+  text-align: center;
+  width: 100%;
+}
+
+.not {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 5%;
+}
+.not label {
+  width: 90%;
+  font-weight: var(--regular);
+  font-size: 0.75rem;
+  text-align: center;
+  color: var(--gris-v-1);
+}
+
+.bio {
+  display: flex;
+  width: 100%;
+  padding: 2% 0;
+  flex-direction: column;
+  position: relative;
+  height: 27%;
+  border-top: 1px solid var(--gris-v-4);
+}
+.bio label {
+  font-weight: var(--bold);
+  color: var(--gris);
+  font-size: 1.25rem;
+  width: 100%;
+  padding: 0.25rem 0 0.5rem 0;
+  text-align: center;
+}
+.bio div {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+.textarea {
+  max-width: 100%;
+  min-width: 100%;
+  max-height: 100%;
+  min-height: 100%;
+  background: var(--gris-v-4);
+  scrollbar-width: thin;
+  scrollbar-color: var(--gris) var(--gris-v-1);
+  overflow: hidden;
+  overflow-y: scroll;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  padding: 3% 4%;
+  line-height: 1.25;
+}
+.textarea:focus {
+  outline: 1px solid var(--gris-v-2);
+}
+.textarea::-webkit-scrollbar {
+  width: 4px;
+}
+
+.textarea::-webkit-scrollbar-button:start,
+.textarea::-webkit-scrollbar-button:end {
+  display: none;
+}
+.textarea::-webkit-scrollbar-thumb {
+  background-color: var(--gris-v-1);
+  border-radius: 2rem;
+}
+.textarea::-webkit-scrollbar-thumb:hover {
+  background-color: var(--gris);
+}
+.textarea::-webkit-scrollbar-track {
+  background-color: transparent;
+  transition: 0.15s;
+}
+@media (max-width: 1250px) {
+  .photo {
+    height: 12rem;
+    width: 12rem;
+  }
+}
+@media (max-width: 1000px) {
+  .photo {
+    height: 10rem;
+    width: 10rem;
+  }
+  .btn label {
+    padding: 0.35rem 2%;
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+  }
+  .suppr {
+    max-width: 90%;
+  }
+  .suppr label {
+    padding: 0.25rem 3%;
+    border-radius: 0.45rem;
+    font-size: 0.75rem;
+  }
+}

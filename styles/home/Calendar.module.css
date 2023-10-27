@@ -1,0 +1,134 @@
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  color: var(--white);
+}
+.container.cli {
+  height: auto;
+}
+.left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  height: 95%;
+  position: relative;
+  min-width: max-content;
+  flex: 2;
+}
+.mde span {
+  color: var(--blue);
+}
+.left .ht {
+  height: 100%;
+  text-align: right;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+}
+
+.left i {
+  color: var(--white);
+  font-size: 0.9rem;
+}
+.upd i {
+  font-size: 1rem;
+}
+.container button[type="submit"] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--green);
+  padding: 0.25rem;
+  border-radius: 50%;
+  box-shadow: var(--box-shadow);
+  cursor: pointer;
+}
+.container .labc {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--blue);
+  padding: 0.25rem;
+  border-radius: 50%;
+  box-shadow: var(--box-shadow);
+  cursor: pointer;
+}
+.left div span,
+.right div label {
+  color: var(--white);
+  font-size: 0.8rem;
+  text-align: right;
+  font-weight: var(--bold);
+}
+.right {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  gap: 2.2%;
+  flex: 6;
+  min-width: max-content;
+}
+.right .dt {
+  height: 15%;
+}
+.right > div {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+.right .d {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+.right .d span {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 1.3rem;
+  width: 1.3rem;
+  border-radius: 0.18rem;
+  margin-top: 25.5%;
+  overflow: hidden;
+  box-shadow: 1px 1px 1px var(--black-25);
+}
+.right .d span::before {
+  content: "";
+  position: absolute;
+  background: var(--gris-v-4);
+  width: 100%;
+  height: 100%;
+  transition: 0.15s;
+}
+
+.right .d span:hover::before {
+  background: var(--gris);
+}
+.right .d .jca::before {
+  background: var(--green);
+}
+.right .d .jcd::before {
+  background: var(--red);
+}
+.right .d .jca:hover::before {
+  background: rgba(var(--green));
+}
+.right .d .jcd:hover::before {
+  background: rgba(var(--red));
+}
+
+@media (max-width: 1000px) {
+  .container {
+    justify-content: flex-start;
+  }
+}

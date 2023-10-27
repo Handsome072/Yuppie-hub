@@ -1,0 +1,101 @@
+.container {
+  position: absolute;
+  max-width: 25rem;
+  z-index: 15;
+  background: var(--white);
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: var(--box-shadow-btn);
+  align-self: flex-start;
+}
+.container.auto {
+  transform: translateY(-100%);
+  animation: anim 0.5s forwards;
+}
+@keyframes anim {
+  100% {
+    transform: translateY(37.5%);
+  }
+}
+.container.rev {
+  animation: rev 0.5s forwards;
+}
+@keyframes rev {
+  100% {
+    transform: translateY(-137.5%);
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+.contenu {
+  position: relative;
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  align-items: center;
+  justify-content: space-between;
+}
+.message {
+  position: relative;
+  font-weight: var(--bold);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0.75rem;
+  color: var(--blue);
+}
+.message.error {
+  color: var(--red);
+}
+.message.success {
+  color: var(--green);
+}
+
+.message * {
+  border: none;
+}
+.message ul {
+  position: relative;
+}
+.message li {
+  list-style-type: none;
+  position: relative;
+  display: flex;
+  gap: 0.35rem;
+  word-break: keep-all;
+  padding: 0.15rem 0;
+  align-items: center;
+}
+.message li span {
+  font-size: 0.8rem;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+}
+.message li i {
+  font-size: 1.2rem;
+}
+.close {
+  align-self: flex-start;
+  padding: 0.5rem;
+  cursor: pointer;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  opacity: 0.5;
+  transition: 0.1s;
+  height: 100%;
+  color: var(--gris);
+}
+.close:hover,
+.close:focus {
+  opacity: 1;
+  transform: scale(1.1);
+}
+@media (max-width: 1000px) {
+  .container {
+    top: -20%;
+  }
+}

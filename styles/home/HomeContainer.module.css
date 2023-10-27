@@ -1,0 +1,19 @@
+.container {
+  width: 100%;
+  display: flex;
+  height: 100%;
+  position: relative;
+}
+.left {
+  height: 100%;
+  min-width: 25%;
+  max-width: 25%;
+}
+.middle {
+  height: 100%;
+  min-width: 55%;
+}
+.right {
+  height: 100%;
+  min-width: 20%;
+}

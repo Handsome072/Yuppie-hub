@@ -1,0 +1,267 @@
+.container {
+  width: 100%;
+  height: 100%;
+  padding: 2%;
+  position: relative;
+  color: var(--gris);
+  display: flex;
+  flex-direction: column;
+  gap: 5%;
+  padding-top: 5%;
+}
+.container div {
+  width: 100%;
+  display: flex;
+  position: relative;
+}
+.container .l {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.container .l label {
+  font-weight: var(--bold);
+  font-size: 1.2rem;
+  width: max-content;
+}
+
+.container .l p {
+  font-weight: var(--regular);
+  font-size: 0.8rem;
+  padding: 1rem 25% 1rem 0;
+}
+
+.container .grid {
+  display: grid;
+  width: 40%;
+  position: relative;
+  min-width: max-content;
+  grid-template-columns: 1fr 50%;
+  align-items: center;
+  height: max-content;
+  justify-content: flex-end;
+  gap: 10%;
+}
+.container .r input,
+.container .inputR input {
+  width: 100%;
+  border: 1px solid var(--gris-v-2);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  color: var(--blue);
+  padding-right: 1.75rem;
+  min-width: 8rem;
+}
+.container input::placeholder {
+  color: var(--gris-v-2);
+  transition: 0.075s;
+}
+.container input:focus::placeholder {
+  color: transparent;
+}
+.container .r.foc input:hover,
+.container .r.foc input:focus {
+  outline: 1px solid var(--gris-v-2);
+}
+.container .inputR {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: relative;
+  flex-direction: column;
+}
+.container .shareLink {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: relative;
+  flex-direction: column;
+}
+
+.shareLink .sh {
+  position: absolute;
+  color: var(--blue);
+  padding: 0 0.5rem;
+  z-index: 6;
+  right: 0;
+  cursor: pointer;
+  transform: translateY(0.5px);
+}
+.inputR i {
+  position: absolute;
+  padding-right: 0.5rem;
+  transform: scale(1.6);
+  transition: 0.1s;
+  color: var(--gris-v-2);
+  cursor: pointer;
+}
+.inputR:hover i,
+.inputR input:focus i {
+  color: var(--gris);
+}
+
+.container .grid .menuDeroulant {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  border-radius: 0.25rem;
+  width: 100%;
+  height: max-content;
+  max-height: 448%;
+  right: 0;
+  top: 112.5%;
+  min-height: max-content;
+  border: 1px solid var(--gris-v-1);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gris) var(--gris-v-1);
+  z-index: 6;
+  padding-right: 0.25rem;
+  animation: anim 0.25s;
+  transform-origin: top;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+.container .grid .menuDeroulant label {
+  cursor: default;
+}
+.menuDeroulant * {
+  user-select: none;
+}
+.container .grid .menuDeroulant.hidden {
+  padding: 0;
+  cursor: default;
+}
+
+@keyframes anim {
+  0% {
+    transform: scaleY(0);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+.container .grid .stat {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.container .grid .cat {
+  gap: 0.5rem;
+}
+.container .grid .menuDeroulant * {
+  border: none;
+}
+.menuDeroulant::-webkit-scrollbar {
+  width: 4px;
+}
+
+.menuDeroulant::-webkit-scrollbar-button:start,
+.menuDeroulant::-webkit-scrollbar-button:end {
+  display: none;
+}
+.menuDeroulant::-webkit-scrollbar-thumb {
+  background-color: var(--gris-v-1);
+  border-radius: 2rem;
+}
+.menuDeroulant::-webkit-scrollbar-thumb:hover {
+  background-color: var(--gris);
+}
+.menuDeroulant::-webkit-scrollbar-track {
+  background-color: transparent;
+  transition: 0.15s;
+}
+.container .grid .menuDeroulant * {
+  min-height: max-content;
+}
+.container .grid .stat > div {
+  padding: 0.25rem 0;
+}
+.container .grid .stat div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-left: 0.5rem;
+  height: max-content;
+  transition: 0.15s;
+}
+.container .grid .stat div:hover {
+  background: var(--gris-v-4);
+}
+.container .grid .pays.notHover div:hover {
+  background: transparent;
+}
+.container .grid .menuDeroulant i {
+  cursor: pointer;
+  font-size: 1rem;
+}
+.container .grid .menuDeroulant div.po {
+  pointer-events: none;
+  color: var(--blue);
+}
+.container .chrt {
+  display: flex;
+  align-items: center;
+  width: 75%;
+}
+.container .grid label {
+  font-size: 0.9rem;
+}
+.container .chrt div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10%;
+}
+
+.container .chrt input {
+  cursor: pointer;
+  height: 0.75rem;
+  width: 0.75rem;
+  appearance: none;
+  color: var(--white);
+  border-radius: 3px;
+  border: 1px solid var(--gris);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.1s;
+}
+
+.container .chrt input::before {
+  content: "";
+  border-radius: 4px;
+  width: 100%;
+  height: 100%;
+  font-size: 0.7rem;
+  padding: 0.11rem 0.16rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  transform-origin: bottom center;
+  transform: translate(-50%, 15%) scale(0);
+  transition: transform 0.2s ease-in;
+}
+
+.container .chrt input:hover,
+.container .chrt input:focus {
+  box-shadow: var(--box-shadow);
+}
+.container .chrt input:checked {
+  box-shadow: none;
+  border-color: transparent;
+  transform: scale(1);
+}
+.container .chrt input:checked:before {
+  background-color: var(--blue);
+  content: "\2713";
+  transform: translateY(0) scale(1);
+}
