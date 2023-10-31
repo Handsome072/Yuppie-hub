@@ -44,7 +44,7 @@ body {
   text-decoration: inherit;
   border: inherit;
   outline: inherit;
-  /* font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif; */
+  font-family: "Archivo", sans-serif;
 }
 *::selection {
   background: rgba(186, 223, 91, 0.25);

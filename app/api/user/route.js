@@ -1,7 +1,9 @@
+import connectToMongo from "@/lib/db";
 import UserModel from "@/lib/models/user.model";
 import { NextResponse } from "next/server";
 export const GET = async () => {
   try {
+    await connectToMongo();
     const users = await UserModel.find().select("-password");
     if (!users)
       return new NextResponse(
@@ -17,6 +19,7 @@ export const GET = async () => {
 
 export const POST = async (req) => {
   try {
+    await connectToMongo();
     const { id } = await req.json();
     const users = await UserModel.find();
     // const users = await UserModel.findByIdAndDelete(id);

@@ -20,7 +20,7 @@
 }
 .container form {
   background: var(--white);
-  padding: 4% 3rem;
+  padding: 4% 8%;
   width: 80%;
   min-width: 475px;
   border-radius: 1rem;
@@ -28,7 +28,7 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-  justify-content: space-between;
+  justify-content: space-around;
   height: 100%;
   box-shadow: var(--box-shadow-form);
 }

@@ -1,10 +1,9 @@
 import { cookieName } from "@/constants";
 import { isEmpty } from "@/lib/utils/isEmpty";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-export const GET = async () => {
+export const GET = async (req) => {
   try {
-    const token = cookies().get(cookieName)?.value;
+    const token = req.cookies.get(cookieName);
     if (isEmpty(token)) {
       return new NextResponse(
         JSON.stringify({ error: "No token" }, { status: 200 })

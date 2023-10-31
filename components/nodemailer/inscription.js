@@ -1,4 +1,4 @@
-const src = process.env.LOGO_URL;
+const src = process.env.URL;
 export const generateEmail = ({ name, username, userType }) => {
   if (userType === "assistant")
     return {
@@ -36,7 +36,7 @@ export const generateEmail = ({ name, username, userType }) => {
                       <table style="width: 100%;">
                         <tr>
                           <td style="width: 100%; text-align: center">
-                               <img style="height:4rem" src="${src}/logo.png"
+                               <img style="height:2rem" src="${src}/logo.png"
                               alt="Yuppie HUB"
                                />
                           </td>
@@ -127,7 +127,7 @@ export const generateEmail = ({ name, username, userType }) => {
                       <table style="width: 100%;">
                         <tr>
                           <td style="width: 100%; text-align: center">
-                              <img height:4rem"  src="${src}/logo.png"
+                              <img style="height:2rem" src="${src}/logo.png"
                               alt="Yuppie HUB"
                                />
                           </td>

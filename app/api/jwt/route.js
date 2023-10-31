@@ -1,15 +1,18 @@
 import { authTokenName, cookieName } from "@/constants";
+import connectToMongo from "@/lib/db";
 import { verifyToken } from "@/lib/jwt";
 import UserModel from "@/lib/models/user.model";
 import { isEmpty } from "@/lib/utils/isEmpty";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-export const GET = async () => {
+export const GET = async (req) => {
   try {
-    const token = cookies().get(cookieName);
+    const token = req.cookies.get(cookieName);
     if (isEmpty(token?.value)) {
       return new NextResponse(
-        JSON.stringify({ error: "No token" }, { status: 400 })
+        JSON.stringify(
+          { error: "No token", token, cookie: req.cookies },
+          { status: 400 }
+        )
       );
     }
     const verify = verifyToken(token.value);
@@ -20,6 +23,7 @@ export const GET = async () => {
       res.cookies.set(cookieName, "", { maxAge: -1 });
       return res;
     }
+    await connectToMongo();
     const { id } = verify.infos;
     const user = await UserModel.findById(id);
     if (isEmpty(user)) {

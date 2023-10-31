@@ -13,7 +13,6 @@ import Btn from "./Btn";
 import Conditions from "./Conditions";
 export default function RegisterForm() {
   const { push } = useRouter();
-  const { isLoadingJWT } = useContext(UidContext);
   const [spinner, setSpinner] = useState(false);
   const [userType, setUserType] = useState({
     obj: "userType",
@@ -87,7 +86,7 @@ export default function RegisterForm() {
   };
   if (spinner) return <Spinner />;
   return (
-    <ClientOnly isLoadingJWT={isLoadingJWT} spin>
+    <ClientOnly spin>
       <div
         className={
           isHovered.obj === "assistant" && isHovered.value

@@ -1,16 +1,19 @@
 "use client";
 import ClientOnly from "@/components/ClientOnly";
-import { fetchTokenController } from "@/lib/controllers/auth.controller";
-import { fetchUserInfosController } from "@/lib/controllers/user.controller";
+import { fetchToken } from "@/lib/controllers/auth.controller";
+import { verifyJWT } from "@/lib/controllers/jwt.controller";
+import { fetchUserInfos } from "@/lib/controllers/user.controller";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import { updateUserInfos } from "@/redux/slices/userSlice";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, createContext, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export const UidContext = createContext();
 export const UidContextProvider = ({ children }) => {
   const path = usePathname();
+  const token = useSelector((state) => state.token);
+  const userInfos = useSelector((state) => state.user);
   const [uid, setUid] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingJWT, setIsLoadingJWT] = useState(true);
@@ -18,12 +21,13 @@ export const UidContextProvider = ({ children }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     (async () => {
-      const res = await fetchTokenController().catch((error) =>
-        console.log(error)
-      );
+      if (!isEmpty(userInfos)) {
+        setUid(userInfos);
+      }
+      const res = await verifyJWT(token);
       setIsLoadingJWT(false);
-      if (!isEmpty(res?.token)) {
-        setUid(res.token);
+      if (!isEmpty(res?.infos)) {
+        setUid(res.infos);
       } else {
         if (path === "/home") {
           push("/login");
@@ -34,9 +38,7 @@ export const UidContextProvider = ({ children }) => {
   useEffect(() => {
     if (!isEmpty(uid)) {
       (async () => {
-        const res = await fetchUserInfosController(uid.id).catch((error) =>
-          console.log(error)
-        );
+        const res = await fetchUserInfos(uid.id);
         setIsLoading(false);
         if (!isEmpty(res?.userInfos)) {
           dispatch(updateUserInfos(res.userInfos));
@@ -48,10 +50,16 @@ export const UidContextProvider = ({ children }) => {
       })();
     }
   }, [uid]);
+
+  const toggleUid = (value) => {
+    setUid(value);
+  };
   if (typeof window !== "undefined")
     return (
       <ClientOnly>
-        <UidContext.Provider value={{ uid, isLoading, isLoadingJWT }}>
+        <UidContext.Provider
+          value={{ uid, toggleUid, isLoading, isLoadingJWT }}
+        >
           <>{children}</>
         </UidContext.Provider>
       </ClientOnly>

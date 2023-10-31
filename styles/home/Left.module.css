@@ -206,6 +206,10 @@
   color: var(--blue);
   background: var(--green);
 }
+.btn .activeCli {
+  background: var(--blue);
+  color: var(--white);
+}
 .middle.middleCli {
   height: 67.5%;
   max-height: initial;

@@ -10,8 +10,8 @@ import { ImBooks } from "react-icons/im";
 import { FaCopyright } from "react-icons/fa";
 import ClientOnly from "../ClientOnly";
 export default function Bottom() {
-  const { uid, isLoading } = useContext(UidContext);
-  if (isLoading || isEmpty(uid)) {
+  const { uid } = useContext(UidContext);
+  if (isEmpty(uid)) {
     return null;
   }
   return (

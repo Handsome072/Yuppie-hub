@@ -24,7 +24,6 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
   const lastPhoto = !isEmpty(userInfos?.image)
     ? userInfos.image[userInfos.image.length - 1]
     : null;
-  console.log("lastPhoto", typeof lastPhoto, lastPhoto);
   useEffect(() => {
     if (newNote.obj !== userInfos.note) {
       setNewNote((prev) => {
@@ -124,7 +123,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                   <i className="mdi mdi-star-outline" />
                 </div>
                 <label>
-                  {!isEmpty(userInfos) && userInfos.avis.length === 0 ? (
+                  {!isEmpty(userInfos) && userInfos.avis?.length === 0 ? (
                     <>aucun avis</>
                   ) : (
                     <>{userInfos.avis?.length} avis</>
@@ -391,6 +390,8 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                     className={
                       active.obj === "bio" && active.value === true
                         ? `${styles.active}`
+                        : uid?.userType === "client"
+                        ? `${styles.activeCli}`
                         : null
                     }
                     onClick={() => setActive({ obj: "bio", value: true })}
@@ -410,6 +411,8 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                     className={
                       active.obj === "disp" && active.value === true
                         ? `${styles.active}`
+                        : uid?.userType === "client"
+                        ? `${styles.activeCli}`
                         : null
                     }
                     onClick={() => setActive({ obj: "disp", value: true })}

@@ -1,14 +1,18 @@
 "use client";
+import { UidContext } from "@/context/UidContext";
 import {
   loginController,
   registerController,
 } from "@/lib/controllers/auth.controller";
 import { verifyJWT } from "@/lib/controllers/jwt.controller";
 import { isEmpty } from "@/lib/utils/isEmpty";
+import { updateToken } from "@/redux/slices/tokenSlice";
+import { updateUserInfos } from "@/redux/slices/userSlice";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import styles from "../../styles/auth/Fail.module.css";
 import ClientOnly from "../ClientOnly";
 import Spinner from "../Spinner";
@@ -16,6 +20,8 @@ import Spinner from "../Spinner";
 export default function Fail() {
   const token = useSearchParams().get("t");
   const { push } = useRouter();
+  const dispatch = useDispatch();
+  const { toggleUid } = useContext(UidContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isValid, setIsValid] = useState(false);
   const [userEmail, setUserEmail] = useState({
@@ -113,7 +119,7 @@ export default function Fail() {
     })();
   }, [token]);
   useEffect(() => {
-    if (newUser?.email?.trim() !== email.obj) {
+    if (newUser?.email?.trim() !== userEmail.obj) {
       setNewUser((prev) => {
         let nwe = { ...prev };
         nwe.valid = true;
@@ -137,10 +143,11 @@ export default function Fail() {
       setIsLoading(false);
       if (res?.error) {
         push(`/fail?t=${res.error}`);
-      } else if (!isEmpty(res.id)) {
-        window.location = "/home";
       } else {
-        console.log(res);
+        dispatch(updateUserInfos(res.user));
+        dispatch(updateToken(res.token));
+        toggleUid(res.user);
+        push("/home");
       }
     } else if (userEmail.register) {
       setIsLoading(true);
@@ -154,7 +161,7 @@ export default function Fail() {
       });
       setIsLoading(false);
       if (res?.id) {
-        window.location = "/home";
+        push("/home");
       } else if (res?.error) {
         push(`/fail?t=${res.error}`);
       } else if (res?.message) {
@@ -163,7 +170,7 @@ export default function Fail() {
       }
     }
   };
-  if (!isValid) return <Spinner />;
+  if (!isValid || isLoading) return <Spinner />;
   return (
     <ClientOnly>
       <div className={`${styles.container} ${styles.ov}`}>

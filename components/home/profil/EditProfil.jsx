@@ -1,6 +1,6 @@
 "use client";
 import ClientOnly from "@/components/ClientOnly";
-import { updateUserInfosController as updateUser } from "@/lib/controllers/user.controller";
+import { updateUserInfos as updateUser } from "@/lib/controllers/user.controller";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import { updateUserInfos } from "@/redux/slices/userSlice";
 import { useEffect, useState } from "react";
@@ -158,17 +158,13 @@ export default function EditProfil({ setIsEditProfil }) {
     newBio,
     newImage,
   ]);
-  console.log(newImage);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("submit");
-    console.log(infosToUpdate);
     if (!isEmpty(infosToUpdate)) {
       infosToUpdate = { id: userInfos._id, ...infosToUpdate };
       const res = await updateUser(infosToUpdate).catch((error) =>
         console.log(error)
       );
-      console.log(res);
       if (!isEmpty(res.updatedUser)) {
         dispatch(updateUserInfos(res.updatedUser));
         setIsEditProfil(false);

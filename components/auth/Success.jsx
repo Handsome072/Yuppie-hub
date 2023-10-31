@@ -12,13 +12,14 @@ import Spinner from "../Spinner";
 export default function Success() {
   const token = useSearchParams().get("t");
   const { push } = useRouter();
-  const [spinner, setSpinner] = useState(true);
+  const [spinner, setSpinner] = useState(false);
   const [scr, setSCR] = useState(false);
   useEffect(() => {
     setSpinner(false);
   }, []);
   useEffect(() => {
     (async () => {
+      setSpinner(true);
       const res = await verifyJWT(token);
       setSpinner(false);
       if (res?.newUser) {
@@ -30,9 +31,8 @@ export default function Success() {
   }, [token]);
   if (isEmpty(token)) {
     push("/login");
-  }
-  if (spinner) return <Spinner />;
-  if (scr)
+  } else if (spinner) return <Spinner />;
+  else if (scr)
     return (
       <ClientOnly spin>
         <div className={styles.container}>

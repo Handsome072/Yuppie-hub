@@ -12,6 +12,7 @@ import { generateEmail } from "@/components/nodemailer/inscription";
 import path from "path";
 import convertImageToBase64 from "@/lib/controllers/nodemailer";
 import { emailController } from "@/lib/controllers/email.controller";
+import connectToMongo from "@/lib/db";
 export const POST = async (req) => {
   try {
     let token = null;
@@ -49,6 +50,7 @@ export const POST = async (req) => {
         JSON.stringify({ error: passWordError }, { status: 400 })
       );
     }
+    await connectToMongo();
     const verifyExistUser = await UserModel.findOne({ email: body.email });
     if (!isEmpty(verifyExistUser)) {
       infos = { ...body, emailExist: true };

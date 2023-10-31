@@ -188,7 +188,10 @@ export default function Statut({
             <p>Ajoutez un lien d&apos;un réseau social professionnel.</p>
           </div>
           <div className={`${styles.r} ${styles.foc}`}>
-            <div className={styles.shareLink}>
+            <Link
+              href={newLienProfessionnelle.obj || ""}
+              className={styles.shareLink}
+            >
               <input
                 type="text"
                 id="lienPro"
@@ -199,7 +202,7 @@ export default function Statut({
               <span className={styles.sh}>
                 <BsShare />
               </span>
-            </div>
+            </Link>
           </div>
         </div>
 
@@ -213,7 +216,7 @@ export default function Statut({
             </p>
           </div>
           <div className={`${styles.r} ${styles.foc}`}>
-            <div className={styles.shareLink}>
+            <Link href={newPortfolio.obj || ""} className={styles.shareLink}>
               <input
                 type="text"
                 id="portfolio"
@@ -224,7 +227,7 @@ export default function Statut({
               <span className={styles.sh}>
                 <BsShare />
               </span>
-            </div>
+            </Link>
           </div>
         </div>
       </div>

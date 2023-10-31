@@ -1,3 +1,4 @@
+import connectToMongo from "@/lib/db";
 import UserModel from "@/lib/models/user.model";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import { isValidObjectId } from "mongoose";
@@ -11,6 +12,7 @@ export const GET = async (req, { params }) => {
         JSON.stringify({ error: "Invalid ID" }, { status: 404 })
       );
     }
+    await connectToMongo();
     const user = await UserModel.findById(id);
     if (!user)
       return new NextResponse(
@@ -35,6 +37,7 @@ export const DELETE = async (req, { params }) => {
         JSON.stringify({ error: "Invalid ID" }, { status: 404 })
       );
     }
+    await connectToMongo();
     const user = await UserModel.findByIdAndDelete(id);
     if (!user)
       return new NextResponse(
@@ -56,6 +59,7 @@ export const PUT = async (req, { params }) => {
         JSON.stringify({ error: "Invalid ID" }, { status: 404 })
       );
     }
+    await connectToMongo();
     const user = await UserModel.findById(id);
     if (!user)
       return new NextResponse(

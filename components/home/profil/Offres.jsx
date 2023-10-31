@@ -88,7 +88,7 @@ export default function Offres({
             <p>Ajoutez un lien Dropbox, Google Forms, PDF, etc.</p>
           </div>
           <div className={`${styles.r} ${styles.foc}`}>
-            <div className={styles.shareLink}>
+            <Link href={newOffres.obj || ""} className={styles.shareLink}>
               <input
                 type="text"
                 onChange={handleChangeOffres}
@@ -98,7 +98,7 @@ export default function Offres({
               <span className={styles.sh}>
                 <BsShare />
               </span>{" "}
-            </div>
+            </Link>
           </div>
         </div>
         <div>

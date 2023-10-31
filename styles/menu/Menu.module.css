@@ -82,7 +82,8 @@
   justify-content: space-between;
   align-items: center;
   border-radius: 0.5rem;
-  padding: 0.3rem 0.45rem;
+  padding: 0.25rem 0.45rem;
+  gap: 0.25rem;
   box-shadow: var(--box-shadow-btn);
 }
 
@@ -91,11 +92,11 @@
   font-size: 0.75rem;
 }
 
-.projet:hover {
-  background: var(--gris);
-}
 .link:hover {
   background: var(--gris-v-4);
+}
+.projet:hover {
+  background: var(--gris);
 }
 .link.active,
 .link.active:hover {

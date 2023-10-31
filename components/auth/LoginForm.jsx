@@ -1,14 +1,20 @@
 "use client";
+import { UidContext } from "@/context/UidContext";
 import { loginController } from "@/lib/controllers/auth.controller";
-import { isEmpty } from "@/lib/utils/isEmpty";
+import { updateToken } from "@/redux/slices/tokenSlice";
+import { updateUserInfos } from "@/redux/slices/userSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "../../styles/auth/LoginForm.module.css";
 import ClientOnly from "../ClientOnly";
 import Spinner from "../Spinner";
-export default function LoginForm() {
+export default function LoginForm(req) {
   const { push } = useRouter();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+  const { toggleUid } = useContext(UidContext);
   const [spinner, setSpinner] = useState(false);
   const [userType, setUserType] = useState("client");
   const [showPassword, setShowPassword] = useState(false);
@@ -23,19 +29,24 @@ export default function LoginForm() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    const res = await loginController({
-      email: userEmail,
-      password: userPassword,
-    }).catch((error) => console.log(error.message));
-    setSpinner(true);
-    setIsLoading(false);
-    if (res?.error) {
-      push(`/fail?t=${res.error}`);
-    } else if (!isEmpty(res.id)) {
-      window.location = "/home";
-    } else {
-      console.log(res);
+    try {
+      setIsLoading(true);
+      const res = await loginController({
+        email: userEmail,
+        password: userPassword,
+      });
+      setSpinner(true);
+      setIsLoading(false);
+      if (res?.error) {
+        push(`/fail?t=${res.error}`);
+      } else {
+        dispatch(updateUserInfos(res.user));
+        dispatch(updateToken(res.token));
+        toggleUid(res.user);
+        push("/home");
+      }
+    } catch (error) {
+      console.log(error.message);
     }
   };
   if (spinner) return <Spinner />;

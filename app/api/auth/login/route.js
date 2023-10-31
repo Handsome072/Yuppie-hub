@@ -5,6 +5,7 @@ import { addNewToken, createToken } from "@/lib/jwt";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import { authTokenName, cookieName, maxAge } from "@/constants";
 import { emailController } from "@/lib/controllers/email.controller";
+import connectToMongo from "@/lib/db";
 
 export const POST = async (req) => {
   try {
@@ -24,6 +25,7 @@ export const POST = async (req) => {
         JSON.stringify({ error: token }, { status: 401 }) // Changed status to 401 for invalid email
       );
     }
+    await connectToMongo();
     const user = await UserModel.findOne({ email: body.email });
     if (isEmpty(user)) {
       infos = { ...body, ukEmail: true };
@@ -53,17 +55,24 @@ export const POST = async (req) => {
       tokenName: authTokenName,
       infos: body?.infos,
       persist: body?.persist,
-    }).catch((error) => console.log(error));
-    const resLogin = new NextResponse(
-      JSON.stringify({ id: user._doc._id }, { status: 200 })
+    });
+    const { password, tokens, isAdmin, ...userInfos } = Object.assign(
+      {},
+      user.toJSON()
     );
-    resLogin.cookies.set(cookieName, accessToken, {
+    const res = new NextResponse(
+      JSON.stringify({ user: userInfos, token: accessToken }, { status: 200 })
+    );
+    const options = {
       httpOnly: true,
       secure: true,
       sameSite: "strict",
-      maxAge: body?.persist ? null : maxAge,
-    });
-    return resLogin;
+    };
+    if (body?.persist) {
+      options.maxAge = maxAge;
+    }
+    res.cookies.set(cookieName, accessToken, options);
+    return res;
   } catch (err) {
     return new NextResponse(
       JSON.stringify({ error: err.message }, { status: 500 })

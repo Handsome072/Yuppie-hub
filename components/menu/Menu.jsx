@@ -20,21 +20,28 @@ import { GoBellFill } from "react-icons/go";
 import { IoMdSettings } from "react-icons/io";
 // plus
 import { AiFillPlusCircle } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import { removeUserInfos } from "@/redux/slices/userSlice";
+import { removeToken } from "@/redux/slices/tokenSlice";
 
 export default function Menu() {
   const path = usePathname();
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.token);
   const { push } = useRouter();
-  const { uid, isLoading } = useContext(UidContext);
+  const { uid } = useContext(UidContext);
   const handleLogout = async () => {
     try {
-      await logoutController();
+      await logoutController(token);
+      dispatch(removeToken());
+      dispatch(removeUserInfos());
     } catch (error) {
       console.log(error.message);
     }
     window.location = "/login";
   };
   const handleProjet = async () => {};
-  if (isLoading || isEmpty(uid)) {
+  if (isEmpty(uid)) {
     return null;
   }
   return (

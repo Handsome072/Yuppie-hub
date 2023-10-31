@@ -29,10 +29,11 @@ export const nodeMailer = async ({ to, subject, text, html }) => {
     };
 
     const res = await transporter.sendMail(message);
+
     if (!isEmpty(res?.error)) {
-      return { error: res.error };
+      return { error: res.error, res };
     } else {
-      return { message: "Email sent" };
+      return { message: "Email sent", res };
     }
   }
 };

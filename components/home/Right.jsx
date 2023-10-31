@@ -8,7 +8,7 @@ import { HiUserGroup } from "react-icons/hi";
 import { TfiEmail } from "react-icons/tfi";
 export default function Right() {
   const [active, setActive] = useState({ obj: "heart", value: true });
-  const { uid, isLoading } = useContext(UidContext);
+  const { uid } = useContext(UidContext);
   return (
     <ClientOnly>
       <div className={styles.container}>
