@@ -5,7 +5,7 @@ import logo from "../../assets/logo.png";
 import styles from "../../styles/menu/Menu.module.css";
 import { usePathname, useRouter } from "next/navigation";
 import ClientOnly from "../ClientOnly";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UidContext } from "@/context/UidContext";
 import { logoutController } from "@/lib/controllers/auth.controller";
 import { isEmpty } from "@/lib/utils/isEmpty";
@@ -30,18 +30,25 @@ export default function Menu() {
   const token = useSelector((state) => state.token);
   const { push } = useRouter();
   const { uid } = useContext(UidContext);
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
   const handleLogout = async () => {
     try {
-      await logoutController(token);
-      dispatch(removeToken());
-      dispatch(removeUserInfos());
+      await logoutController(token).then(() => {
+        setIsLoading(true);
+        dispatch(removeToken());
+        dispatch(removeUserInfos());
+      });
     } catch (error) {
       console.log(error.message);
     }
-    window.location = "/login";
+    push("/login");
+    // window.location = "/login";
   };
   const handleProjet = async () => {};
-  if (isEmpty(uid)) {
+  if (isEmpty(uid) || isLoading) {
     return null;
   }
   return (
