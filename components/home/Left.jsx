@@ -166,9 +166,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                         ? `${styles.active}`
                         : null
                     }
-                    onClick={() => {
-                      setActive({ obj: "bio", value: true });
-                    }}
+                    onClick={() => setActive({ obj: "bio", value: true })}
                   >
                     <label>Biographie</label>
                   </div>
@@ -178,9 +176,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                         ? `${styles.active}`
                         : null
                     }
-                    onClick={() => {
-                      setActive({ obj: "disp", value: true });
-                    }}
+                    onClick={() => setActive({ obj: "disp", value: true })}
                   >
                     <label>Disponibilités</label>
                   </div>

@@ -60,17 +60,13 @@ export default function ProfilMiddle({
         </div>
         <div className={styles.menu}>
           <div
-            onClick={() => {
-              setActive("infos");
-            }}
+            onClick={() => setActive("infos")}
             className={active === "infos" ? `${styles.active}` : null}
           >
             <label>Information personnelle</label>
           </div>
           <div
-            onClick={() => {
-              setActive("statut");
-            }}
+            onClick={() => setActive("statut")}
             className={active === "statut" ? `${styles.active}` : null}
           >
             <label>Statut professionnel</label>
@@ -78,17 +74,13 @@ export default function ProfilMiddle({
           {uid?.userType === "assistant" && (
             <>
               <div
-                onClick={() => {
-                  setActive("cp");
-                }}
+                onClick={() => setActive("cp")}
                 className={active === "cp" ? `${styles.active}` : null}
               >
                 <label>Compétences virtuelles</label>
               </div>
               <div
-                onClick={() => {
-                  setActive("offres");
-                }}
+                onClick={() => setActive("offres")}
                 className={active === "offres" ? `${styles.active}` : null}
               >
                 <label>Offres de services & tarifications</label>

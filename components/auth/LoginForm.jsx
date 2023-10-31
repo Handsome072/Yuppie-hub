@@ -13,7 +13,6 @@ import Spinner from "../Spinner";
 export default function LoginForm(req) {
   const { push } = useRouter();
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
   const { toggleUid } = useContext(UidContext);
   const [spinner, setSpinner] = useState(false);
   const [userType, setUserType] = useState("client");
@@ -67,9 +66,7 @@ export default function LoginForm(req) {
                 <div>
                   <input
                     type="text"
-                    onChange={(e) => {
-                      setUserEmail(e.target.value);
-                    }}
+                    onChange={(e) => setUserEmail(e.target.value)}
                     value={userEmail}
                     placeholder={`Adresse email`}
                     required
@@ -79,9 +76,7 @@ export default function LoginForm(req) {
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder={`Mot de passe`}
-                    onChange={(e) => {
-                      setUserPassword(e.target.value);
-                    }}
+                    onChange={(e) => setUserPassword(e.target.value)}
                     value={userPassword}
                     required
                   />

@@ -21,7 +21,7 @@
   border: none;
 }
 .top label {
-  font-weight: var(--medium);
+  font-weight: var(--bold);
   font-size: 0.9rem;
 }
 .top span {

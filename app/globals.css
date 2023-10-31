@@ -44,7 +44,7 @@ body {
   text-decoration: inherit;
   border: inherit;
   outline: inherit;
-  font-family: "Archivo", sans-serif;
+  font-family: "Archivo", arial;
 }
 *::selection {
   background: rgba(186, 223, 91, 0.25);
