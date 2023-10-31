@@ -1,17 +1,16 @@
 "use client";
-import { UidContext } from "@/context/UidContext";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import Link from "next/link";
-import { useContext } from "react";
 import styles from "../../styles/menu/Bottom.module.css";
 import { MdPhoneInTalk } from "react-icons/md";
 import { IoMdInformationCircle } from "react-icons/io";
 import { ImBooks } from "react-icons/im";
 import { FaCopyright } from "react-icons/fa";
 import ClientOnly from "../ClientOnly";
+import { useSelector } from "react-redux";
 export default function Bottom() {
-  const { uid } = useContext(UidContext);
-  if (isEmpty(uid)) {
+  const userInfos = useSelector((state) => state.user);
+  if (isEmpty(userInfos)) {
     return null;
   }
   return (

@@ -189,6 +189,7 @@ export default function Statut({
           </div>
           <div className={`${styles.r} ${styles.foc}`}>
             <Link
+              target={"_blank"}
               href={newLienProfessionnelle.obj || ""}
               className={styles.shareLink}
             >
@@ -216,7 +217,11 @@ export default function Statut({
             </p>
           </div>
           <div className={`${styles.r} ${styles.foc}`}>
-            <Link href={newPortfolio.obj || ""} className={styles.shareLink}>
+            <Link
+              target={"_blank"}
+              href={newPortfolio.obj || ""}
+              className={styles.shareLink}
+            >
               <input
                 type="text"
                 id="portfolio"

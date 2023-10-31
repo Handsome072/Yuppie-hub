@@ -2,21 +2,19 @@
 import Image from "next/image";
 import styles from "../../styles/home/Left.module.css";
 import photo from "../../assets/default_avatar.jpg";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Calendar from "./Calendar";
 import ClientOnly from "../ClientOnly";
 import { useSelector } from "react-redux";
-import { UidContext } from "@/context/UidContext";
 import Link from "next/link";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import { removeHTTPPrefix } from "@/lib/controllers/http.controller";
 // edit
-import { HiPencilAlt, HiPencil } from "react-icons/hi";
+import { HiPencilAlt } from "react-icons/hi";
 //share
 import { BsShare } from "react-icons/bs";
 
 export default function Left({ setIsEditProfil, isEditProfil }) {
-  const { uid } = useContext(UidContext);
   const userInfos = useSelector((state) => state.user);
   const [canUpdate, setCanUpdate] = useState(false);
   const [active, setActive] = useState({ obj: "", value: false });
@@ -37,7 +35,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
     e.preventDefault();
   };
   return (
-    <ClientOnly>
+    <ClientOnly pr>
       <div className={styles.container}>
         <div className={styles.top}>
           <div className={styles.md}>
@@ -132,6 +130,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
               </div>
               <div className={styles.link}>
                 <Link
+                  target={"_blank"}
                   href={userInfos?.lienProfessionnelle || ""}
                   className={styles.shr}
                 >
@@ -140,7 +139,8 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                     id="portfolio"
                     className={styles.shrInput}
                     value={
-                      userInfos?.lienProfessionnelle || "Lien professionnel"
+                      removeHTTPPrefix(userInfos?.lienProfessionnelle) ||
+                      "Lien professionnel"
                     }
                   />
                   <span className={styles.sh}>
@@ -150,7 +150,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
               </div>
             </div>
           </div>
-          {uid?.userType === "assistant" ? (
+          {userInfos?.userType === "assistant" ? (
             <div className={styles.middle}>
               <div
                 className={
@@ -329,6 +329,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                       <label htmlFor="portfolio">Portfolio</label>
                     </div>
                     <Link
+                      target={"_blank"}
                       href={userInfos?.portfolio || ""}
                       className={styles.shr}
                     >
@@ -365,9 +366,9 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
           ) : (
             <div
               className={
-                uid?.userType === "client"
+                userInfos?.userType === "client"
                   ? `${styles.middle} ${styles.middleCli}`
-                  : uid?.userType === "assistant" &&
+                  : userInfos?.userType === "assistant" &&
                     active.obj === "disp" &&
                     active.value === true
                   ? `${styles.middle} ${styles.middleh}`
@@ -376,7 +377,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
             >
               <div
                 className={
-                  uid?.userType === "client"
+                  userInfos?.userType === "client"
                     ? `${styles.more} ${styles.morecli}`
                     : `${styles.more}`
                 }
@@ -386,7 +387,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                     className={
                       active.obj === "bio" && active.value === true
                         ? `${styles.active}`
-                        : uid?.userType === "client"
+                        : userInfos?.userType === "client"
                         ? `${styles.activeCli}`
                         : null
                     }
@@ -407,7 +408,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                     className={
                       active.obj === "disp" && active.value === true
                         ? `${styles.active}`
-                        : uid?.userType === "client"
+                        : userInfos?.userType === "client"
                         ? `${styles.activeCli}`
                         : null
                     }
@@ -459,7 +460,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
               </div>
               <div
                 className={
-                  uid?.userType === "client"
+                  userInfos?.userType === "client"
                     ? `${styles.moreInfos} ${styles.mrf}`
                     : `${styles.moreInfos}`
                 }
@@ -494,9 +495,9 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
 
           <div
             className={
-              active.obj === "disp" && uid?.userType === "assistant"
+              active.obj === "disp" && userInfos?.userType === "assistant"
                 ? `${styles.edit} ${styles.editnt}`
-                : uid?.userType === "client"
+                : userInfos?.userType === "client"
                 ? `${styles.edit} ${styles.editCli}`
                 : `${styles.edit}`
             }

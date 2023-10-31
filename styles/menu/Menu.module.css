@@ -95,7 +95,7 @@
 .link:hover {
   background: var(--gris-v-4);
 }
-.projet:hover {
+.projet:hover, .projet:active {
   background: var(--gris);
 }
 .link.active,

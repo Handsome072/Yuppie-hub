@@ -5,8 +5,6 @@ import logo from "../../assets/logo.png";
 import styles from "../../styles/menu/Menu.module.css";
 import { usePathname, useRouter } from "next/navigation";
 import ClientOnly from "../ClientOnly";
-import { useContext, useEffect, useState } from "react";
-import { UidContext } from "@/context/UidContext";
 import { logoutController } from "@/lib/controllers/auth.controller";
 import { isEmpty } from "@/lib/utils/isEmpty";
 // home
@@ -28,27 +26,20 @@ export default function Menu() {
   const path = usePathname();
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
+  const userInfos = useSelector((state) => state.user);
   const { push } = useRouter();
-  const { uid } = useContext(UidContext);
-  const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => {
-    setIsLoading(false);
-  }, []);
   const handleLogout = async () => {
     try {
-      setIsLoading(true);
-      await logoutController(token).then(() => {
-        dispatch(removeToken());
-        dispatch(removeUserInfos());
-      });
+      await logoutController(token);
+      dispatch(removeToken());
+      dispatch(removeUserInfos());
     } catch (error) {
       console.log(error.message);
     }
     push("/login");
-    // window.location = "/login";
   };
   const handleProjet = async () => {};
-  if (isEmpty(uid) || isLoading) {
+  if (isEmpty(userInfos)) {
     return null;
   }
   return (
@@ -88,7 +79,7 @@ export default function Menu() {
                 <label>Acceuil</label>
               </Link>
             </div>
-            {uid?.userType === "client" && (
+            {userInfos?.userType === "client" && (
               <div className={styles.div}>
                 <button
                   onClick={handleProjet}

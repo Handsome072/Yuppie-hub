@@ -88,7 +88,7 @@ export default function Offres({
             <p>Ajoutez un lien Dropbox, Google Forms, PDF, etc.</p>
           </div>
           <div className={`${styles.r} ${styles.foc}`}>
-            <Link href={newOffres.obj || ""} className={styles.shareLink}>
+            <Link target={"_blank"} href={newOffres.obj || ""} className={styles.shareLink}>
               <input
                 type="text"
                 onChange={handleChangeOffres}

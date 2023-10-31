@@ -10,7 +10,7 @@ export default function Right() {
   const [active, setActive] = useState({ obj: "heart", value: true });
   const { uid } = useContext(UidContext);
   return (
-    <ClientOnly>
+    <ClientOnly pr>
       <div className={styles.container}>
         <div className={styles.top}>
           <label
