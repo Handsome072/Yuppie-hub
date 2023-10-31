@@ -36,8 +36,8 @@ export default function Menu() {
   }, []);
   const handleLogout = async () => {
     try {
+      setIsLoading(true);
       await logoutController(token).then(() => {
-        setIsLoading(true);
         dispatch(removeToken());
         dispatch(removeUserInfos());
       });
