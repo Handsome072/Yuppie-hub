@@ -37,7 +37,7 @@ export const POST = async (req) => {
     const validUser = await bcrypt.compare(body.password, user.password);
     if (!validUser) {
       infos = { ...body, invalidLoginPassword: true };
-      token = createToken(infosos, max);
+      token = createToken(infos, max);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 403 }) // Changed status to 403 for invalid password
       );
