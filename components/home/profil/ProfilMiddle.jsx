@@ -1,13 +1,13 @@
 "use client";
 import ClientOnly from "@/components/ClientOnly";
-import { UidContext } from "@/context/UidContext";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import styles from "../../../styles/home/profil/ProfilMiddle.module.css";
 import CV from "./CV";
 import Infos from "./Infos";
 import Offres from "./Offres";
 import Statut from "./Statut";
 import { HiPencilAlt } from "react-icons/hi";
+import { useSelector } from "react-redux";
 
 export default function ProfilMiddle({
   handleSubmit,
@@ -47,7 +47,7 @@ export default function ProfilMiddle({
   newImage,
   setNewImage,
 }) {
-  const { uid } = useContext(UidContext);
+  const userInfos = useSelector(state=>state.user)
   const [active, setActive] = useState("infos");
   return (
     <ClientOnly>
@@ -71,7 +71,7 @@ export default function ProfilMiddle({
           >
             <label>Statut professionnel</label>
           </div>
-          {uid?.userType === "assistant" && (
+          {userInfos?.userType === "assistant" && (
             <>
               <div
                 onClick={() => setActive("cp")}
@@ -185,7 +185,7 @@ export default function ProfilMiddle({
                   }
                 }}
                 className={
-                  uid?.userType === "client"
+                  userInfos?.userType === "client"
                     ? active === "statut"
                       ? `${styles.disbl}`
                       : null

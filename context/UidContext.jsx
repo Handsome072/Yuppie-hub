@@ -49,7 +49,7 @@ export const UidContextProvider = ({ children }) => {
         }
       })();
     }
-  }, [uid]);
+  }, []);
 
   const toggleUid = (value) => {
     setUid(value);

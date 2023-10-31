@@ -1,14 +1,14 @@
 "use client";
-import { UidContext } from "@/context/UidContext";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import styles from "../../styles/home/Right.module.css";
 import ClientOnly from "../ClientOnly";
 import { IoIosHeart } from "react-icons/io";
 import { HiUserGroup } from "react-icons/hi";
 import { TfiEmail } from "react-icons/tfi";
+import { useSelector } from "react-redux";
 export default function Right() {
   const [active, setActive] = useState({ obj: "heart", value: true });
-  const { uid } = useContext(UidContext);
+  const userInfos = useSelector((state) => state.user);
   return (
     <ClientOnly pr>
       <div className={styles.container}>
@@ -23,7 +23,7 @@ export default function Right() {
               <IoIosHeart size={"1.4rem"} />
             </span>
           </label>
-          {uid?.userType === "assistant" && (
+          {userInfos?.userType === "assistant" && (
             <label
               className={
                 active.obj === "account" && active.value

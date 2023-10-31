@@ -1,9 +1,8 @@
 "use client";
 import styles from "../../../styles/home/profil/Infos.module.css";
 import { pays, clientPays, lang } from "@/lib/utils/menuDeroulant";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import ClientOnly from "@/components/ClientOnly";
-import { UidContext } from "@/context/UidContext";
 import Image from "next/image";
 import frenchFlag from "../../../assets/french.png";
 import frenchLogo from "../../../assets/french-1.png";
@@ -26,7 +25,6 @@ export default function Infos({
   newProvince,
   setNewProvince,
 }) {
-  const { uid } = useContext(UidContext);
   const userInfos = useSelector((state) => state.user);
   const [togglePays, setTogglePays] = useState({
     obj: userInfos?.pays,
@@ -42,7 +40,7 @@ export default function Infos({
   const [residence, setResidence] = useState({
     pays: userInfos?.pays,
     ville:
-      uid.userType === "client"
+      userInfos.userType === "client"
         ? clientPays.find((p) => p.pays === userInfos?.pays)?.ville
         : pays.find((p) => p.pays === userInfos?.pays)?.ville || [],
     province: userInfos?.province,
@@ -193,7 +191,7 @@ export default function Infos({
                 {showMenu.obj === "pays" && showMenu.value && (
                   <div className={`${styles.menuDeroulant} ${styles.hidden}`}>
                     <div className={`${styles.pays}`}>
-                      {uid?.userType === "client"
+                      {userInfos?.userType === "client"
                         ? clientPays.map((p) => {
                             return (
                               <div
@@ -332,7 +330,7 @@ export default function Infos({
                 isEmpty(residence.pays) ? (
                   <div className={styles.menuDeroulant}>
                     <div className={styles.pays}>
-                      {uid?.userType === "assistant"
+                      {userInfos?.userType === "assistant"
                         ? pays.map((p) => {
                             if (!isEmpty(p.province)) {
                               return (

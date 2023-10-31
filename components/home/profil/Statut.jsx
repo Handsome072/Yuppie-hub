@@ -1,11 +1,9 @@
 "use client";
 import styles from "../../../styles/home/profil/Statut.module.css";
 import { statut, statutCli } from "@/lib/utils/menuDeroulant";
-import { useContext, useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import ClientOnly from "@/components/ClientOnly";
-import { UidContext } from "@/context/UidContext";
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { isValidLink } from "@/lib/controllers/http.controller";
 import { BsShare } from "react-icons/bs";
@@ -18,7 +16,6 @@ export default function Statut({
   setNewPortfolio,
   newPortfolio,
 }) {
-  const { uid } = useContext(UidContext);
   const userInfos = useSelector((state) => state.user);
   const [showMenu, setShowMenu] = useState({
     obj: "",
@@ -126,7 +123,7 @@ export default function Statut({
               {showMenu.obj === "statutPro" && showMenu.value && (
                 <div className={`${styles.menuDeroulant} ${styles.hidden}`}>
                   <div className={styles.stat}>
-                    {uid?.userType === "client"
+                    {userInfos?.userType === "client"
                       ? statutCli.map((p) => {
                           return (
                             <div
