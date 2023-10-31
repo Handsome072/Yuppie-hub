@@ -13,10 +13,7 @@ export default function ClientOnly({ pr, children, spin }) {
   }, []);
   if (typeof window === "undefined" || (pr && isEmpty(userInfos))) {
     return null;
-  } else if (
-    !mounted
-    // || isLoadingJWT
-  ) {
+  } else if (!mounted) {
     if (spin) return <Spinner />;
     return null;
   }

@@ -1,10 +1,9 @@
 "use client";
-import { UidContext } from "@/context/UidContext";
 import { registerController } from "@/lib/controllers/auth.controller";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import styles from "../../styles/auth/RegisterForm.module.css";
 import ClientOnly from "../ClientOnly";
 import Terms from "../copy/Terms";

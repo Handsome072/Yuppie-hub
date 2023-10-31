@@ -1,6 +1,5 @@
 "use client";
 import ClientOnly from "@/components/ClientOnly";
-import { fetchToken } from "@/lib/controllers/auth.controller";
 import { verifyJWT } from "@/lib/controllers/jwt.controller";
 import { fetchUserInfos } from "@/lib/controllers/user.controller";
 import { isEmpty } from "@/lib/utils/isEmpty";
@@ -13,53 +12,25 @@ export const UidContext = createContext();
 export const UidContextProvider = ({ children }) => {
   const path = usePathname();
   const token = useSelector((state) => state.token);
-  const userInfos = useSelector((state) => state.user);
-  const [uid, setUid] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [isLoadingJWT, setIsLoadingJWT] = useState(true);
   const { push } = useRouter();
   const dispatch = useDispatch();
   useEffect(() => {
     (async () => {
-      if (!isEmpty(userInfos)) {
-        setUid(userInfos);
-      }
-      const res = await verifyJWT(token);
+      const resJWT = await verifyJWT(token);
+      const res = await fetchUserInfos(resJWT.id);
+      dispatch(updateUserInfos(res.userInfos));
       setIsLoadingJWT(false);
-      if (!isEmpty(res?.infos)) {
-        setUid(res.infos);
-      } else {
-        if (path === "/home") {
-          push("/login");
-        }
+      if (isEmpty(res?.infos) && path === "/home") {
+        push("/login");
       }
     })();
   }, []);
-  useEffect(() => {
-    if (!isEmpty(uid)) {
-      (async () => {
-        const res = await fetchUserInfos(uid.id);
-        setIsLoading(false);
-        if (!isEmpty(res?.userInfos)) {
-          dispatch(updateUserInfos(res.userInfos));
-        } else {
-          if (path === "/home") {
-            push("/login");
-          }
-        }
-      })();
-    }
-  }, []);
 
-  const toggleUid = (value) => {
-    setUid(value);
-  };
   if (typeof window !== "undefined")
     return (
       <ClientOnly>
-        <UidContext.Provider
-          value={{ uid, toggleUid, isLoading, isLoadingJWT }}
-        >
+        <UidContext.Provider value={{ isLoadingJWT }}>
           <>{children}</>
         </UidContext.Provider>
       </ClientOnly>

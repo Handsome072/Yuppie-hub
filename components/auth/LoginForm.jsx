@@ -1,11 +1,10 @@
 "use client";
-import { UidContext } from "@/context/UidContext";
 import { loginController } from "@/lib/controllers/auth.controller";
 import { updateToken } from "@/redux/slices/tokenSlice";
 import { updateUserInfos } from "@/redux/slices/userSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../../styles/auth/LoginForm.module.css";
 import ClientOnly from "../ClientOnly";
@@ -13,7 +12,6 @@ import Spinner from "../Spinner";
 export default function LoginForm(req) {
   const { push } = useRouter();
   const dispatch = useDispatch();
-  const { toggleUid } = useContext(UidContext);
   const [spinner, setSpinner] = useState(false);
   const [userType, setUserType] = useState("client");
   const [showPassword, setShowPassword] = useState(false);
@@ -41,7 +39,6 @@ export default function LoginForm(req) {
       } else {
         dispatch(updateUserInfos(res.user));
         dispatch(updateToken(res.token));
-        toggleUid(res.user);
         push("/home");
       }
     } catch (error) {

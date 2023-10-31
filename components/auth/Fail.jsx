@@ -1,5 +1,4 @@
 "use client";
-import { UidContext } from "@/context/UidContext";
 import {
   loginController,
   registerController,
@@ -10,7 +9,7 @@ import { updateToken } from "@/redux/slices/tokenSlice";
 import { updateUserInfos } from "@/redux/slices/userSlice";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import styles from "../../styles/auth/Fail.module.css";
@@ -21,7 +20,6 @@ export default function Fail() {
   const token = useSearchParams().get("t");
   const { push } = useRouter();
   const dispatch = useDispatch();
-  const { toggleUid } = useContext(UidContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isValid, setIsValid] = useState(false);
   const [userEmail, setUserEmail] = useState({
@@ -146,7 +144,6 @@ export default function Fail() {
       } else {
         dispatch(updateUserInfos(res.user));
         dispatch(updateToken(res.token));
-        toggleUid(res.user);
         push("/home");
       }
     } else if (userEmail.register) {

@@ -14,14 +14,10 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  await connectToMongo()
-    .then(() => console.log("Connected to MongoDB"))
-    .catch((error) => console.log(error));
+  await connectToMongo();
   return (
     <html lang="fr">
-      <body
-       className={inter.className}
-      >
+      <body className={inter.className}>
         <ReduxProvider>
           <UidContextProvider>{children}</UidContextProvider>
         </ReduxProvider>
