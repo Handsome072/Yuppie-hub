@@ -173,8 +173,6 @@
   max-height: 100%;
   min-height: 100%;
   background: var(--gris-v-4);
-  scrollbar-width: thin;
-  scrollbar-color: var(--gris) var(--gris-v-1);
   overflow: hidden;
   overflow-y: scroll;
   border-radius: 0.5rem;
@@ -184,25 +182,6 @@
 }
 .textarea:focus {
   outline: 1px solid var(--gris-v-2);
-}
-.textarea::-webkit-scrollbar {
-  width: 4px;
-}
-
-.textarea::-webkit-scrollbar-button:start,
-.textarea::-webkit-scrollbar-button:end {
-  display: none;
-}
-.textarea::-webkit-scrollbar-thumb {
-  background-color: var(--gris-v-1);
-  border-radius: 2rem;
-}
-.textarea::-webkit-scrollbar-thumb:hover {
-  background-color: var(--gris);
-}
-.textarea::-webkit-scrollbar-track {
-  background-color: transparent;
-  transition: 0.15s;
 }
 @media (max-width: 1250px) {
   .photo {

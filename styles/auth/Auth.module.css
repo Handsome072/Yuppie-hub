@@ -81,13 +81,14 @@
 }
 
 .slogan {
-  font-size: 2.5rem;
-  width: 85%;
+  font-size: 3rem;
+  width: 90%;
   max-width: 600px;
   text-align: center;
   color: var(--green);
   padding: 1.75rem 0;
   font-style: italic;
+  font-weight: var(--bold);
 }
 
 .right {

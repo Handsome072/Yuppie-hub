@@ -67,27 +67,14 @@
   flex-direction: column;
 }
 .link:focus .switchIcon,
-.link:hover .switchIcon {
-  box-shadow: var(--box-shadow);
+.link:hover .switchIcon,
+.switchIcon:hover {
+  color: var(--gris-v-2);
 }
 .switchIcon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  background: var(--gris-v-3);
-  height: 2rem;
-  width: 2rem;
+  color: var(--gris-v-3);
   cursor: pointer;
   transition: 0.1s;
-}
-.switchIcon:hover {
-  background: var(--gris-v-2);
-}
-.switchIcon i {
-  font-size: 1.5rem;
-  color: var(--white);
-  text-shadow: 1px 2px 2px var(--gris-v-2);
 }
 
 .inputs {
@@ -192,7 +179,7 @@
   width: 100%;
   color: var(--blue);
   font-size: 1rem;
-  font-weight: var(--medium);
+  font-weight: var(--bold);
 }
 .submit {
   width: 100%;
@@ -256,14 +243,7 @@
     border-radius: 50%;
     z-index: 0;
   }
-  .switchIcon {
-    height: 2.5rem;
-    width: 2.5rem;
-  }
-  .switchIcon i {
-    font-size: 2rem;
-  }
-  .inputs > div input {
+   .inputs > div input {
     padding: 0.65rem 2rem 0.65rem 1rem;
     font-size: 0.9rem;
   }

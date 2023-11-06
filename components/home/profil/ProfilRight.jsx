@@ -115,7 +115,7 @@ export default function ProfilRight({
           <label htmlFor="bio">Courte biographie</label>
           <div>
             <textarea
-              className={styles.textarea}
+              className={`${styles.textarea} scr`}
               onChange={handleChangeBio}
               value={newBio.obj}
             />

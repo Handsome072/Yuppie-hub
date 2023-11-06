@@ -129,12 +129,13 @@
   align-items: center;
 }
 
-.link {
+.shrInput {
   background: var(--white);
   color: var(--blue);
-  padding: 0.15rem 0.25rem;
+  padding: 0.25rem 1.25rem 0.25rem 0.25rem;
   border-radius: 0.25rem;
   width: 100%;
+  font-size: 0.75rem;
 }
 .lpro {
   display: flex;
@@ -262,33 +263,11 @@
   min-height: 100%;
   border-radius: 0.5rem;
   padding: 1.25% 2.25%;
-  scrollbar-width: thin;
-  scrollbar-color: var(--gris) var(--gris-v-1);
   line-height: 1.25;
 }
 .textarea.textrnt {
   max-height: calc(4 * 0.52rem);
 }
-.textarea::-webkit-scrollbar {
-  width: 5px;
-}
-
-.textarea::-webkit-scrollbar-button:start,
-.textarea::-webkit-scrollbar-button:end {
-  display: none;
-}
-.textarea::-webkit-scrollbar-thumb {
-  background-color: var(--gris-v-1);
-  border-radius: 2rem;
-}
-.textarea::-webkit-scrollbar-thumb:hover {
-  background-color: var(--gris);
-}
-.textarea::-webkit-scrollbar-track {
-  background-color: transparent;
-  transition: 0.15s;
-}
-
 .moreInfos {
   display: flex;
   position: relative;
@@ -376,8 +355,6 @@
 }
 .txtrnt {
   border-radius: 0.1rem;
-  scrollbar-width: thin;
-  scrollbar-color: var(--gris) var(--gris-v-1);
   font-size: 0.7rem;
   height: 100%;
 }
@@ -403,8 +380,6 @@
   height: 100%;
   border-radius: 0.25rem;
   padding: 2.75%;
-  scrollbar-width: thin;
-  scrollbar-color: var(--gris) var(--gris-v-2);
 }
 .op input {
   width: 100%;
@@ -414,19 +389,11 @@
 }
 .op .shrInput {
   padding-right: 1.25rem;
-  cursor: pointer;
 }
 .shr {
   position: relative;
   display: flex;
   align-items: center;
-}
-.link .shr input {
-  padding: 0.15rem 0;
-}
-.shr input {
-  color: var(--blue);
-  font-size: 0.75rem;
 }
 .shr .sh {
   position: absolute;
@@ -435,7 +402,6 @@
   z-index: 6;
   right: 0;
   cursor: pointer;
-  transform: translateY(0.5px);
 }
 .edit {
   width: 100%;

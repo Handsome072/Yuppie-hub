@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "../../assets/logo.png";
 import styles from "../../styles/menu/Menu.module.css";
 import { usePathname, useRouter } from "next/navigation";
 import ClientOnly from "../ClientOnly";
@@ -21,7 +20,6 @@ import { AiFillPlusCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUserInfos } from "@/redux/slices/userSlice";
 import { removeToken } from "@/redux/slices/tokenSlice";
-
 export default function Menu() {
   const path = usePathname();
   const dispatch = useDispatch();
@@ -49,7 +47,7 @@ export default function Menu() {
           <div className={styles.left}>
             <div className={styles.logo}>
               <Image
-                src={logo}
+                src={"/logo.png"}
                 onClick={() => push("/home")}
                 alt=""
                 className={styles.logoImg}
@@ -158,6 +156,8 @@ export default function Menu() {
                 <label>Paramètres</label>
               </Link>
             </div>
+          </div>
+          <div className={styles.right}>
             <div className={styles.div}>
               <button
                 onClick={handleLogout}

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useState } from "react";
+import { FaCircleArrowLeft } from "react-icons/fa6";
 import styles from "../../styles/auth/Success.module.css";
 import ClientOnly from "../ClientOnly";
 import Spinner from "../Spinner";
@@ -40,7 +41,7 @@ export default function Success() {
             <div className={styles.switchBtn}>
               <Link href={"/login"}>
                 <div className={styles.switchIcon}>
-                  <i className="mdi mdi-arrow-left" />
+                  <FaCircleArrowLeft size={"2rem"} />
                 </div>
               </Link>
             </div>

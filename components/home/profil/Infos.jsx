@@ -4,13 +4,12 @@ import { pays, clientPays, lang } from "@/lib/utils/menuDeroulant";
 import { useState } from "react";
 import ClientOnly from "@/components/ClientOnly";
 import Image from "next/image";
-import frenchFlag from "../../../assets/french.png";
 import frenchLogo from "../../../assets/french-1.png";
-import englishFlag from "../../../assets/english.png";
 import englishLogo from "../../../assets/english.jpg";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { isEmpty } from "@/lib/utils/isEmpty";
+import { VscCheckAll } from "react-icons/vsc";
 export default function Infos({
   newUsername,
   setNewUsername,
@@ -742,15 +741,12 @@ export default function Infos({
                             });
                           }}
                         >
-                          <div className={styles.contFlag}>
-                            <Image
-                              src={p.tp === "fr" ? frenchFlag : englishFlag}
-                              alt=""
-                              fill
-                              className={styles.flag}
-                            />
-                          </div>
                           <span>{p.obj}</span>
+                          {langue.obj === p.obj && (
+                            <span>
+                              <VscCheckAll size={"1.15rem"} className="trx1" />
+                            </span>
+                          )}
                         </div>
                       );
                     })}

@@ -75,6 +75,35 @@ button::-moz-focus-inner {
 .fr {
   flex-direction: row;
 }
+.try1 {
+  transform: translateY(1px);
+}
+.trx1 {
+  transform: translateX(1px);
+}
+.scr {
+  scrollbar-width: thin;
+  scrollbar-color: var(--gris) var(--gris-v-1);
+}
+.scr::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scr::-webkit-scrollbar-button:start,
+.scr::-webkit-scrollbar-button:end {
+  display: none;
+}
+.scr::-webkit-scrollbar-thumb {
+  background-color: var(--gris-v-1);
+  border-radius: 2rem;
+}
+.scr::-webkit-scrollbar-thumb:hover {
+  background-color: var(--gris);
+}
+.scr::-webkit-scrollbar-track {
+  background-color: transparent;
+  transition: 0.15s;
+}
 i {
   display: flex;
   justify-content: center;
@@ -88,7 +117,9 @@ textarea {
 }
 textarea {
   font-size: 0.8rem;
+  resize: none;
 }
+
 @media (max-height: 600px) {
   *,
   body,

@@ -16,6 +16,7 @@ export default function Bottom() {
   return (
     <ClientOnly>
       <div className={styles.container}>
+        <div className={styles.left}></div>
         <div className={styles.div}>
           <Link href={"/contact"} className={styles.link}>
             <span className={styles.cnt}>
@@ -31,17 +32,18 @@ export default function Bottom() {
           </Link>
           <Link href={"/politiques"} className={styles.link}>
             <span>
-              <ImBooks size={"1.6rem"} />
+              <ImBooks size={"1.65rem"} />
             </span>
             <label>Politiques</label>
           </Link>
           <Link href={"/copyright"} className={styles.link}>
             <span>
-              <FaCopyright size={"1.4rem"} />
+              <FaCopyright size={"1.5rem"} />
             </span>
             <label>Copyright</label>
           </Link>
         </div>
+        <div className={styles.right}></div>
       </div>
     </ClientOnly>
   );

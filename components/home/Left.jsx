@@ -13,7 +13,8 @@ import { removeHTTPPrefix } from "@/lib/controllers/http.controller";
 import { HiPencilAlt } from "react-icons/hi";
 //share
 import { BsShare } from "react-icons/bs";
-
+import { RxAvatar } from "react-icons/rx";
+import { AiOutlineStar } from "react-icons/ai";
 export default function Left({ setIsEditProfil, isEditProfil }) {
   const userInfos = useSelector((state) => state.user);
   const [canUpdate, setCanUpdate] = useState(false);
@@ -58,7 +59,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
           </div>
           <div className={styles.lg}>
             <span>
-              <i className="mdi mdi-account-circle-outline"></i>
+              <RxAvatar size={"1.5rem"} className="try1" />
             </span>
             <label>Profil</label>
           </div>
@@ -114,11 +115,11 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
               </div>
               <div className={styles.stars}>
                 <div className={styles.icons}>
-                  <i className="mdi mdi-star-outline" />
-                  <i className="mdi mdi-star-outline" />
-                  <i className="mdi mdi-star-outline" />
-                  <i className="mdi mdi-star-outline" />
-                  <i className="mdi mdi-star-outline" />
+                  <AiOutlineStar size={"1.15rem"} />
+                  <AiOutlineStar size={"1.15rem"} />
+                  <AiOutlineStar size={"1.15rem"} />
+                  <AiOutlineStar size={"1.15rem"} />
+                  <AiOutlineStar size={"1.15rem"} />
                 </div>
                 <label>
                   {!isEmpty(userInfos) && userInfos.avis?.length === 0 ? (
@@ -128,24 +129,22 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                   )}
                 </label>
               </div>
-              <div className={styles.link}>
+              <div className={styles.shr}>
+                <input
+                  readOnly
+                  id="portfolio"
+                  className={styles.shrInput}
+                  value={
+                    removeHTTPPrefix(userInfos?.lienProfessionnelle) ||
+                    "Lien professionnel"
+                  }
+                />
                 <Link
                   target={"_blank"}
-                  href={userInfos?.lienProfessionnelle || ""}
-                  className={styles.shr}
+                  href={userInfos?.lienProfessionnelle || "#"}
+                  className={styles.sh}
                 >
-                  <input
-                    readOnly
-                    id="portfolio"
-                    className={styles.shrInput}
-                    value={
-                      removeHTTPPrefix(userInfos?.lienProfessionnelle) ||
-                      "Lien professionnel"
-                    }
-                  />
-                  <span className={styles.sh}>
-                    <BsShare size={".8rem"} />
-                  </span>
+                  <BsShare size={".8rem"} className="try1" />
                 </Link>
               </div>
             </div>
@@ -192,7 +191,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                     <textarea
                       readOnly
                       value={userInfos.bio}
-                      className={styles.textarea}
+                      className={`${styles.textarea} scr`}
                     />
                   ) : (
                     active.obj === "disp" && (
@@ -220,14 +219,14 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                                       return nwn;
                                     });
                                   }}
-                                  className={styles.textarea}
+                                  className={`${styles.textarea} scr`}
                                 />
                               ) : (
                                 <textarea
                                   readOnly
                                   defaultValue={userInfos.note}
                                   id="cp"
-                                  className={styles.textarea}
+                                  className={`${styles.textarea} scr`}
                                 />
                               )}
                             </div>
@@ -264,8 +263,8 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                         id="cp"
                         className={
                           active.obj === "disp"
-                            ? `${styles.textarea} ${styles.textrnt}`
-                            : `${styles.textarea}`
+                            ? `${styles.textarea} ${styles.textrnt} scr`
+                            : `${styles.textarea} scr`
                         }
                         value={
                           userInfos.competenceVirtuelle
@@ -290,7 +289,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                             ? userInfos.tauxHoraire + "$/h"
                             : ""
                         }
-                        className={styles.textarea}
+                        className={`${styles.textarea} scr`}
                       />
                     </div>
                   </div>
@@ -328,21 +327,21 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                     <div className={styles.lab}>
                       <label htmlFor="portfolio">Portfolio</label>
                     </div>
-                    <Link
-                      target={"_blank"}
-                      href={userInfos?.portfolio || ""}
-                      className={styles.shr}
-                    >
+                    <div className={styles.shr}>
                       <input
                         readOnly
                         id="portfolio"
                         className={styles.shrInput}
                         value={removeHTTPPrefix(userInfos.portfolio) || ""}
                       />
-                      <span className={styles.sh}>
-                        <BsShare size={".8rem"} />
-                      </span>
-                    </Link>
+                      <Link
+                        target={"_blank"}
+                        href={userInfos?.portfolio || "#"}
+                        className={styles.sh}
+                      >
+                        <BsShare size={".8rem"} className="try1" />
+                      </Link>
+                    </div>
                   </div>
                   <div>
                     <div>
@@ -355,9 +354,13 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                         value={removeHTTPPrefix(userInfos.offresDeService)}
                         className={styles.shrInput}
                       />
-                      <span className={styles.sh}>
-                        <BsShare size={".8rem"} />
-                      </span>
+                      <Link
+                        target={"_blank"}
+                        href={userInfos?.offresDeService || "#"}
+                        className={styles.sh}
+                      >
+                        <BsShare size={".8rem"} className="try1" />
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -400,7 +403,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                   <textarea
                     readOnly
                     value={userInfos?.bio}
-                    className={styles.textarea}
+                    className={`${styles.textarea} scr`}
                   />
                 </div>
                 <div className={styles.btn}>
@@ -442,14 +445,14 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                                   return nwn;
                                 })
                               }
-                              className={styles.textarea}
+                              className={`${styles.textarea} scr`}
                             />
                           ) : (
                             <textarea
                               readOnly
                               defaultValue={userInfos.note}
                               id="cp"
-                              className={styles.textarea}
+                              className={`${styles.textarea} scr`}
                             />
                           )}
                         </div>
@@ -484,7 +487,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                         value={userInfos?.portfolio}
                       />
                       <span className={styles.sh}>
-                        <BsShare size={".8rem"} />
+                        <BsShare size={".8rem"} className="try1" />
                       </span>
                     </div>
                   </div>

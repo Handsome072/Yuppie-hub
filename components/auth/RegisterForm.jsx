@@ -10,6 +10,7 @@ import Terms from "../copy/Terms";
 import Spinner from "../Spinner";
 import Btn from "./Btn";
 import Conditions from "./Conditions";
+import { FaCircleArrowLeft } from "react-icons/fa6";
 export default function RegisterForm() {
   const { push } = useRouter();
   const [spinner, setSpinner] = useState(false);
@@ -98,7 +99,7 @@ export default function RegisterForm() {
             <div className={styles.switchBtn}>
               <Link href={"/login"} className={styles.link}>
                 <div className={styles.switchIcon}>
-                  <i className="mdi mdi-arrow-left" />
+                  <FaCircleArrowLeft size={"2rem"} />
                 </div>
               </Link>
             </div>

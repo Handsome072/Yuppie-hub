@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { FaCircleArrowLeft } from "react-icons/fa6";
 import styles from "../../styles/auth/Reset.module.css";
 import ClientOnly from "../ClientOnly";
 
@@ -14,7 +15,7 @@ export default function Reset() {
           <div className={styles.switchBtn}>
             <Link href={"/login"} className={styles.link}>
               <div className={styles.switchIcon}>
-                <i className="mdi mdi-arrow-left" />
+                <FaCircleArrowLeft size={"2rem"} />
               </div>
             </Link>
           </div>

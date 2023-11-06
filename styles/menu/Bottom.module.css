@@ -1,21 +1,25 @@
 .container {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 5%;
   height: 100%;
   border-top: 2px solid var(--gris-v-2);
 }
-
+.container .left {
+  width: 25%;
+  border: none;
+}
+.container .right {
+  width: 20%;
+  border: none;
+}
 .container .div {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   height: 100%;
-  gap: 5%;
-  width: 100%;
-  transform: translateX(2.5%);
+  width: 55%;
 }
 .container .div,
 .container .div * {

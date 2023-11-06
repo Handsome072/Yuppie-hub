@@ -294,7 +294,13 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 5%;
+  justify-content: space-between;
+}
+.container .r .menuDeroulant .bl span {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .container .r .menuDeroulant div.bg.ch {
@@ -324,10 +330,6 @@
   border-radius: 50%;
   left: 0;
   margin-left: 0.5rem;
-}
-.container .r .pays .flag {
-  height: 12.5px;
-  width: 12.5px;
 }
 .container .r .inputL input,
 .container .r .inputL.ic input {

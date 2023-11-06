@@ -49,6 +49,7 @@ export default function TestReducer() {
           value={desc}
           id="desc"
           placeholder="description..."
+          className="scr"
         />
         <br />
         <button type="submit">Submit</button>

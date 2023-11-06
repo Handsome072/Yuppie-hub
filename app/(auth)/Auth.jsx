@@ -1,6 +1,5 @@
 import Image from "next/image";
 import styles from "../../styles/auth/Auth.module.css";
-import logo from "../../assets/logo.png";
 export default function AuthPage({ dn, children }) {
   return (
     <>
@@ -9,11 +8,16 @@ export default function AuthPage({ dn, children }) {
           <div className={styles.left}>
             <div>
               <div className={styles.logo}>
-                <Image alt="" src={logo} fill className={styles.logoImg} />
+                <Image
+                  alt=""
+                  src={"/logo.png"}
+                  fill
+                  className={styles.logoImg}
+                />
               </div>
               <div className={styles.line}>
-                <span></span>
-                <span></span>
+                <span />
+                <span />
               </div>
             </div>
             <div

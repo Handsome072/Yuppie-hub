@@ -5,6 +5,7 @@ import { updateUserInfos } from "@/redux/slices/userSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../../styles/auth/LoginForm.module.css";
 import ClientOnly from "../ClientOnly";
@@ -21,7 +22,8 @@ export default function LoginForm(req) {
   useEffect(() => {
     setSpinner(false);
   }, []);
-  const handleUserType = () => {
+  const handleUserType = (e) => {
+    e.preventDefault();
     setUserType(userType === "client" ? "assistant" : "client");
   };
   const handleSubmit = async (e) => {
@@ -79,16 +81,16 @@ export default function LoginForm(req) {
                   />
                   <button>
                     {showPassword ? (
-                      <i
-                        className="mdi mdi-eye-outline"
+                      <IoMdEye
+                        size={"1.25rem"}
                         onClick={(e) => {
                           e.preventDefault();
                           setShowPassword(false);
                         }}
                       />
                     ) : (
-                      <i
-                        className="mdi mdi-eye-off-outline"
+                      <IoMdEyeOff
+                        size={"1.25rem"}
                         onClick={(e) => {
                           e.preventDefault();
                           setShowPassword(true);

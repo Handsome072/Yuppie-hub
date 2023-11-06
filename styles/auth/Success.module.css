@@ -28,25 +28,17 @@
   position: relative;
   align-self: flex-start;
 }
+.link:focus .switchIcon,
+.link:hover .switchIcon,
+.switchIcon:hover {
+  color: var(--gris-v-2);
+}
 .switchIcon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  background: var(--gris-v-3);
-  height: 2rem;
-  width: 2rem;
+  color: var(--gris-v-3);
   cursor: pointer;
   transition: 0.1s;
 }
-.switchIcon:hover {
-  background: var(--gris-v-2);
-}
-.switchIcon i {
-  font-size: 1.5rem;
-  color: var(--white);
-  text-shadow: 1px 2px 2px var(--gris-v-2);
-}
+
 .contenu {
   display: flex;
   justify-content: center;
@@ -86,23 +78,9 @@
     border-radius: 50%;
     z-index: 0;
   }
-  .switchIcon {
-    height: 2.5rem;
-    width: 2.5rem;
-  }
-  .switchIcon i {
-    font-size: 2rem;
-  }
 }
 @media (max-width: 450px) {
   .container form {
     padding: 0 2rem;
-  }
-  .switchIcon {
-    height: 2rem;
-    width: 2rem;
-  }
-  .switchIcon i {
-    font-size: 1.5rem;
   }
 }

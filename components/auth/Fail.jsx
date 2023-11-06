@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useState } from "react";
+import { FaCircleArrowLeft } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import styles from "../../styles/auth/Fail.module.css";
 import ClientOnly from "../ClientOnly";
@@ -178,7 +179,7 @@ export default function Fail() {
               className={styles.link}
             >
               <div className={styles.switchIcon}>
-                <i className="mdi mdi-arrow-left" />
+                <FaCircleArrowLeft size={"2rem"} />
               </div>
             </Link>
           </div>
