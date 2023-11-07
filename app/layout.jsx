@@ -1,10 +1,8 @@
 import "./globals.css";
-import { Archivo } from "next/font/google";
 import "../assets/mdi/css/materialdesignicons.min.css"; // icons
 import { UidContextProvider } from "@/context/UidContext";
 import ReduxProvider from "@/redux/Redux.provider";
 import connectToMongo from "@/lib/db";
-const inter = Archivo({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Yuppie HUB",
@@ -17,7 +15,7 @@ export default async function RootLayout({ children }) {
   await connectToMongo();
   return (
     <html lang="fr">
-      <body className={inter.className}>
+      <body>
         <ReduxProvider>
           <UidContextProvider>{children}</UidContextProvider>
         </ReduxProvider>

@@ -1,3 +1,21 @@
+@font-face {
+  font-family: "Archivo";
+  src: url("../assets/fonts/Archivo-Bold.ttf");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Archivo";
+  src: url("../assets/fonts/Archivo-Medium.ttf");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Archivo";
+  src: url("../assets/fonts/Archivo-Regular.ttf");
+  font-weight: 400;
+  font-style: normal;
+}
 *,
 html,
 body {
@@ -26,7 +44,7 @@ body {
   --box-shadow-form: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
   --bold: 700;
   --medium: 500;
-  --regular: 300;
+  --regular: 400;
   --linear-gradient: linear-gradient(135deg, var(--green), var(--blue))
     var(--green);
   --linear-gradient-reverse: linear-gradient(135deg, var(--blue), var(--green))
@@ -44,7 +62,7 @@ body {
   text-decoration: inherit;
   border: inherit;
   outline: inherit;
-  font-family: "Archivo", arial;
+  font-family: "Archivo", sans-serif;
 }
 *::selection {
   background: rgba(186, 223, 91, 0.25);

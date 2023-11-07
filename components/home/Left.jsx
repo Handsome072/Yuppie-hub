@@ -41,13 +41,13 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
         <div className={styles.top}>
           <div className={styles.md}>
             <div className={styles.photoMd}>
-              <Image
+              {/* <Image
                 src={!isEmpty(lastPhoto) ? lastPhoto : photo}
                 alt=""
                 fill
                 className={styles.profilImgMd}
                 sizes=""
-              />
+              /> */}
             </div>
             <div>
               {!isEmpty(userInfos) && (

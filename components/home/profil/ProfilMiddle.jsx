@@ -44,8 +44,6 @@ export default function ProfilMiddle({
   setNewMTF,
   newProvince,
   setNewProvince,
-  newImage,
-  setNewImage,
 }) {
   const userInfos = useSelector((state) => state.user);
   const [active, setActive] = useState("infos");
