@@ -1,5 +1,4 @@
 "use client";
-import { isEmpty } from "@/lib/utils/isEmpty";
 import styles from "../../styles/auth/Terms.module.css";
 import ClientOnly from "../ClientOnly";
 export default function Terms({
@@ -16,7 +15,7 @@ export default function Terms({
         <input
           required
           type="checkbox"
-          checked={acceptConditions.value || !isEmpty(activePopup?.obj)}
+          checked={acceptConditions.value}
           id="condition"
           onChange={() =>
             setAcceptconditions({
