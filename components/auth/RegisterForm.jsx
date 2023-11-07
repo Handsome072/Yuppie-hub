@@ -6,11 +6,12 @@ import { useEffect } from "react";
 import { useState } from "react";
 import styles from "../../styles/auth/RegisterForm.module.css";
 import ClientOnly from "../ClientOnly";
-import Terms from "../copy/Terms";
+import Terms from "./Terms";
 import Spinner from "../Spinner";
 import Btn from "./Btn";
 import Conditions from "./Conditions";
 import { FaCircleArrowLeft } from "react-icons/fa6";
+import { isEmpty } from "@/lib/utils/isEmpty";
 export default function RegisterForm() {
   const { push } = useRouter();
   const [spinner, setSpinner] = useState(false);
@@ -22,7 +23,6 @@ export default function RegisterForm() {
     submit: false,
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [showConditions, setShowConditions] = useState(false);
   const [acceptConditions, setAcceptconditions] = useState({
     obj: "conditions",
     value: false,
@@ -55,6 +55,7 @@ export default function RegisterForm() {
   useEffect(() => {
     setSpinner(false);
   }, []);
+  const [activePopup, setActivePopup] = useState({ obj: null });
   const handleSubmit = async (e) => {
     e.preventDefault();
     setAcceptconditions({ ...acceptConditions, submit: true });
@@ -198,9 +199,10 @@ export default function RegisterForm() {
                   />
                 </div>
                 <Terms
-                  setShowConditions={setShowConditions}
                   setAcceptconditions={setAcceptconditions}
                   acceptConditions={acceptConditions}
+                  activePopup={activePopup}
+                  setActivePopup={setActivePopup}
                 />
                 <div
                   className={
@@ -225,11 +227,12 @@ export default function RegisterForm() {
               </div>
             </div>
           </form>
-          {showConditions && (
+          {!isEmpty(activePopup.obj) && (
             <Conditions
-              setShowConditions={setShowConditions}
               acceptConditions={acceptConditions}
               setAcceptconditions={setAcceptconditions}
+              activePopup={activePopup}
+              setActivePopup={setActivePopup}
             />
           )}
         </div>

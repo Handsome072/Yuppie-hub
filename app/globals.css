@@ -83,10 +83,10 @@ button::-moz-focus-inner {
 }
 .scr {
   scrollbar-width: thin;
-  scrollbar-color: var(--gris) var(--gris-v-1);
+  scrollbar-color: var(--gris) transparent;
 }
 .scr::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 
 .scr::-webkit-scrollbar-button:start,

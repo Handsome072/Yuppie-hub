@@ -95,15 +95,13 @@
 }
 .inputs div button {
   position: absolute;
-  right: 0;
+  right: 0.7rem;
   display: flex;
   justify-content: center;
   align-items: center;
   background: transparent;
   color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
-  margin-right: 0.7rem;
-  transform: translateY(1px);
 }
 
 .forgot {

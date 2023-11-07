@@ -87,6 +87,7 @@ export default function LoginForm(req) {
                           e.preventDefault();
                           setShowPassword(false);
                         }}
+                        className="try1"
                       />
                     ) : (
                       <IoMdEyeOff
@@ -95,6 +96,7 @@ export default function LoginForm(req) {
                           e.preventDefault();
                           setShowPassword(true);
                         }}
+                        className="try1"
                       />
                     )}
                   </button>

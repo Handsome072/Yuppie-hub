@@ -23,8 +23,11 @@
 .top * {
   border: none;
 }
+.top span {
+  display: flex;
+}
 .top label {
-  font-weight: var(--medium);
+  font-weight: var(--bold);
   font-size: 0.9rem;
 }
 
