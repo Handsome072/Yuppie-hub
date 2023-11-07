@@ -27,7 +27,7 @@
 .logo {
   position: relative;
   width: 100%;
-  height: 8rem;
+  height: 10rem;
   user-select: none;
 }
 .logoImg {
@@ -40,27 +40,31 @@
   align-items: center;
   width: 100%;
   user-select: none;
+  padding: 0.65rem 0;
 }
 .line::before {
   content: "";
   position: absolute;
-  width: 72.5%;
-  height: 4px;
+  width: 80%;
+  height: 0.5rem;
   background: var(--blue);
+}
+.line span {
+  --rond: 1rem;
 }
 .line span:first-child {
   position: relative;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: 72.5%;
+  width: 80%;
 }
 .line span:first-child:before {
   content: "";
   position: absolute;
-  width: 12px;
-  height: 12px;
-  border: 0.25rem solid var(--blue);
+  width: var(--rond);
+  height: var(--rond);
+  border: 0.5rem solid var(--blue);
   border-radius: 50%;
   background: var(--white);
 }
@@ -73,9 +77,9 @@
 .line span:last-child:before {
   content: "";
   position: absolute;
-  width: 12px;
-  height: 12px;
-  border: 0.25rem solid var(--blue);
+  width: var(--rond);
+  height: var(--rond);
+  border: 0.5rem solid var(--blue);
   border-radius: 50%;
   background: var(--white);
 }
@@ -86,9 +90,9 @@
   max-width: 600px;
   text-align: center;
   color: var(--green);
-  padding: 1.75rem 0;
+  padding: 2rem 0;
   font-style: italic;
-  text-shadow: 2px 0 0;
+  text-shadow: 0.175rem 0 0;
 }
 
 .right {

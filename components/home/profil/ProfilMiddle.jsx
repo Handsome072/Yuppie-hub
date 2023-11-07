@@ -47,7 +47,7 @@ export default function ProfilMiddle({
   newImage,
   setNewImage,
 }) {
-  const userInfos = useSelector(state=>state.user)
+  const userInfos = useSelector((state) => state.user);
   const [active, setActive] = useState("infos");
   return (
     <ClientOnly>

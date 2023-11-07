@@ -19,6 +19,7 @@ export default function LoginForm(req) {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [remember, setRemember] = useState(false);
   useEffect(() => {
     setSpinner(false);
   }, []);
@@ -103,6 +104,15 @@ export default function LoginForm(req) {
                 </div>
               </div>
               <div className={styles.forgot}>
+                <label htmlFor="remember" className={styles.remember}>
+                  <input
+                    type="checkbox"
+                    checked={remember}
+                    id="remember"
+                    onChange={() => setRemember(!remember)}
+                  />
+                  <span>Se souvenir de moi</span>
+                </label>
                 <Link href={"/reset"} className={styles.link}>
                   <span>Mot de passe oublié</span> <span>?</span>
                 </Link>

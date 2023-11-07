@@ -110,10 +110,66 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  gap: 0.65rem;
 }
 
-.forgot .link span {
+.remember {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: var(--gris-text);
+  gap: 0.25rem;
+  padding: 0;
+  user-select: none;
+  transform: translateX(-0.2rem);
+}
+.remember span {
+  font-size: 0.9rem;
+}
+.remember input {
+  cursor: pointer;
+  appearance: none;
+  color: var(--white);
+  border-radius: 4px;
+  border: 2px solid var(--gris-text);
+  transform: scale(0.75);
+  width: inherit;
+  padding: inherit;
+}
+.remember input::before {
+  content: "";
+  border-radius: 4px;
+  width: 0.65rem;
+  height: 0.65rem;
+  font-size: 0.7rem;
+  padding: 0.1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  transform-origin: bottom center;
+  transform: translate(-50%, 15%) scale(0);
+  transition: transform 0.2s ease-in;
+}
+
+.remember input:hover,
+.remember input:focus {
+  box-shadow: var(--box-shadow);
+}
+.remember input:checked {
+  border-color: transparent;
+  transform: scale(1);
+  box-shadow: none;
+  outline: none;
+}
+.remember input:checked:before {
+  background-color: var(--blue);
+  content: "\2713";
+  transform: translate(0) scale(1);
+}
+.forgot .link span {
+  color: var(--gris);
   font-weight: var(--regular);
   font-size: 0.9rem;
   cursor: pointer;
