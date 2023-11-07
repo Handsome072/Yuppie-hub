@@ -11,6 +11,7 @@
 .container.cli {
   height: auto;
 }
+
 .left {
   display: flex;
   flex-direction: column;
