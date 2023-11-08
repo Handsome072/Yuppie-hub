@@ -8,6 +8,7 @@ import Offres from "./Offres";
 import Statut from "./Statut";
 import { HiPencilAlt } from "react-icons/hi";
 import { useSelector } from "react-redux";
+import { FaCircleArrowLeft, FaCircleArrowRight } from "react-icons/fa6";
 
 export default function ProfilMiddle({
   handleSubmit,
@@ -170,7 +171,7 @@ export default function ProfilMiddle({
                 }}
                 className={active === "infos" ? `${styles.disbl}` : null}
               >
-                <i className="mdi mdi-arrow-left" />
+                <FaCircleArrowLeft size={"1.8rem"} />
               </label>
               <label
                 onClick={() => {
@@ -192,7 +193,7 @@ export default function ProfilMiddle({
                     : null
                 }
               >
-                <i className="mdi mdi-arrow-right" />
+                <FaCircleArrowRight size={"1.8rem"} />
               </label>
             </div>
             <button onClick={handleSubmit} type="submit">

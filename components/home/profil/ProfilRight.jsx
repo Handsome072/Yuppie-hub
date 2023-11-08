@@ -20,10 +20,7 @@ export default function ProfilRight({
     : null;
   const [srcImg, setSrcImg] = useState(lastPhoto);
   useEffect(() => {
-    if (
-      userInfos?.bio !== newBio.obj?.trim() &&
-      newBio.obj?.trim().length > 5
-    ) {
+    if (userInfos.bio !== newBio.obj?.trim() && newBio.obj?.trim().length > 5) {
       setNewBio((prev) => {
         let nwb = { ...prev };
         nwb.value = true;
@@ -43,7 +40,6 @@ export default function ProfilRight({
   }, [newBio.obj, newImage.obj]);
   const handleChangeFile = async (e) => {
     if (e.target.files && e.target.files.length > 0) {
-      setSrcImg(URL.createObjectURL(e.target.files[0]));
       const res = await base64(e.target.files[0]).catch((error) =>
         console.log(error)
       );
@@ -68,6 +64,7 @@ export default function ProfilRight({
       });
     }
   };
+  const handleSelection = ()=>{}
   return (
     <ClientOnly>
       <div className={styles.container}>
@@ -103,7 +100,7 @@ export default function ProfilRight({
             </div>
           </div>
           <div className={styles.choose}>
-            <label>ou sélectionner une ancienne photo de profil</label>
+            <label onClick={handleSelection}>ou sélectionner une ancienne photo de profil</label>
           </div>
           <div className={styles.not}>
             <label>

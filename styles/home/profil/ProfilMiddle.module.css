@@ -54,6 +54,7 @@
   height: 100%;
   padding: 0 2%;
   max-height: 100%;
+  min-width: max-content;
 }
 
 .menu div.active {
@@ -66,7 +67,7 @@
 .menu div label {
   text-align: center;
   color: var(--white);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   width: 100%;
   max-height: 100%;
   overflow: hidden;
@@ -107,9 +108,8 @@
 }
 .bottom button {
   color: var(--white);
-  padding: 0.35rem 1rem;
+  padding: 0.45rem 1rem;
   font-weight: var(--medium);
-  font-size: 1rem;
   border-radius: 0.35rem;
   cursor: pointer;
   box-shadow: var(--box-shadow);
@@ -143,12 +143,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 50%;
-  background: var(--gris-v-2);
   cursor: pointer;
   transition: 0.15s ease-out;
+  color: var(--gris-v-2);
+  border-radius: 50%;
 }
 .switch .disbl {
   transition: 0s;
@@ -158,10 +156,5 @@
 .switch label:hover,
 .switch label:focus {
   box-shadow: var(--box-shadow);
-}
-
-.switch label i {
-  color: var(--white);
-  font-size: 1.5rem;
-  text-shadow: 1px 1px 1px var(--gris);
+  color: var(--gris);
 }

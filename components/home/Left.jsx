@@ -41,13 +41,13 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
         <div className={styles.top}>
           <div className={styles.md}>
             <div className={styles.photoMd}>
-              {/* <Image
+              <Image
                 src={!isEmpty(lastPhoto) ? lastPhoto : photo}
                 alt=""
                 fill
                 className={styles.profilImgMd}
                 sizes=""
-              /> */}
+              />
             </div>
             <div>
               {!isEmpty(userInfos) && (
@@ -78,18 +78,14 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
               </div>
             </div>
             <div className={styles.right}>
-              <div className={styles.info}>
-                {!isEmpty(userInfos) && (
-                  <h1>
-                    {userInfos.username}, {userInfos.name}
-                  </h1>
-                )}
-              </div>
+              {!isEmpty(userInfos) && (
+                <h1>
+                  {userInfos.username}, {userInfos.name}
+                </h1>
+              )}
               <div className={styles.statut}>
                 {!isEmpty(userInfos) && (
-                  <div>
-                    <label>{userInfos.statutProfessionnelle}</label>
-                  </div>
+                  <label>{userInfos.statutProfessionnelle}</label>
                 )}
               </div>
               <div className={styles.loc}>
@@ -151,13 +147,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
           </div>
           {userInfos?.userType === "assistant" ? (
             <div className={styles.middle}>
-              <div
-                className={
-                  active.obj === "disp"
-                    ? `${styles.more} ${styles.morent}`
-                    : `${styles.more}`
-                }
-              >
+              <div className={styles.more}>
                 <div className={styles.btn}>
                   <div
                     className={
@@ -237,96 +227,60 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                   )}
                 </div>
               </div>
-              <div
-                className={
-                  active.obj === "disp"
-                    ? `${styles.moreInfos} ${styles.ntm}`
-                    : `${styles.moreInfos}`
-                }
-              >
-                <div
-                  className={
-                    active.obj === "disp"
-                      ? `${styles.op} ${styles.nt} `
-                      : `${styles.op} `
-                  }
-                >
+              <div className={styles.moreInfos}>
+                <div className={styles.op}>
                   <div>
-                    <div className={`${styles.lab} ${styles.labtxt}`}>
-                      <label htmlFor="cp" className={styles.cp}>
-                        Compéténces virtuelles
-                      </label>
-                    </div>
-                    <div className={styles.txtr}>
-                      <textarea
-                        readOnly
-                        id="cp"
-                        className={
-                          active.obj === "disp"
-                            ? `${styles.textarea} ${styles.textrnt} scr`
-                            : `${styles.textarea} scr`
-                        }
-                        value={
-                          userInfos.competenceVirtuelle
-                            ?.map((c, index, array) =>
-                              index === array?.length - 1 ? c : c + "\n"
-                            )
-                            .join("") || ""
-                        }
-                      />
-                    </div>
+                    <label htmlFor="cp" className={styles.lab}>
+                      <span>Compéténces virtuelles</span>
+                    </label>
+                    <textarea
+                      readOnly
+                      id="cp"
+                      className={`${styles.textarea} scr`}
+                      value={
+                        userInfos.competenceVirtuelle
+                          ?.map((c, index, array) =>
+                            index === array?.length - 1 ? c : c + "\n"
+                          )
+                          .join("") || ""
+                      }
+                    />
                   </div>
                   <div>
-                    <div className={`${styles.lab} ${styles.labtxt}`}>
-                      <label htmlFor="tar">Tarifications</label>
-                    </div>
-                    <div className={`${styles.txtr} ${styles.thr}`}>
-                      <textarea
-                        readOnly
-                        id="tar"
-                        value={
-                          !isEmpty(userInfos?.tauxHoraire)
-                            ? userInfos.tauxHoraire + "$/h"
-                            : ""
-                        }
-                        className={`${styles.textarea} scr`}
-                      />
-                    </div>
+                    <label htmlFor="tar" className={styles.lab}>
+                      <span>Tarifications</span>
+                    </label>
+                    <textarea
+                      readOnly
+                      id="tar"
+                      value={
+                        !isEmpty(userInfos?.tauxHoraire)
+                          ? userInfos.tauxHoraire + "$/h"
+                          : ""
+                      }
+                      className={`${styles.textarea} scr`}
+                    />
                   </div>
                 </div>
-                <div
-                  className={
-                    active.obj === "disp"
-                      ? `${styles.op} ${styles.nt} `
-                      : `${styles.op} `
-                  }
-                >
+                <div className={styles.op}>
                   <div>
-                    <div className={styles.lab}>
-                      <label htmlFor="web">Application web</label>
-                    </div>
+                    <label htmlFor="web" className={styles.lab}>
+                      <span>Application web</span>
+                    </label>
                     <input readOnly id="web" value={userInfos.applicationWeb} />
                   </div>
                   <div>
-                    <div className={styles.lab}>
-                      <label htmlFor="exp" className={styles.exp}>
-                        Expérience professionnelle
-                      </label>
-                    </div>
+                    <label htmlFor="exp" className={styles.lab}>
+                      <span>Expérience professionnelle</span>
+                    </label>
                     <input readOnly id="exp" value={userInfos.experiencePro} />
                   </div>
                 </div>
-                <div
-                  className={
-                    active.obj === "disp"
-                      ? `${styles.op} ${styles.nt} `
-                      : `${styles.op} `
-                  }
-                >
+                <div className={styles.op}>
                   <div>
-                    <div className={styles.lab}>
-                      <label htmlFor="portfolio">Portfolio</label>
-                    </div>
+                    <label htmlFor="portfolio" className={styles.lab}>
+                      <span>Portfolio</span>
+                    </label>
                     <div className={styles.shr}>
                       <input
                         readOnly
@@ -344,9 +298,9 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                     </div>
                   </div>
                   <div>
-                    <div>
-                      <label htmlFor="offre">Offres de service</label>
-                    </div>
+                    <label htmlFor="offre" className={styles.lab}>
+                      <span>Offres de service</span>
+                    </label>
                     <div className={styles.shr}>
                       <input
                         readOnly
@@ -363,6 +317,22 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                       </Link>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div className={styles.edit}>
+                <div
+                  className={
+                    isEditProfil
+                      ? `${styles.profilLink} ${styles.disable}`
+                      : `${styles.profilLink}`
+                  }
+                >
+                  <label onClick={() => setIsEditProfil(true)}>
+                    <span>
+                      <HiPencilAlt size={"1.25rem"} />
+                    </span>
+                    <span>Mettre à jour le profil</span>
+                  </label>
                 </div>
               </div>
             </div>
@@ -433,7 +403,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                         <label htmlFor="note" className={styles.ntlab}>
                           Note :
                         </label>
-                        <div className={styles.txtrnt}>
+                        <div>
                           {canUpdate ? (
                             <textarea
                               value={newNote.obj}
@@ -468,13 +438,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                     : `${styles.moreInfos}`
                 }
               >
-                <div
-                  className={
-                    active.obj === "disp"
-                      ? `${styles.op} ${styles.ntc} `
-                      : `${styles.op} `
-                  }
-                >
+                <div className={styles.op}>
                   <div>
                     <div className={styles.lab}>
                       <label htmlFor="portfolio">Portfolio</label>
@@ -493,33 +457,24 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                   </div>
                 </div>
               </div>
+              <div className={styles.edit}>
+                <div
+                  className={
+                    isEditProfil
+                      ? `${styles.profilLink} ${styles.disable}`
+                      : `${styles.profilLink}`
+                  }
+                >
+                  <label onClick={() => setIsEditProfil(true)}>
+                    <span>
+                      <HiPencilAlt size={"1.25rem"} />
+                    </span>
+                    <span>Mettre à jour le profil</span>
+                  </label>
+                </div>
+              </div>
             </div>
           )}
-
-          <div
-            className={
-              active.obj === "disp" && userInfos?.userType === "assistant"
-                ? `${styles.edit} ${styles.editnt}`
-                : userInfos?.userType === "client"
-                ? `${styles.edit} ${styles.editCli}`
-                : `${styles.edit}`
-            }
-          >
-            <div
-              className={
-                isEditProfil
-                  ? `${styles.profilLink} ${styles.disable}`
-                  : `${styles.profilLink}`
-              }
-            >
-              <label onClick={() => setIsEditProfil(true)}>
-                <span>
-                  <HiPencilAlt size={"1.25rem"} />
-                </span>
-                <span>Mettre à jour le profil</span>
-              </label>
-            </div>
-          </div>
         </div>
       </div>
     </ClientOnly>

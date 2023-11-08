@@ -6,7 +6,7 @@
   color: var(--gris);
   display: flex;
   flex-direction: column;
-  gap: 5%;
+  gap: 8%;
   padding-top: 5%;
 }
 .container div {
@@ -21,14 +21,15 @@
 }
 .container .l label {
   font-weight: var(--bold);
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   width: max-content;
 }
 
 .container .l p {
   font-weight: var(--regular);
-  font-size: 0.8rem;
-  padding: 1rem 25% 1rem 0;
+  padding: 0.5rem;
+  padding-left: 0;
+  font-size: 0.9rem;
 }
 
 .container .r {
@@ -68,22 +69,12 @@
   position: relative;
   flex-direction: column;
 }
-.container .shareLink {
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  position: relative;
-  flex-direction: column;
-}
-
-.shareLink .sh {
+.sh {
   position: absolute;
   color: var(--blue);
   padding: 0 0.5rem;
-  z-index: 6;
   right: 0;
   cursor: pointer;
-  transform: translateY(0.5px);
 }
 .inputR i {
   position: absolute;

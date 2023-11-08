@@ -99,6 +99,12 @@ button::-moz-focus-inner {
 .trx1 {
   transform: translateX(1px);
 }
+.z3 {
+  z-index: 3;
+}
+.z6 {
+  z-index: 6;
+}
 .scr {
   scrollbar-width: thin;
   scrollbar-color: var(--gris) transparent;

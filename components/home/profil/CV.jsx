@@ -3,20 +3,22 @@ import styles from "../../../styles/home/profil/CV.module.css";
 import { useEffect, useState } from "react";
 import ClientOnly from "@/components/ClientOnly";
 import { useSelector } from "react-redux";
-import {
-  appWeb,
-  expPro,
-  competVirt,
-  nbCmp as max,
-} from "@/lib/utils/menuDeroulant";
+import { appWeb, expPro, competVirt, nbCmp } from "@/lib/utils/menuDeroulant";
 import { isEmpty } from "@/lib/utils/isEmpty";
 
-export default function CV({ newCmp, setNewCmp, setNewApp, setNewExpPro }) {
+export default function CV({
+  newCmp,
+  setNewCmp,
+  newApp,
+  setNewApp,
+  newExpPro,
+  setNewExpPro,
+}) {
   const userInfos = useSelector((state) => state.user);
   const [cmp, setCmp] = useState(() => {
     const initialCmp = [
       ...newCmp,
-      ...Array.from({ length: max - newCmp.length }, () => ({
+      ...Array.from({ length: nbCmp - newCmp.length }, () => ({
         obj: "",
         value: false,
       })),
@@ -27,7 +29,7 @@ export default function CV({ newCmp, setNewCmp, setNewApp, setNewExpPro }) {
     const initialCmp = [
       ...userInfos.competenceVirtuelle,
       ...Array.from(
-        { length: max - userInfos.competenceVirtuelle.length },
+        { length: nbCmp - userInfos.competenceVirtuelle.length },
         () => ""
       ),
     ];
@@ -35,56 +37,46 @@ export default function CV({ newCmp, setNewCmp, setNewApp, setNewExpPro }) {
   });
 
   const [lastIndex, setLastIndex] = useState(0);
-  const [app, setApp] = useState({
-    obj: userInfos.applicationWeb,
-    value: true,
-  });
-  const [exp, setExp] = useState({
-    obj: userInfos.experiencePro,
-    value: true,
-  });
   const [showMenu, setShowMenu] = useState({
     obj: "",
     value: false,
     focus: false,
   });
   useEffect(() => {
-    for (let i = 0; i < max; i++) {
+    for (let i = 0; i < nbCmp; i++) {
       if (cmp[i].obj === "") {
         setLastIndex(i);
         break;
       }
     }
-    for (let i = 0; i < max; i++) {
-      if (!isEmpty(cmp[i].obj) && cmp[i].obj !== invalidOptions[i]) {
-        setNewCmp((prev) => {
-          let nwc = [...prev];
-          while (nwc.length <= i) {
-            nwc.push({ obj: "", value: false });
-          }
-          nwc[i].obj = cmp[i].obj;
-          nwc[i].value = true;
-          return nwc;
-        });
-      }
+    for (let i = 0; i < nbCmp; i++) {
+      setNewCmp((prev) => {
+        return cmp
+          .filter((item) => !isEmpty(item.obj))
+          .map((item, i) => {
+            let newObj = { obj: item.obj, value: true };
+            while (prev.length <= i) {
+              prev.push({ obj: "", value: false });
+            }
+            return newObj;
+          });
+      });
     }
-    if (app.obj !== userInfos.applicationWeb) {
+    if (newApp.obj !== userInfos.applicationWeb) {
       setNewApp((prev) => {
-        let nwa = { ...prev };
-        nwa.obj = app.obj;
-        nwa.value = userInfos?.applicationWeb !== app.obj;
-        return nwa;
+        let nwe = { ...prev };
+        nwe.value = true;
+        return nwe;
       });
     }
-    if (exp.obj !== userInfos.experiencePro) {
+    if (newExpPro.obj !== userInfos.experiencePro) {
       setNewExpPro((prev) => {
-        let nwa = { ...prev };
-        nwa.obj = exp.obj;
-        nwa.value = userInfos?.experiencePro !== exp.obj;
-        return nwa;
+        let nwe = { ...prev };
+        nwe.value = true;
+        return nwe;
       });
     }
-  }, [cmp, app, exp]);
+  }, [cmp, newApp, newExpPro]);
   return (
     <ClientOnly>
       <div className={styles.container}>
@@ -225,7 +217,7 @@ export default function CV({ newCmp, setNewCmp, setNewApp, setNewExpPro }) {
               <input
                 type="text"
                 id="appWeb"
-                value={app.obj || "Application Web"}
+                value={newApp.obj || "Application Web"}
                 readOnly
                 onFocus={() => {
                   showMenu.obj === "appWeb" && showMenu.value && showMenu.focus
@@ -258,10 +250,16 @@ export default function CV({ newCmp, setNewCmp, setNewApp, setNewExpPro }) {
                         <div
                           key={p}
                           className={
-                            app.obj === p ? `${styles.bg} ${styles.po}` : null
+                            newApp.obj === p
+                              ? `${styles.bg} ${styles.po}`
+                              : null
                           }
                           onClick={() => {
-                            setApp({ obj: p, value: true });
+                            setNewApp((prev) => {
+                              let nwe = { ...prev };
+                              nwe.obj = p;
+                              return nwe;
+                            });
                             setShowMenu({
                               obj: "",
                               value: false,
@@ -296,7 +294,7 @@ export default function CV({ newCmp, setNewCmp, setNewApp, setNewExpPro }) {
               <input
                 type="text"
                 id="expPro"
-                value={exp.obj || "Expérience professionnelle"}
+                value={newExpPro.obj || "Expérience professionnelle"}
                 readOnly
                 onFocus={() => {
                   showMenu.obj === "expPro" && showMenu.value && showMenu.focus
@@ -329,10 +327,16 @@ export default function CV({ newCmp, setNewCmp, setNewApp, setNewExpPro }) {
                         <div
                           key={p}
                           className={
-                            exp.obj === p ? `${styles.bg} ${styles.po}` : null
+                            newExpPro.obj === p
+                              ? `${styles.bg} ${styles.po}`
+                              : null
                           }
                           onClick={() => {
-                            setExp({ obj: p, value: true });
+                            setNewExpPro((prev) => {
+                              let nwe = { ...prev };
+                              nwe.obj = p;
+                              return nwe;
+                            });
                             setShowMenu({
                               obj: "",
                               value: false,

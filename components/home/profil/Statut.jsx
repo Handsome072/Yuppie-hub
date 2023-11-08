@@ -22,14 +22,12 @@ export default function Statut({
     value: false,
     focus: false,
   });
-  const [statutPro, setStatutPro] = useState({
-    obj: userInfos.statutProfessionnelle,
-  });
   useEffect(() => {
-    if (statutPro.obj !== newStatutPro.obj) {
-      setNewStatutPro({
-        obj: statutPro.obj,
-        value: userInfos?.statutProfessionnelle !== newStatutPro.obj,
+    if (userInfos.statutProfessionnelle !== newStatutPro.obj) {
+      setNewStatutPro((prev) => {
+        let nwe = { ...prev };
+        nwe.value = true;
+        return nwe;
       });
     }
     if (
@@ -52,12 +50,7 @@ export default function Statut({
         return nwlp;
       });
     }
-  }, [
-    statutPro,
-    newStatutPro.obj,
-    newPortfolio.obj,
-    newLienProfessionnelle.obj,
-  ]);
+  }, [newStatutPro.obj, newPortfolio.obj, newLienProfessionnelle.obj]);
   const handleChangeLinkPro = (e) => {
     setNewLienProfessionnelle((prev) => {
       let nwlp = { ...prev };
@@ -91,7 +84,7 @@ export default function Statut({
               <input
                 type="text"
                 id="statutPro"
-                value={statutPro.obj || "Statut"}
+                value={newStatutPro.obj || "Statut"}
                 readOnly
                 onFocus={() => {
                   showMenu.obj === "statutPro" &&
@@ -129,12 +122,12 @@ export default function Statut({
                             <div
                               key={p}
                               className={
-                                statutPro.obj === p
+                                newStatutPro.obj === p
                                   ? `${styles.bg} ${styles.po}`
                                   : null
                               }
                               onClick={() => {
-                                setStatutPro((prev) => {
+                                setNewStatutPro((prev) => {
                                   let nwe = { ...prev };
                                   nwe.obj = p;
                                   return nwe;
@@ -155,12 +148,16 @@ export default function Statut({
                             <div
                               key={p}
                               className={
-                                statutPro.obj === p
+                                newStatutPro.obj === p
                                   ? `${styles.bg} ${styles.po}`
                                   : null
                               }
                               onClick={() => {
-                                setStatutPro({ obj: p, value: true });
+                                setNewStatutPro((prev) => {
+                                  let nwe = { ...prev };
+                                  nwe.obj = p;
+                                  return nwe;
+                                });
                                 setShowMenu({
                                   obj: "",
                                   value: false,
@@ -185,21 +182,23 @@ export default function Statut({
             <p>Ajoutez un lien d&apos;un réseau social professionnel.</p>
           </div>
           <div className={`${styles.r} ${styles.foc}`}>
+            <input
+              type="text"
+              id="lienPro"
+              onChange={handleChangeLinkPro}
+              value={newLienProfessionnelle?.obj || ""}
+              placeholder="https://..."
+            />
             <Link
               target={"_blank"}
-              href={newLienProfessionnelle.obj || ""}
-              className={styles.shareLink}
+              href={
+                isValidLink(newLienProfessionnelle.obj)
+                  ? newLienProfessionnelle.obj
+                  : "#"
+              }
+              className={styles.sh}
             >
-              <input
-                type="text"
-                id="lienPro"
-                onChange={handleChangeLinkPro}
-                value={newLienProfessionnelle?.obj || ""}
-                placeholder="https://..."
-              />
-              <span className={styles.sh}>
-                <BsShare />
-              </span>
+              <BsShare className="try1" />
             </Link>
           </div>
         </div>
@@ -214,21 +213,19 @@ export default function Statut({
             </p>
           </div>
           <div className={`${styles.r} ${styles.foc}`}>
+            <input
+              type="text"
+              id="portfolio"
+              onChange={handleChangePortfolio}
+              value={newPortfolio?.obj || ""}
+              placeholder="https://..."
+            />
             <Link
               target={"_blank"}
-              href={newPortfolio.obj || ""}
-              className={styles.shareLink}
+              href={isValidLink(newPortfolio.obj) ? newPortfolio.obj : "#"}
+              className={styles.sh}
             >
-              <input
-                type="text"
-                id="portfolio"
-                onChange={handleChangePortfolio}
-                value={newPortfolio?.obj || ""}
-                placeholder="https://..."
-              />
-              <span className={styles.sh}>
-                <BsShare />
-              </span>
+              <BsShare className="try1" />
             </Link>
           </div>
         </div>

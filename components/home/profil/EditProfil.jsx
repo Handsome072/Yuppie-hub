@@ -21,49 +21,49 @@ export default function EditProfil({ setIsEditProfil }) {
     value: false,
   });
   const [newPays, setNewPays] = useState({
-    obj: userInfos?.pays,
+    obj: userInfos.pays,
     value: false,
   });
   const [newVille, setNewVille] = useState({
-    obj: userInfos?.ville,
+    obj: userInfos.ville,
     value: false,
   });
   const [newProvince, setNewProvince] = useState({
-    obj: userInfos?.province,
+    obj: userInfos.province,
     value: false,
   });
   const [newLang, setNewLang] = useState({
-    obj: userInfos?.lang,
+    obj: userInfos.lang,
     value: false,
   });
   const [newStatutPro, setNewStatutPro] = useState({
-    obj: userInfos?.statutProfessionnelle,
+    obj: userInfos.statutProfessionnelle,
     value: false,
   });
   const [newLienProfessionnelle, setNewLienProfessionnelle] = useState({
-    obj: userInfos?.lienProfessionnelle,
+    obj: userInfos.lienProfessionnelle,
     value: false,
   });
   const [newPortfolio, setNewPortfolio] = useState({
-    obj: userInfos?.portfolio,
+    obj: userInfos.portfolio,
     value: false,
   });
   const [newCmp, setNewCmp] = useState(() => {
-    return userInfos.competenceVirtuelle.map((u) => ({
+    return userInfos.competenceVirtuelle?.map((u) => ({
       obj: u,
       value: false,
     }));
   });
   const [newExpPro, setNewExpPro] = useState({
-    obj: userInfos?.experiencePro,
+    obj: userInfos.experiencePro,
     value: false,
   });
   const [newApp, setNewApp] = useState({
-    obj: userInfos?.applicationWeb,
+    obj: userInfos.applicationWeb,
     value: false,
   });
   const [newOffres, setNewOffres] = useState({
-    obj: userInfos?.offresDeService,
+    obj: userInfos.offresDeService,
     value: false,
   });
   const [newTh, setNewTh] = useState({
@@ -78,7 +78,7 @@ export default function EditProfil({ setIsEditProfil }) {
     obj: userInfos?.montantForfaitaire,
     value: false,
   });
-  const [newBio, setNewBio] = useState({ obj: userInfos?.bio, value: false });
+  const [newBio, setNewBio] = useState({ obj: userInfos.bio, value: false });
   const [newImage, setNewImage] = useState({
     obj: userInfos.image,
     value: false,
@@ -160,6 +160,7 @@ export default function EditProfil({ setIsEditProfil }) {
   ]);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("infosToUpdate", infosToUpdate);
     if (!isEmpty(infosToUpdate)) {
       infosToUpdate = { id: userInfos._id, ...infosToUpdate };
       const res = await updateUser(infosToUpdate).catch((error) =>

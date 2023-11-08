@@ -20,19 +20,20 @@ export default function Offres({
   setNewMTF,
 }) {
   const userInfos = useSelector((state) => state.user);
-  const [bnv, setBnv] = useState({ obj: userInfos?.benevolat, value: false });
   const [showMenu, setShowMenu] = useState({
     obj: "",
     value: false,
     focus: false,
   });
-  const [tarif, setTarif] = useState({
-    obj: userInfos?.tauxHoraire,
-  });
   useEffect(() => {
-    if (tarif.obj !== newTh.obj) {
-      setNewTh({ obj: tarif.obj, value: newTh.obj !== userInfos.tauxHoraire });
+    if (newTh.obj !== userInfos?.tauxHoraire) {
+      setNewTh((prev) => {
+        let nwe = { ...prev };
+        nwe.value = true;
+        return nwe;
+      });
     }
+
     if (
       newOffres.obj?.trim() !== userInfos.offresDeService &&
       isValidLink(newOffres.obj?.trim())
@@ -43,9 +44,9 @@ export default function Offres({
         return nwo;
       });
     }
-    if (bnv.obj !== userInfos?.benevolat) {
+    if (newBenevolat.obj !== userInfos?.benevolat) {
       setNewBenevolat({
-        obj: bnv.obj,
+        obj: newBenevolat.obj,
         value: true,
       });
     }
@@ -55,7 +56,7 @@ export default function Offres({
         value: true,
       });
     }
-  }, [tarif, newOffres.obj, bnv.obj, newMTF.obj]);
+  }, [newTh, newOffres.obj, newBenevolat.obj, newMTF.obj]);
 
   const handleChangeOffres = (e) => {
     setNewOffres((prev) => {
@@ -72,7 +73,7 @@ export default function Offres({
     });
   };
   const handleChangeBenevolat = (newValue) => {
-    setBnv((prev) => {
+    setNewBenevolat((prev) => {
       let nwb = { ...prev };
       nwb.obj = newValue;
       return nwb;
@@ -88,17 +89,21 @@ export default function Offres({
             <p>Ajoutez un lien Dropbox, Google Forms, PDF, etc.</p>
           </div>
           <div className={`${styles.r} ${styles.foc}`}>
-            <Link target={"_blank"} href={newOffres.obj || ""} className={styles.shareLink}>
+            <div className={styles.inputR}>
               <input
                 type="text"
                 onChange={handleChangeOffres}
                 value={newOffres?.obj || ""}
                 placeholder="https://..."
               />
-              <span className={styles.sh}>
-                <BsShare />
-              </span>{" "}
-            </Link>
+              <Link
+                target={"_blank"}
+                href={isValidLink(newOffres.obj) ? newOffres.obj : "#"}
+                className={styles.sh}
+              >
+                <BsShare className="try1" />
+              </Link>
+            </div>
           </div>
         </div>
         <div>
@@ -156,10 +161,14 @@ export default function Offres({
                         <div
                           key={p}
                           className={
-                            tarif.obj === p ? `${styles.bg} ${styles.po}` : null
+                            newTh.obj === p ? `${styles.bg} ${styles.po}` : null
                           }
                           onClick={() => {
-                            setTarif({ obj: p });
+                            setNewTh((prev) => {
+                              let nwe = { ...prev };
+                              nwe.obj = p;
+                              return nwe;
+                            });
                             setShowMenu({
                               obj: "",
                               value: false,
@@ -220,7 +229,7 @@ export default function Offres({
                     handleChangeBenevolat(true);
                     console.log("benevolat oui");
                   }}
-                  checked={bnv.obj === true}
+                  checked={newBenevolat.obj === true}
                   name="bn"
                   id="by"
                 />
@@ -233,7 +242,7 @@ export default function Offres({
                     handleChangeBenevolat(false);
                     console.log("benevolat non");
                   }}
-                  checked={bnv.obj === false}
+                  checked={newBenevolat.obj === false}
                   name="bn"
                   id="bn"
                 />
