@@ -38,11 +38,10 @@
   color: var(--white);
   background: var(--blue);
   box-shadow: var(--box-shadow-value-btn) var(--gris-v-2);
-  font-size: 0.9rem;
   text-align: center;
   cursor: pointer;
   white-space: nowrap;
-  transition: 0.1;
+  transition: 0.1s;
   max-width: 100%;
 }
 .btn input {
@@ -84,7 +83,7 @@
   font-weight: var(--medium);
   color: var(--white);
   background: var(--gris-v-2);
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   white-space: nowrap;
   box-shadow: var(--box-shadow-value-btn) var(--gris-v-2);
   user-select: none;
@@ -125,11 +124,18 @@
   text-transform: uppercase;
   color: var(--gris);
   font-weight: var(--medium);
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   text-align: center;
   width: 100%;
+  cursor: pointer;
 }
-
+.choose label:hover {
+  text-decoration: underline;
+}
+.choose .dis {
+  color: var(--gris-v-3);
+  pointer-events: none;
+}
 .not {
   width: 100%;
   display: flex;
@@ -140,9 +146,9 @@
 .not label {
   width: 90%;
   font-weight: var(--regular);
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   text-align: center;
-  color: var(--gris-v-1);
+  color: var(--gris);
 }
 
 .bio {

@@ -43,6 +43,7 @@ export default function ProfilRight({
       const res = await base64(e.target.files[0]).catch((error) =>
         console.log(error)
       );
+      setSrcImg(res);
       setNewImage((prev) => ({
         ...prev,
         obj: [...prev.obj, res],
@@ -64,7 +65,7 @@ export default function ProfilRight({
       });
     }
   };
-  const handleSelection = ()=>{}
+  const handleSelection = () => {};
   return (
     <ClientOnly>
       <div className={styles.container}>
@@ -99,14 +100,29 @@ export default function ProfilRight({
               />
             </div>
           </div>
-          <div className={styles.choose}>
-            <label onClick={handleSelection}>ou sélectionner une ancienne photo de profil</label>
-          </div>
-          <div className={styles.not}>
-            <label>
-              Vous n&apos;avez aucune photo enregistré pour le moment
-            </label>
-          </div>
+          {userInfos.image?.length === 0 ? (
+            <div className={styles.not}>
+              <label>
+                Vous n&apos;avez aucune photo enregistré pour le moment
+              </label>
+            </div>
+          ) : userInfos.image?.length === 1 ? (
+            <div className={styles.not}>
+              <label>
+                Vous n&apos;avez qu&apos;une seule photo enregistré pour le
+                moment
+              </label>
+            </div>
+          ) : (
+            <div className={styles.choose}>
+              <label
+                className={newImage.value ? `${styles.dis}` : null}
+                onClick={handleSelection}
+              >
+                ou sélectionner une ancienne photo de profil
+              </label>
+            </div>
+          )}
         </div>
         <div className={styles.bio}>
           <label htmlFor="bio">Courte biographie</label>

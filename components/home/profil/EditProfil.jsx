@@ -136,7 +136,7 @@ export default function EditProfil({ setIsEditProfil }) {
       infosToUpdate.bio = newBio.obj;
     }
     if (newImage.value) {
-      infosToUpdate.image = newImage.obj || [];
+      infosToUpdate.image = newImage.obj;
     }
   }, [
     newUsername,
@@ -160,7 +160,6 @@ export default function EditProfil({ setIsEditProfil }) {
   ]);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("infosToUpdate", infosToUpdate);
     if (!isEmpty(infosToUpdate)) {
       infosToUpdate = { id: userInfos._id, ...infosToUpdate };
       const res = await updateUser(infosToUpdate).catch((error) =>
