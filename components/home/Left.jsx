@@ -83,13 +83,13 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                   {userInfos.username}, {userInfos.name}
                 </h1>
               )}
-              <div className={styles.statut}>
-                {!isEmpty(userInfos) && (
+              {!isEmpty(userInfos.statutProfessionnelle) && (
+                <div className={styles.statut}>
                   <label>{userInfos.statutProfessionnelle}</label>
-                )}
-              </div>
-              <div className={styles.loc}>
-                {!isEmpty(userInfos) && (
+                </div>
+              )}
+              {(!isEmpty(userInfos.ville) || !isEmpty(userInfos.pays)) && (
+                <div className={styles.loc}>
                   <p>
                     {userInfos.pays}
                     {!isEmpty(userInfos.ville) &&
@@ -107,8 +107,8 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                       )
                     )}
                   </p>
-                )}
-              </div>
+                </div>
+              )}
               <div className={styles.stars}>
                 <div className={styles.icons}>
                   <AiOutlineStar size={"1.15rem"} />
@@ -337,33 +337,11 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
               </div>
             </div>
           ) : (
-            <div
-              className={
-                userInfos?.userType === "client"
-                  ? `${styles.middle} ${styles.middleCli}`
-                  : userInfos?.userType === "assistant" &&
-                    active.obj === "disp" &&
-                    active.value === true
-                  ? `${styles.middle} ${styles.middleh}`
-                  : `${styles.middle}`
-              }
-            >
-              <div
-                className={
-                  userInfos?.userType === "client"
-                    ? `${styles.more} ${styles.morecli}`
-                    : `${styles.more}`
-                }
-              >
+            <div className={`${styles.middle} ${styles.middleCli}`}>
+              <div className={`${styles.more} ${styles.morecli}`}>
                 <div className={styles.btn}>
                   <div
-                    className={
-                      active.obj === "bio" && active.value === true
-                        ? `${styles.active}`
-                        : userInfos?.userType === "client"
-                        ? `${styles.activeCli}`
-                        : null
-                    }
+                    className={`${styles.activeCli}`}
                     onClick={() => setActive({ obj: "bio", value: true })}
                   >
                     <label>Biographie</label>
@@ -378,13 +356,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                 </div>
                 <div className={styles.btn}>
                   <div
-                    className={
-                      active.obj === "disp" && active.value === true
-                        ? `${styles.active}`
-                        : userInfos?.userType === "client"
-                        ? `${styles.activeCli}`
-                        : null
-                    }
+                    className={`${styles.activeCli}`}
                     onClick={() => setActive({ obj: "disp", value: true })}
                   >
                     <label>Disponibilites</label>
@@ -431,17 +403,13 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                   </form>
                 </div>
               </div>
-              <div
-                className={
-                  userInfos?.userType === "client"
-                    ? `${styles.moreInfos} ${styles.mrf}`
-                    : `${styles.moreInfos}`
-                }
-              >
+              <div className={`${styles.moreInfos} ${styles.mrf}`}>
                 <div className={styles.op}>
                   <div>
                     <div className={styles.lab}>
-                      <label htmlFor="portfolio">Portfolio</label>
+                      <label htmlFor="portfolio">
+                        <span>Portfolio</span>
+                      </label>
                     </div>
                     <div className={styles.shr}>
                       <input

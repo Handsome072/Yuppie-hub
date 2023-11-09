@@ -85,7 +85,7 @@
 }
 
 .slogan {
-  font-size: 3.15rem;
+  font-size: 3rem;
   width: 92.5%;
   max-width: 625px;
   text-align: center;
@@ -130,6 +130,9 @@
   }
   .logoImg {
     transform: scale(1.5);
+  }
+  .line {
+    padding: 0;
   }
   .line::before {
     min-width: 0;

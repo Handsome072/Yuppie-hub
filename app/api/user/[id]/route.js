@@ -6,15 +6,15 @@ import { NextResponse } from "next/server";
 
 export const GET = async (req, { params }) => {
   try {
+    await connectToMongo();
+    let user;
     const { id } = params;
     if (!isValidObjectId(id)) {
-      return new NextResponse(
-        JSON.stringify({ error: "Invalid ID" }, { status: 404 })
-      );
+      user = await UserModel.find({ name: id });
+      return new NextResponse(JSON.stringify({ user }, { status: 404 }));
     }
-    await connectToMongo();
-    const user = await UserModel.findById(id);
-    if (!user)
+    user = await UserModel.findById(id);
+    if (isEmpty(user))
       return new NextResponse(
         JSON.stringify({ error: "Aucun utilisateur trouvé" }, { status: 404 })
       );

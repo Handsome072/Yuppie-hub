@@ -152,6 +152,9 @@
   flex-direction: column;
   min-height: 35%;
 }
+.middleCli .more {
+  flex: 1;
+}
 .ccli {
   flex: 1;
   position: relative;
@@ -236,7 +239,7 @@
   display: flex;
   position: relative;
   width: 100%;
-  height: 49%;
+  height: 50%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -246,7 +249,10 @@
 .moreInfos.mrf {
   padding: 0;
 }
-
+.middleCli .moreInfos {
+  height: max-content;
+  margin-bottom: 3%;
+}
 .op {
   display: flex;
   gap: 3%;
