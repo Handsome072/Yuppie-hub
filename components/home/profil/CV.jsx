@@ -5,6 +5,7 @@ import ClientOnly from "@/components/ClientOnly";
 import { useSelector } from "react-redux";
 import { appWeb, expPro, competVirt, nbCmp } from "@/lib/utils/menuDeroulant";
 import { isEmpty } from "@/lib/utils/isEmpty";
+import { GoTriangleDown } from "react-icons/go";
 
 export default function CV({
   newCmp,
@@ -140,7 +141,6 @@ export default function CV({
                       }}
                     />
                     <i
-                      className="mdi mdi-menu-down"
                       onClick={() => {
                         showMenu.obj === `cmp${i}` &&
                         showMenu.value &&
@@ -151,7 +151,9 @@ export default function CV({
                             })
                           : setShowMenu({ obj: `cmp${i}`, value: true });
                       }}
-                    />
+                    >
+                      <GoTriangleDown size={"1.25rem"} className="try1" />
+                    </i>
                     {showMenu.obj === `cmp${i}` &&
                       showMenu.value &&
                       cmp[i] === c && (
@@ -235,13 +237,14 @@ export default function CV({
                 }}
               />
               <i
-                className="mdi mdi-menu-down"
                 onClick={() => {
                   showMenu.obj === "appWeb" && showMenu.value
                     ? setShowMenu({ obj: "appWeb", value: !showMenu.value })
                     : setShowMenu({ obj: "appWeb", value: true });
                 }}
-              />
+              >
+                <GoTriangleDown size={"1.25rem"} className="try1" />
+              </i>
               {showMenu.obj === "appWeb" && showMenu.value && (
                 <div className={`${styles.menuDeroulant} ${styles.hidden}`}>
                   <div className={styles.stat}>
@@ -312,13 +315,14 @@ export default function CV({
                 }}
               />
               <i
-                className="mdi mdi-menu-down"
                 onClick={() => {
                   showMenu.obj === "expPro" && showMenu.value
                     ? setShowMenu({ obj: "expPro", value: !showMenu.value })
                     : setShowMenu({ obj: "expPro", value: true });
                 }}
-              />
+              >
+                <GoTriangleDown size={"1.25rem"} className="try1" />
+              </i>
               {showMenu.obj === "expPro" && showMenu.value && (
                 <div className={`${styles.menuDeroulant} ${styles.hidden}`}>
                   <div className={styles.stat}>

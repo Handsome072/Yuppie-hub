@@ -34,7 +34,6 @@
 
 .container .grid {
   display: grid;
-  width: 40%;
   position: relative;
   min-width: max-content;
   grid-template-columns: 1fr 50%;
@@ -81,16 +80,10 @@
 .inputR i {
   position: absolute;
   padding-right: 0.5rem;
-  transform: scale(1.6);
   transition: 0.1s;
-  color: var(--gris-v-2);
+  color: var(--gris);
   cursor: pointer;
 }
-.inputR:hover i,
-.inputR input:focus i {
-  color: var(--gris);
-}
-
 .container .grid .menuDeroulant {
   position: absolute;
   display: flex;
@@ -189,7 +182,6 @@
 }
 .container .grid .menuDeroulant i {
   cursor: pointer;
-  font-size: 1rem;
 }
 .container .grid .menuDeroulant div.po {
   pointer-events: none;

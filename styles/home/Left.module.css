@@ -6,7 +6,7 @@
   border-right: 2px solid var(--gris-v-2);
 }
 .container * {
-  border: none;
+  border: inheri;
 }
 .container input:focus,
 .container textarea:focus {
@@ -102,7 +102,7 @@
 .statut *,
 .loc * {
   font-weight: var(--regular);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   white-space: nowrap;
   overflow: hidden;
 }
@@ -119,7 +119,7 @@
 .stars label * {
   color: var(--gris-v-3);
   font-weight: var(--regular);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -161,11 +161,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 .btn {
   display: flex;
   align-items: center;
   gap: 3%;
+  width: 100%;
 }
 .btn div {
   padding: 0.25rem 0.5rem;
@@ -195,10 +197,6 @@
   max-height: initial;
   min-height: initial;
 }
-.middleCli .add {
-  height: 50%;
-  padding: 2% 0;
-}
 .add {
   position: relative;
   display: flex;
@@ -208,6 +206,13 @@
   width: 100%;
   flex-direction: column;
   padding: 3% 0;
+}
+.middleCli .add {
+  height: 50%;
+  padding: 2% 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 .addnt {
   padding: 0%;
@@ -223,15 +228,15 @@
   overflow: hidden;
   flex-direction: column;
 }
-.ccli form {
-  justify-content: space-evenly;
-}
 .middleCli {
   height: 65%;
 }
+.bcl {
+  display: flex;
+  flex-direction: column;
+  height: 38%;
+}
 .more .textarea {
-  width: 100%;
-  height: 100%;
   border-radius: 0.5rem;
   padding: 1.25% 2.25%;
 }
@@ -279,7 +284,10 @@
   position: relative;
   overflow: hidden;
 }
-.note > div {
+.ccli .note {
+  flex: 1;
+}
+.note div {
   position: relative;
   height: 100%;
   overflow: hidden;
@@ -298,12 +306,7 @@
   border-radius: 0.5rem 0.5rem 0 0;
 }
 
-.txtrnt {
-  border-radius: 0.1rem;
-  font-size: var(--fi);
-  height: 100%;
-}
-.txtrnt .textarea {
+.note .textarea {
   padding: 1.25rem 2% 2% 2%;
   height: 2.5rem;
 }
@@ -312,8 +315,11 @@
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 2.5% 0 2.5% 0.1rem;
+  padding: 2% 0 2% 0.1rem;
   color: var(--white);
+}
+.middleCli .op .lab {
+  padding: 1.5% 0 1.5% 0.1rem;
 }
 .lab span {
   font-size: 0.85rem;
@@ -321,8 +327,6 @@
   overflow: hidden;
 }
 .op textarea {
-  width: 100%;
-  height: 100%;
   border-radius: 0.25rem;
   padding: 2.75%;
 }
@@ -485,10 +489,6 @@
   .op label {
     line-height: 1;
     font-size: 0.75rem;
-  }
-  .op textarea {
-    padding: 0 2.5%;
-    font-size: 0.7rem;
   }
   .middle {
     height: auto;

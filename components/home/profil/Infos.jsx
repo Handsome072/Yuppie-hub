@@ -10,6 +10,8 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import { VscCheckAll } from "react-icons/vsc";
+import { GoTriangleDown } from "react-icons/go";
+import { HiChevronDown } from "react-icons/hi";
 export default function Infos({
   newUsername,
   setNewUsername,
@@ -180,13 +182,14 @@ export default function Infos({
                   readOnly
                 />
                 <i
-                  className="mdi mdi-menu-down"
                   onClick={() => {
                     showMenu.obj === "pays" && showMenu.value
                       ? setShowMenu({ obj: "pays", value: !showMenu.value })
                       : setShowMenu({ obj: "pays", value: true });
                   }}
-                />
+                >
+                  <GoTriangleDown size={"1.25rem"} className="try1" />
+                </i>
                 {showMenu.obj === "pays" && showMenu.value && (
                   <div className={`${styles.menuDeroulant} ${styles.hidden}`}>
                     <div className={`${styles.pays}`}>
@@ -316,14 +319,16 @@ export default function Infos({
                       : setShowMenu({ obj: "ville", value: true });
                   }}
                 />
+
                 <i
-                  className="mdi mdi-menu-down"
                   onClick={() => {
                     showMenu.obj === "ville" && showMenu.value
                       ? setShowMenu({ ...showMenu, value: !showMenu.value })
                       : setShowMenu({ obj: "ville", value: true });
                   }}
-                />
+                >
+                  <GoTriangleDown size={"1.25rem"} className="try1" />
+                </i>
                 {showMenu.obj === "ville" &&
                 showMenu.value &&
                 isEmpty(residence.pays) ? (
@@ -358,7 +363,9 @@ export default function Infos({
                                     }}
                                   >
                                     <span>{p.pays}</span>
-                                    <i className="mdi mdi-chevron-down" />
+                                    <i>
+                                      <HiChevronDown className="try1" />
+                                    </i>
                                   </h1>
                                   <div
                                     className={
@@ -388,7 +395,9 @@ export default function Infos({
                                       }}
                                     >
                                       <span>{p.province}</span>
-                                      <i className="mdi mdi-chevron-down" />
+                                      <i>
+                                        <HiChevronDown className="try1" />
+                                      </i>
                                     </h2>
                                     <div
                                       className={
@@ -456,7 +465,9 @@ export default function Infos({
                                     }
                                   >
                                     <span>{p.pays}</span>
-                                    <i className="mdi mdi-chevron-down" />
+                                    <i>
+                                      <HiChevronDown className="try1" />
+                                    </i>
                                   </h1>
                                   <div
                                     className={
@@ -526,7 +537,9 @@ export default function Infos({
                                   }
                                 >
                                   <span>{p.pays}</span>
-                                  <i className="mdi mdi-chevron-down" />
+                                  <i>
+                                    <HiChevronDown className="try1" />
+                                  </i>
                                 </h1>
                                 <div
                                   className={
@@ -602,7 +615,9 @@ export default function Infos({
                               }}
                             >
                               <span>{residence.province}</span>
-                              <i className="mdi mdi-chevron-down" />
+                              <i>
+                                <HiChevronDown className="try1" />
+                              </i>
                             </h2>
                             <div
                               className={
@@ -712,14 +727,16 @@ export default function Infos({
                     : setShowMenu({ obj: "langue", value: true });
                 }}
               />
+
               <i
-                className="mdi mdi-menu-down"
                 onClick={() => {
                   showMenu.obj === "langue" && showMenu.value
                     ? setShowMenu({ obj: "langue", value: !showMenu.value })
                     : setShowMenu({ obj: "langue", value: true });
                 }}
-              />
+              >
+                <GoTriangleDown size={"1.25rem"} className="try1" />
+              </i>
               {showMenu.obj === "langue" && showMenu.value && (
                 <div className={`${styles.menuDeroulant} ${styles.hidden}`}>
                   <div className={styles.pays}>

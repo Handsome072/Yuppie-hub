@@ -197,7 +197,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                             <label htmlFor="note" className={styles.ntlab}>
                               Note :
                             </label>
-                            <div className={styles.txtrnt}>
+                            <div>
                               {canUpdate ? (
                                 <textarea
                                   value={newNote.obj}
@@ -338,31 +338,33 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
             </div>
           ) : (
             <div className={`${styles.middle} ${styles.middleCli}`}>
-              <div className={`${styles.more} ${styles.morecli}`}>
-                <div className={styles.btn}>
-                  <div
-                    className={`${styles.activeCli}`}
-                    onClick={() => setActive({ obj: "bio", value: true })}
-                  >
-                    <label>Biographie</label>
+              <div className={styles.more}>
+                <div className={styles.bcl}>
+                  <div className={styles.btn}>
+                    <div
+                      className={`${styles.activeCli}`}
+                      onClick={() => setActive({ obj: "bio", value: true })}
+                    >
+                      <label>Biographie</label>
+                    </div>
                   </div>
-                </div>
-                <div className={`${styles.add}`}>
-                  <textarea
-                    readOnly
-                    value={userInfos?.bio}
-                    className={`${styles.textarea} scr`}
-                  />
-                </div>
-                <div className={styles.btn}>
-                  <div
-                    className={`${styles.activeCli}`}
-                    onClick={() => setActive({ obj: "disp", value: true })}
-                  >
-                    <label>Disponibilites</label>
+                  <div className={styles.add}>
+                    <textarea
+                      readOnly
+                      value={userInfos?.bio}
+                      className={`${styles.textarea} scr`}
+                    />
                   </div>
                 </div>
                 <div className={styles.ccli}>
+                  <div className={styles.btn}>
+                    <div
+                      className={`${styles.activeCli}`}
+                      onClick={() => setActive({ obj: "disp", value: true })}
+                    >
+                      <label>Disponibilites</label>
+                    </div>
+                  </div>
                   <form onSubmit={handlesubmit}>
                     <Calendar
                       canUpdate={canUpdate}

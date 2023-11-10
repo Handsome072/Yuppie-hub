@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import { isValidLink } from "@/lib/controllers/http.controller";
 import { BsShare } from "react-icons/bs";
+import { GoTriangleDown } from "react-icons/go";
 export default function Offres({
   newOffres,
   setNewOffres,
@@ -146,13 +147,14 @@ export default function Offres({
                 }}
               />
               <i
-                className="mdi mdi-menu-down"
                 onClick={() => {
                   showMenu.obj === "tarif" && showMenu.value
                     ? setShowMenu({ obj: "tarif", value: !showMenu.value })
                     : setShowMenu({ obj: "tarif", value: true });
                 }}
-              />
+              >
+                <GoTriangleDown size={"1.25rem"} className="try1" />
+              </i>
               {showMenu.obj === "tarif" && showMenu.value && (
                 <div className={`${styles.menuDeroulant} ${styles.hidden}`}>
                   <div className={styles.stat}>

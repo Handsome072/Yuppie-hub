@@ -79,17 +79,11 @@
 
 .inputR i {
   position: absolute;
-  padding-right: 0.5rem;
-  transform: scale(1.6);
+  right: 0.5rem;
   transition: 0.1s;
-  color: var(--gris-v-2);
+  color: var(--gris);
   cursor: pointer;
 }
-.inputR input:hover ~ i,
-.inputR.ic i {
-  color: var(--gris);
-}
-
 .container .r .menuDeroulant {
   position: absolute;
   display: flex;
@@ -192,7 +186,7 @@
   background-color: transparent;
   transition: 0.15s;
 }
-.container .r .menuDeroulant * {
+.container .r .menuDeroulant {
   min-height: max-content;
 }
 .container .r .pays > div {

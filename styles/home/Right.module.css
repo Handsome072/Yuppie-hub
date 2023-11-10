@@ -55,14 +55,12 @@
 .favoris span {
   text-transform: uppercase;
   font-weight: var(--medium);
-  color: var(--gris-v-2);
-  font-size: 0.8rem;
+  color: var(--gris-v-1);
   text-align: center;
 }
 
 .favoris i {
-  color: var(--gris-v-2);
-  transform: scale(2);
+  color: var(--gris-v-1);
 }
 .nt {
   padding: 0 1rem;
@@ -77,10 +75,10 @@
 }
 .nt label span {
   font-weight: var(--regular);
-  color: var(--gris-v-2);
+  color: var(--gris-v-1);
   width: 100%;
   text-align: center;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
 @media (max-width: 700px) {

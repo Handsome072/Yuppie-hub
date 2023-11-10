@@ -7,6 +7,7 @@ import ClientOnly from "@/components/ClientOnly";
 import { useSelector } from "react-redux";
 import { isValidLink } from "@/lib/controllers/http.controller";
 import { BsShare } from "react-icons/bs";
+import { GoTriangleDown } from "react-icons/go";
 
 export default function Statut({
   newStatutPro,
@@ -74,13 +75,7 @@ export default function Statut({
             <p>Choisissez votre statut professionnel actuel.</p>
           </div>
           <div className={styles.r}>
-            <div
-              className={
-                showMenu.obj === "statutPro" && showMenu.value
-                  ? `${styles.inputR} ${styles.ic}`
-                  : `${styles.inputR}`
-              }
-            >
+            <div className={styles.inputR}>
               <input
                 type="text"
                 id="statutPro"
@@ -106,13 +101,14 @@ export default function Statut({
                 }}
               />
               <i
-                className="mdi mdi-menu-down"
                 onClick={() => {
                   showMenu.obj === "statutPro" && showMenu.value
                     ? setShowMenu({ obj: "statutPro", value: !showMenu.value })
                     : setShowMenu({ obj: "statutPro", value: true });
                 }}
-              />
+              >
+                <GoTriangleDown size={"1.25rem"} className="try1" />
+              </i>
               {showMenu.obj === "statutPro" && showMenu.value && (
                 <div className={`${styles.menuDeroulant} ${styles.hidden}`}>
                   <div className={styles.stat}>

@@ -72,15 +72,10 @@
 
 .inputR i {
   position: absolute;
-  padding-right: 0.5rem;
-  transform: scale(1.6);
+  right: 0.5rem;
   transition: 0.1s;
-  color: var(--gris-v-2);
-  cursor: pointer;
-}
-.inputR input:hover ~ i,
-.inputR.ic i {
   color: var(--gris);
+  cursor: pointer;
 }
 
 .container .r .pays .lb {

@@ -78,15 +78,10 @@
 }
 .inputR i {
   position: absolute;
-  padding-right: 0.5rem;
-  transform: scale(1.6) translateY(1px);
+  right: 0.5rem;
   transition: 0.1s;
-  color: var(--gris-v-2);
-  cursor: pointer;
-}
-.inputR input:hover ~ i,
-.inputR.ic i {
   color: var(--gris);
+  cursor: pointer;
 }
 .container .r .menuDeroulant {
   position: absolute;
@@ -181,7 +176,6 @@
 }
 .container .r .menuDeroulant i {
   cursor: pointer;
-  font-size: 1rem;
 }
 .container .r .menuDeroulant label {
   font-weight: var(--regular);

@@ -6,6 +6,7 @@ import { IoIosHeart } from "react-icons/io";
 import { HiUserGroup } from "react-icons/hi";
 import { TfiEmail } from "react-icons/tfi";
 import { useSelector } from "react-redux";
+import { VscTriangleRight, VscTriangleLeft } from "react-icons/vsc";
 export default function Right() {
   const [active, setActive] = useState({ obj: "heart", value: true });
   const userInfos = useSelector((state) => state.user);
@@ -52,9 +53,13 @@ export default function Right() {
         </div>
         <div className={styles.contenu}>
           <div className={styles.favoris}>
-            <i className="mdi mdi-menu-left"></i>
+            <i>
+              <VscTriangleLeft className="try1" size={"1.25rem"} />
+            </i>
             <span>Client favoris</span>
-            <i className="mdi mdi-menu-right"></i>
+            <i>
+              <VscTriangleRight className="try1" size={"1.25rem"} />
+            </i>
           </div>
           <div className={styles.nt}>
             <label>
