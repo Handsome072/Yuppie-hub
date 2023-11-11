@@ -19,17 +19,14 @@ import { IoMdSettings } from "react-icons/io";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUserInfos } from "@/redux/slices/userSlice";
-import { removeToken } from "@/redux/slices/tokenSlice";
 export default function Menu() {
   const path = usePathname();
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.token);
-  const userInfos = useSelector((state) => state.user);
+  const { user, token } = useSelector((state) => state.user);
   const { push } = useRouter();
   const handleLogout = async () => {
     try {
       await logoutController(token);
-      dispatch(removeToken());
       dispatch(removeUserInfos());
     } catch (error) {
       console.log(error.message);
@@ -37,7 +34,7 @@ export default function Menu() {
     push("/login");
   };
   const handleProjet = async () => {};
-  if (isEmpty(userInfos)) {
+  if (isEmpty(user)) {
     return null;
   }
   return (
@@ -77,7 +74,7 @@ export default function Menu() {
                 <label>Acceuil</label>
               </Link>
             </div>
-            {userInfos?.userType === "client" && (
+            {user?.userType === "client" && (
               <div className={styles.div}>
                 <button
                   onClick={handleProjet}

@@ -46,7 +46,7 @@ export default function ProfilMiddle({
   newProvince,
   setNewProvince,
 }) {
-  const userInfos = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const [active, setActive] = useState("infos");
   return (
     <ClientOnly>
@@ -70,7 +70,7 @@ export default function ProfilMiddle({
           >
             <label>Statut professionnel</label>
           </div>
-          {userInfos?.userType === "assistant" && (
+          {user?.userType === "assistant" && (
             <>
               <div
                 onClick={() => setActive("cp")}
@@ -184,7 +184,7 @@ export default function ProfilMiddle({
                   }
                 }}
                 className={
-                  userInfos?.userType === "client"
+                  user?.userType === "client"
                     ? active === "statut"
                       ? `${styles.disbl}`
                       : null

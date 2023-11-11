@@ -17,24 +17,21 @@ export default function Statut({
   setNewPortfolio,
   newPortfolio,
 }) {
-  const userInfos = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const [showMenu, setShowMenu] = useState({
     obj: "",
     value: false,
     focus: false,
   });
   useEffect(() => {
-    if (userInfos.statutProfessionnelle !== newStatutPro.obj) {
+    if (user.statutProfessionnelle !== newStatutPro.obj) {
       setNewStatutPro((prev) => {
         let nwe = { ...prev };
         nwe.value = true;
         return nwe;
       });
     }
-    if (
-      newPortfolio.obj !== userInfos.portfolio &&
-      isValidLink(newPortfolio.obj)
-    ) {
+    if (newPortfolio.obj !== user.portfolio && isValidLink(newPortfolio.obj)) {
       setNewPortfolio((prev) => {
         let nwp = { ...prev };
         nwp.value = true;
@@ -42,7 +39,7 @@ export default function Statut({
       });
     }
     if (
-      newLienProfessionnelle.obj !== userInfos.lienProfessionnelle &&
+      newLienProfessionnelle.obj !== user.lienProfessionnelle &&
       isValidLink(newLienProfessionnelle.obj)
     ) {
       setNewLienProfessionnelle((prev) => {
@@ -112,7 +109,7 @@ export default function Statut({
               {showMenu.obj === "statutPro" && showMenu.value && (
                 <div className={`${styles.menuDeroulant} ${styles.hidden}`}>
                   <div className={styles.stat}>
-                    {userInfos?.userType === "client"
+                    {user?.userType === "client"
                       ? statutCli.map((p) => {
                           return (
                             <div
@@ -175,7 +172,7 @@ export default function Statut({
         <div>
           <div className={styles.l}>
             <label htmlFor="lienPro">Lien professionnel</label>
-            <p>Ajoutez un lien d&apos;un réseau social professionnel.</p>
+            <p>Ajoutez un lien d{"'"}un réseau social professionnel.</p>
           </div>
           <div className={`${styles.r} ${styles.foc}`}>
             <input

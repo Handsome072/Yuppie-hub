@@ -1,28 +1,37 @@
 "use client";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from "redux-persist";
-import storage from "redux-persist/lib/storage";
-import tokenSlice from "./slices/tokenSlice";
+import { persistStore, persistReducer } from "redux-persist";
 import userSlice from "./slices/userSlice";
+
+import createWebStorage from "redux-persist/lib/storage/createWebStorage";
+
+const createNoopStorage = () => {
+  return {
+    getItem(_key) {
+      return Promise.resolve(null);
+    },
+    setItem(_key, value) {
+      return Promise.resolve(value);
+    },
+    removeItem(_key) {
+      return Promise.resolve();
+    },
+  };
+};
+
+const storage =
+  typeof window !== "undefined"
+    ? createWebStorage("local")
+    : createNoopStorage();
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["user", "token"],
+  whitelist: ["user"],
 };
 
 const rootReducer = combineReducers({
   user: userSlice,
-  token: tokenSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -31,13 +40,10 @@ const store = configureStore({
   reducer: persistedReducer,
   middleware: (getdefaultMiddleware) =>
     getdefaultMiddleware({
-      serializableCheck: {
-        ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        warningTimeout: 100,
-      },
+      serializableCheck: false,
     }),
 });
 
 const persistor = persistStore(store);
-
-export { store, persistor };
+export default store
+export { persistor };

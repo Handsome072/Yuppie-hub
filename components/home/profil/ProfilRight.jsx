@@ -14,20 +14,20 @@ export default function ProfilRight({
   newBio,
   setNewBio,
 }) {
-  const userInfos = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const lastPhoto = !isEmpty(newImage.obj)
     ? newImage.obj[newImage.obj.length - 1]
     : null;
   const [srcImg, setSrcImg] = useState(lastPhoto);
   useEffect(() => {
-    if (userInfos.bio !== newBio.obj?.trim() && newBio.obj?.trim().length > 5) {
+    if (user.bio !== newBio.obj?.trim() && newBio.obj?.trim().length > 5) {
       setNewBio((prev) => {
         let nwb = { ...prev };
         nwb.value = true;
         return nwb;
       });
     }
-    if (userInfos.image !== newImage.obj) {
+    if (user.image !== newImage.obj) {
       setNewImage((prev) => ({
         ...prev,
         value: true,
@@ -100,17 +100,16 @@ export default function ProfilRight({
               />
             </div>
           </div>
-          {userInfos.image?.length === 0 ? (
+          {user.image?.length === 0 ? (
             <div className={styles.not}>
               <label>
-                Vous n&apos;avez aucune photo enregistré pour le moment
+                Vous n{"'"}avez aucune photo enregistré pour le moment
               </label>
             </div>
-          ) : userInfos.image?.length === 1 ? (
+          ) : user.image?.length === 1 ? (
             <div className={styles.not}>
               <label>
-                Vous n&apos;avez qu&apos;une seule photo enregistré pour le
-                moment
+                Vous n{"'"}avez qu{"'"}une seule photo enregistré pour le moment
               </label>
             </div>
           ) : (

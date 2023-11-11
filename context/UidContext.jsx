@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 export const UidContext = createContext();
 export const UidContextProvider = ({ children }) => {
   const path = usePathname();
-  const token = useSelector((state) => state.token);
+  const { token } = useSelector((state) => state.user);
   const [isLoadingJWT, setIsLoadingJWT] = useState(true);
   const { push } = useRouter();
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ export const UidContextProvider = ({ children }) => {
     (async () => {
       const resJWT = await verifyJWT(token);
       const res = await fetchUserInfos(resJWT.id);
-      dispatch(updateUserInfos(res.userInfos));
+      dispatch(updateUserInfos({ user: res.userInfos }));
       setIsLoadingJWT(false);
       if (isEmpty(res?.infos) && path === "/home") {
         push("/login");

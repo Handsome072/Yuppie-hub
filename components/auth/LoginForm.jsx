@@ -1,6 +1,5 @@
 "use client";
 import { loginController } from "@/lib/controllers/auth.controller";
-import { updateToken } from "@/redux/slices/tokenSlice";
 import { updateUserInfos } from "@/redux/slices/userSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -40,8 +39,7 @@ export default function LoginForm(req) {
       if (res?.error) {
         push(`/fail?t=${res.error}`);
       } else {
-        dispatch(updateUserInfos(res.user));
-        dispatch(updateToken(res.token));
+        dispatch(updateUserInfos({ user: res.user, token: res.token }));
         push("/home");
       }
     } catch (error) {
@@ -133,7 +131,7 @@ export default function LoginForm(req) {
                   <button onClick={handleUserType}>
                     Se connecter en tant
                     {userType === "client" ? (
-                      <> qu&apos;assistant</>
+                      <> qu{"'"}assistant</>
                     ) : (
                       <> que client</>
                     )}
@@ -142,10 +140,10 @@ export default function LoginForm(req) {
               </div>
               <div className={styles.hr} />
               <div className={styles.notRegistered}>
-                <label>Vous n&apos;avez pas de compte ?</label>
+                <label>Vous n{"'"}avez pas de compte ?</label>
               </div>
               <Link href={"/register"} className={styles.register}>
-                <span>S&apos;inscrire</span>
+                <span>S{"'"}inscrire</span>
               </Link>
             </div>
           </form>

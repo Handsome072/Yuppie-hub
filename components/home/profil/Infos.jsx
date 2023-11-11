@@ -26,12 +26,12 @@ export default function Infos({
   newProvince,
   setNewProvince,
 }) {
-  const userInfos = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const [togglePays, setTogglePays] = useState({
-    obj: userInfos?.pays,
+    obj: user?.pays,
   });
   const [toggleProvince, setToggleProvince] = useState({
-    obj: userInfos?.province,
+    obj: user?.province,
   });
   const [showMenu, setShowMenu] = useState({
     obj: "",
@@ -39,15 +39,15 @@ export default function Infos({
     focus: false,
   });
   const [residence, setResidence] = useState({
-    pays: userInfos?.pays,
+    pays: user?.pays,
     ville:
-      userInfos.userType === "client"
-        ? clientPays.find((p) => p.pays === userInfos?.pays)?.ville
-        : pays.find((p) => p.pays === userInfos?.pays)?.ville || [],
-    province: userInfos?.province,
+      user.userType === "client"
+        ? clientPays.find((p) => p.pays === user?.pays)?.ville
+        : pays.find((p) => p.pays === user?.pays)?.ville || [],
+    province: user?.province,
   });
   const [ville, setVille] = useState({
-    obj: userInfos?.ville,
+    obj: user?.ville,
   });
   const [langue, setLangue] = useState({
     obj: newLang.obj === "en" ? "Anglais" : "Français",
@@ -55,28 +55,28 @@ export default function Infos({
     value: true,
   });
   useEffect(() => {
-    if (togglePays.obj !== userInfos.pays) {
+    if (togglePays.obj !== user.pays) {
       setNewPays({
         obj: togglePays.obj,
-        value: userInfos?.pays !== newPays.obj,
+        value: user?.pays !== newPays.obj,
       });
     }
-    if (ville.obj !== userInfos.ville) {
+    if (ville.obj !== user.ville) {
       setNewVille({
         obj: ville.obj,
-        value: userInfos?.ville !== newVille.obj,
+        value: user?.ville !== newVille.obj,
       });
     }
-    if (langue.obj !== userInfos.lang) {
+    if (langue.obj !== user.lang) {
       setNewLang({
         obj: langue.sgl,
-        value: userInfos.lang !== newLang.obj,
+        value: user.lang !== newLang.obj,
       });
     }
-    if (toggleProvince.obj !== userInfos.province) {
+    if (toggleProvince.obj !== user.province) {
       setNewProvince({
         obj: toggleProvince.obj,
-        value: newProvince.obj !== userInfos?.province,
+        value: newProvince.obj !== user?.province,
       });
     }
   }, [
@@ -91,7 +91,7 @@ export default function Infos({
   ]);
   useEffect(() => {
     if (
-      newUsername.obj?.trim() !== userInfos.username &&
+      newUsername.obj?.trim() !== user.username &&
       newUsername.obj?.trim().length > 2
     ) {
       setNewUsername((prev) => {
@@ -101,7 +101,7 @@ export default function Infos({
       });
     }
     if (
-      newName.obj?.trim() !== userInfos.name?.trim() &&
+      newName.obj?.trim() !== user.name?.trim() &&
       newName.obj?.trim().length > 2
     ) {
       setNewName((prev) => {
@@ -193,7 +193,7 @@ export default function Infos({
                 {showMenu.obj === "pays" && showMenu.value && (
                   <div className={`${styles.menuDeroulant} ${styles.hidden}`}>
                     <div className={`${styles.pays}`}>
-                      {userInfos?.userType === "client"
+                      {user?.userType === "client"
                         ? clientPays.map((p) => {
                             return (
                               <div
@@ -334,7 +334,7 @@ export default function Infos({
                 isEmpty(residence.pays) ? (
                   <div className={styles.menuDeroulant}>
                     <div className={styles.pays}>
-                      {userInfos?.userType === "assistant"
+                      {user?.userType === "assistant"
                         ? pays.map((p) => {
                             if (!isEmpty(p.province)) {
                               return (

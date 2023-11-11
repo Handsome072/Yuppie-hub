@@ -182,7 +182,7 @@ export default function RegisterForm() {
                   </div>
                 </div>
                 <div className={styles.registerChoice}>
-                  S&apos;inscrire en tant que
+                  S{"'"}inscrire en tant que
                 </div>
                 <div
                   className={
@@ -212,7 +212,7 @@ export default function RegisterForm() {
                   }
                 >
                   <button disabled={isLoading} type="submit">
-                    S&apos;inscrire
+                    S{"'"}inscrire
                   </button>
                 </div>
                 <label htmlFor="remember" className={styles.remember}>

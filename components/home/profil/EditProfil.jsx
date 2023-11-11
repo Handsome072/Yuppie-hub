@@ -10,77 +10,77 @@ import ProfilMiddle from "./ProfilMiddle";
 import ProfilRight from "./ProfilRight";
 export default function EditProfil({ setIsEditProfil }) {
   let infosToUpdate = {};
-  const userInfos = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [newUsername, setNewUsername] = useState({
-    obj: userInfos.username,
+    obj: user.username,
     value: false,
   });
   const [newName, setNewName] = useState({
-    obj: userInfos.name,
+    obj: user.name,
     value: false,
   });
   const [newPays, setNewPays] = useState({
-    obj: userInfos.pays,
+    obj: user.pays,
     value: false,
   });
   const [newVille, setNewVille] = useState({
-    obj: userInfos.ville,
+    obj: user.ville,
     value: false,
   });
   const [newProvince, setNewProvince] = useState({
-    obj: userInfos.province,
+    obj: user.province,
     value: false,
   });
   const [newLang, setNewLang] = useState({
-    obj: userInfos.lang,
+    obj: user.lang,
     value: false,
   });
   const [newStatutPro, setNewStatutPro] = useState({
-    obj: userInfos.statutProfessionnelle,
+    obj: user.statutProfessionnelle,
     value: false,
   });
   const [newLienProfessionnelle, setNewLienProfessionnelle] = useState({
-    obj: userInfos.lienProfessionnelle,
+    obj: user.lienProfessionnelle,
     value: false,
   });
   const [newPortfolio, setNewPortfolio] = useState({
-    obj: userInfos.portfolio,
+    obj: user.portfolio,
     value: false,
   });
   const [newCmp, setNewCmp] = useState(() => {
-    return userInfos.competenceVirtuelle?.map((u) => ({
+    return user.competenceVirtuelle?.map((u) => ({
       obj: u,
       value: false,
     }));
   });
   const [newExpPro, setNewExpPro] = useState({
-    obj: userInfos.experiencePro,
+    obj: user.experiencePro,
     value: false,
   });
   const [newApp, setNewApp] = useState({
-    obj: userInfos.applicationWeb,
+    obj: user.applicationWeb,
     value: false,
   });
   const [newOffres, setNewOffres] = useState({
-    obj: userInfos.offresDeService,
+    obj: user.offresDeService,
     value: false,
   });
   const [newTh, setNewTh] = useState({
-    obj: userInfos?.tauxHoraire,
+    obj: user?.tauxHoraire,
     value: false,
   });
   const [newBenevolat, setNewBenevolat] = useState({
-    obj: userInfos?.benevolat,
+    obj: user?.benevolat,
     value: false,
   });
   const [newMTF, setNewMTF] = useState({
-    obj: userInfos?.montantForfaitaire,
+    obj: user?.montantForfaitaire,
     value: false,
   });
-  const [newBio, setNewBio] = useState({ obj: userInfos.bio, value: false });
+  const [newBio, setNewBio] = useState({ obj: user.bio, value: false });
   const [newImage, setNewImage] = useState({
-    obj: userInfos.image,
+    obj: user.image,
     value: false,
   });
   useEffect(() => {
@@ -161,44 +161,44 @@ export default function EditProfil({ setIsEditProfil }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isEmpty(infosToUpdate)) {
-      infosToUpdate = { id: userInfos._id, ...infosToUpdate };
+      infosToUpdate = { id: user._id, ...infosToUpdate };
       const res = await updateUser(infosToUpdate).catch((error) =>
         console.log(error)
       );
       if (!isEmpty(res.updatedUser)) {
-        dispatch(updateUserInfos(res.updatedUser));
+        dispatch(updateUserInfos({ user: res.updatedUser }));
         setIsEditProfil(false);
       }
     }
   };
   const handleReset = async () => {
-    setNewUsername({ obj: userInfos.username, value: false });
-    setNewName({ obj: userInfos.name, value: false });
-    setNewPays({ obj: userInfos.pays, value: false });
-    setNewVille({ obj: userInfos.ville, value: false });
-    setNewProvince({ obj: userInfos.province, value: false });
-    setNewLang({ obj: userInfos.lang, value: false });
-    setNewStatutPro({ obj: userInfos.statutProfessionnelle, value: false });
+    setNewUsername({ obj: user.username, value: false });
+    setNewName({ obj: user.name, value: false });
+    setNewPays({ obj: user.pays, value: false });
+    setNewVille({ obj: user.ville, value: false });
+    setNewProvince({ obj: user.province, value: false });
+    setNewLang({ obj: user.lang, value: false });
+    setNewStatutPro({ obj: user.statutProfessionnelle, value: false });
     setNewLienProfessionnelle({
-      obj: userInfos.statutProfessionnelle,
+      obj: user.statutProfessionnelle,
       value: false,
     });
-    setNewPortfolio({ obj: userInfos.statutProfessionnelle, value: false });
+    setNewPortfolio({ obj: user.statutProfessionnelle, value: false });
     setNewCmp(() => {
-      return userInfos.competenceVirtuelle.map((u) => ({
+      return user.competenceVirtuelle.map((u) => ({
         obj: u,
         value: false,
       }));
     });
-    setNewExpPro({ obj: userInfos.experiencePro, value: false });
-    setNewApp({ obj: userInfos.applicationWeb, value: false });
-    setNewOffres({ obj: userInfos.offresDeService, value: false });
-    setNewTh({ obj: userInfos.tauxHoraire, value: false });
-    setNewBenevolat({ obj: userInfos.benevolat, value: false });
-    setNewMTF({ obj: userInfos.montantForfaitaire, value: false });
-    setNewBio({ obj: userInfos.bio, value: false });
+    setNewExpPro({ obj: user.experiencePro, value: false });
+    setNewApp({ obj: user.applicationWeb, value: false });
+    setNewOffres({ obj: user.offresDeService, value: false });
+    setNewTh({ obj: user.tauxHoraire, value: false });
+    setNewBenevolat({ obj: user.benevolat, value: false });
+    setNewMTF({ obj: user.montantForfaitaire, value: false });
+    setNewBio({ obj: user.bio, value: false });
     setIsEditProfil(false);
-    setNewImage({ obj: userInfos.image, value: false });
+    setNewImage({ obj: user.image, value: false });
   };
   return (
     <ClientOnly>

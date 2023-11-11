@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { VscTriangleRight, VscTriangleLeft } from "react-icons/vsc";
 export default function Right() {
   const [active, setActive] = useState({ obj: "heart", value: true });
-  const userInfos = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   return (
     <ClientOnly pr>
       <div className={styles.container}>
@@ -24,7 +24,7 @@ export default function Right() {
               <IoIosHeart size={"1.4rem"} />
             </span>
           </label>
-          {userInfos?.userType === "assistant" && (
+          {user?.userType === "assistant" && (
             <label
               className={
                 active.obj === "account" && active.value

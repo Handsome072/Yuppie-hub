@@ -15,7 +15,7 @@ export default function CV({
   newExpPro,
   setNewExpPro,
 }) {
-  const userInfos = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const [cmp, setCmp] = useState(() => {
     const initialCmp = [
       ...newCmp,
@@ -28,9 +28,9 @@ export default function CV({
   });
   const [invalidOptions, setInvalidOptions] = useState(() => {
     const initialCmp = [
-      ...userInfos.competenceVirtuelle,
+      ...user.competenceVirtuelle,
       ...Array.from(
-        { length: nbCmp - userInfos.competenceVirtuelle.length },
+        { length: nbCmp - user.competenceVirtuelle.length },
         () => ""
       ),
     ];
@@ -63,14 +63,14 @@ export default function CV({
           });
       });
     }
-    if (newApp.obj !== userInfos.applicationWeb) {
+    if (newApp.obj !== user.applicationWeb) {
       setNewApp((prev) => {
         let nwe = { ...prev };
         nwe.value = true;
         return nwe;
       });
     }
-    if (newExpPro.obj !== userInfos.experiencePro) {
+    if (newExpPro.obj !== user.experiencePro) {
       setNewExpPro((prev) => {
         let nwe = { ...prev };
         nwe.value = true;
@@ -206,7 +206,7 @@ export default function CV({
         <div>
           <div className={styles.l}>
             <label htmlFor="appWeb">Application web</label>
-            <p>Spécifiez l&apos;application que vous maitrisez le mieux.</p>
+            <p>Spécifiez l{"'"}application que vous maitrisez le mieux.</p>
           </div>
           <div className={styles.r}>
             <div

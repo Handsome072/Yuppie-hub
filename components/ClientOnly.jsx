@@ -7,11 +7,11 @@ import Spinner from "./Spinner";
 
 export default function ClientOnly({ pr, children, spin }) {
   const [mounted, setMounted] = useState(false);
-  const userInfos = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   useEffect(() => {
     setMounted(true);
   }, []);
-  if (typeof window === "undefined" || (pr && isEmpty(userInfos))) {
+  if (typeof window === "undefined" || (pr && isEmpty(user))) {
     return null;
   } else if (!mounted) {
     if (spin) return <Spinner />;

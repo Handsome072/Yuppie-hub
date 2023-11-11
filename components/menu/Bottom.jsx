@@ -9,8 +9,8 @@ import { FaCopyright } from "react-icons/fa";
 import ClientOnly from "../ClientOnly";
 import { useSelector } from "react-redux";
 export default function Bottom() {
-  const userInfos = useSelector((state) => state.user);
-  if (isEmpty(userInfos)) {
+  const { user } = useSelector((state) => state.user);
+  if (isEmpty(user)) {
     return null;
   }
   return (

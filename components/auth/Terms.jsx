@@ -26,7 +26,7 @@ export default function Terms({
           }
         />
         <span>
-          J&apos;ai lu et accepté les{" "}
+          J{"'"}ai lu et accepté les{" "}
           <span
             className={
               on && activePopup?.obj === "cnd"
@@ -45,7 +45,7 @@ export default function Terms({
               });
             }}
           >
-            Conditions d&apos;utilisation
+            Conditions d{"'"}utilisation
           </span>{" "}
           et la{" "}
           <span

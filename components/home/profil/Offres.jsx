@@ -20,14 +20,14 @@ export default function Offres({
   newMTF,
   setNewMTF,
 }) {
-  const userInfos = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const [showMenu, setShowMenu] = useState({
     obj: "",
     value: false,
     focus: false,
   });
   useEffect(() => {
-    if (newTh.obj !== userInfos?.tauxHoraire) {
+    if (newTh.obj !== user?.tauxHoraire) {
       setNewTh((prev) => {
         let nwe = { ...prev };
         nwe.value = true;
@@ -36,7 +36,7 @@ export default function Offres({
     }
 
     if (
-      newOffres.obj?.trim() !== userInfos.offresDeService &&
+      newOffres.obj?.trim() !== user.offresDeService &&
       isValidLink(newOffres.obj?.trim())
     ) {
       setNewOffres((prev) => {
@@ -45,13 +45,13 @@ export default function Offres({
         return nwo;
       });
     }
-    if (newBenevolat.obj !== userInfos?.benevolat) {
+    if (newBenevolat.obj !== user?.benevolat) {
       setNewBenevolat({
         obj: newBenevolat.obj,
         value: true,
       });
     }
-    if (newMTF.obj !== userInfos?.montantForfaitaire) {
+    if (newMTF.obj !== user?.montantForfaitaire) {
       setNewMTF({
         obj: newMTF.obj,
         value: true,

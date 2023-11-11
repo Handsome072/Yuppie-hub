@@ -5,7 +5,6 @@ import {
 } from "@/lib/controllers/auth.controller";
 import { verifyJWT } from "@/lib/controllers/jwt.controller";
 import { isEmpty } from "@/lib/utils/isEmpty";
-import { updateToken } from "@/redux/slices/tokenSlice";
 import { updateUserInfos } from "@/redux/slices/userSlice";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -143,8 +142,7 @@ export default function Fail() {
       if (res?.error) {
         push(`/fail?t=${res.error}`);
       } else {
-        dispatch(updateUserInfos(res.user));
-        dispatch(updateToken(res.token));
+        dispatch(updateUserInfos({ user: res.user, token: res.token }));
         push("/home");
       }
     } else if (userEmail.register) {
@@ -193,7 +191,7 @@ export default function Fail() {
                   </h1>
 
                   <label htmlFor="mail">
-                    L&apos;adresse email :{" "}
+                    L{"'"}adresse email :{" "}
                     <span className={styles.mail}>{userEmail.obj}</span> que
                     vous avez entré est invalide.
                   </label>
@@ -232,12 +230,12 @@ export default function Fail() {
               <>
                 <div className={styles.inputs}>
                   <h1>
-                    Désolé, Votre compte n&apos;a pas été créé pour la raison
+                    Désolé, Votre compte n{"'"}a pas été créé pour la raison
                     suivante :
                   </h1>
 
                   <label htmlFor="mail">
-                    L&apos;adresse email :{" "}
+                    L{"'"}adresse email :{" "}
                     <span className={styles.mail}>{userEmail.obj}</span> est
                     déjà associé à un compte.
                   </label>
@@ -276,12 +274,12 @@ export default function Fail() {
               <>
                 <div className={styles.inputs}>
                   <h1>
-                    Désolé, Votre compte n&apos;a pas été créé pour la raison
+                    Désolé, Votre compte n{"'"}a pas été créé pour la raison
                     suivante :
                   </h1>
 
                   <label htmlFor="mail">
-                    L&apos;adresse email :{" "}
+                    L{"'"}adresse email :{" "}
                     <span className={styles.mail}>{userEmail.obj}</span> que
                     vous avez entré est invalide.
                   </label>
@@ -367,9 +365,9 @@ export default function Fail() {
                   </h1>
 
                   <label htmlFor="mail">
-                    L&apos;adresse email :{" "}
+                    L{"'"}adresse email :{" "}
                     <span className={styles.mail}>{userEmail.obj}</span> que
-                    vous avez entré n&apos;est pas encore enregistré.
+                    vous avez entré n{"'"}est pas encore enregistré.
                   </label>
 
                   <div>
