@@ -45,6 +45,10 @@
   transition: 0.1s;
   max-width: 100%;
 }
+.btn .lbd {
+  background: var(--gris);
+  pointer-events: none;
+}
 .btn input {
   display: none;
 }

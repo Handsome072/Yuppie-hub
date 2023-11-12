@@ -76,7 +76,7 @@ export default function ProfilRight({
   };
   const handleChImg = (value) => {
     setSrcImg(value);
-    setAncImg({ obj: null, value: false });
+    setAncImg({ obj: null, value: true });
     setActiveCh(false);
     setNewImage((prev) => {
       let nwe = { ...prev };
@@ -94,6 +94,19 @@ export default function ProfilRight({
     <ClientOnly>
       <div className={styles.container}>
         <div className={styles.btn}>
+          {isEmpty(ancImg.obj) && ancImg.value ? (
+            <label className={styles.lbd}>Importer une nouvelle photo</label>
+          ) : (
+            <>
+              <label htmlFor="file">Importer une nouvelle photo</label>
+              <input
+                type="file"
+                accept=".jpg, .jpeg, .png"
+                id="file"
+                onChange={handleChangeFile}
+              />
+            </>
+          )}
           <label htmlFor="file">Importer une nouvelle photo</label>
           <input
             type="file"
