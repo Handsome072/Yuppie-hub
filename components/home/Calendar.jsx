@@ -14,7 +14,12 @@ const day = [
   { short: "D", long: "Dimanche" },
 ];
 const hour = ["AM", "PM", "SOIR"];
-export default function Calendar({ handlesubmit, setCanUpdate, cli }) {
+export default function Calendar({
+  handlesubmit,
+  setCanUpdate,
+  canUpdate,
+  cli,
+}) {
   const initialDisp = day.map((d) => {
     const dayOptions = hour.map((h) => ({
       obj: h,
@@ -26,7 +31,6 @@ export default function Calendar({ handlesubmit, setCanUpdate, cli }) {
     };
   });
   const [dsp, setDsp] = useState(initialDisp);
-  const [update, setUpdate] = useState(false);
   return (
     <ClientOnly>
       <div
@@ -35,19 +39,13 @@ export default function Calendar({ handlesubmit, setCanUpdate, cli }) {
         }
       >
         <div className={styles.left}>
-          <div
-            className={update ? `${styles.upd}` : `${styles.mdf}`}
-            onClick={() => {
-              setUpdate(true);
-              setCanUpdate(true);
-            }}
-          >
-            {update ? (
+          <div className={canUpdate ? `${styles.upd}` : `${styles.mdf}`}>
+            {canUpdate ? (
               <button type="submit" onClick={handlesubmit}>
                 <MdOutlineCheck />
               </button>
             ) : (
-              <label className={styles.labc}>
+              <label className={styles.labc} onClick={() => setCanUpdate(true)}>
                 <HiPencil />
               </label>
             )}
@@ -98,7 +96,7 @@ export default function Calendar({ handlesubmit, setCanUpdate, cli }) {
                       className={
                         dsp[i].disp[0].value
                           ? `${styles.jca}`
-                          : update
+                          : canUpdate
                           ? `${styles.jcd}`
                           : null
                       }
@@ -134,7 +132,7 @@ export default function Calendar({ handlesubmit, setCanUpdate, cli }) {
                       className={
                         dsp[i].disp[1].value
                           ? `${styles.jca}`
-                          : update
+                          : canUpdate
                           ? `${styles.jcd}`
                           : null
                       }
@@ -170,7 +168,7 @@ export default function Calendar({ handlesubmit, setCanUpdate, cli }) {
                       className={
                         dsp[i].disp[2].value
                           ? `${styles.jca}`
-                          : update
+                          : canUpdate
                           ? `${styles.jcd}`
                           : null
                       }

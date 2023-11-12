@@ -91,6 +91,7 @@
 .projet label {
   font-weight: var(--bold);
   font-size: 0.75rem;
+  user-select: none;
 }
 
 .link:hover,
@@ -120,6 +121,7 @@
   justify-content: center;
   align-items: center;
   font-weight: var(--bold);
+  user-select: none;
 }
 
 .link .linkStyle {
@@ -131,6 +133,7 @@
   border-radius: 0.25rem;
   font-weight: var(--medium);
   font-size: 0.75rem;
+  user-select: none;
 }
 
 @media (max-width: 1000px) {

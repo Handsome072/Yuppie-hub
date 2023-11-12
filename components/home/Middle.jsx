@@ -16,7 +16,7 @@ export default function Middle() {
             <h1>Aucun résultat</h1>
             <label>
               Afin que l’algorithme puisse offrir des avis potentiels selon vos
-              compétences, veiller mettre à jour votre profil.
+              compétences, veuiller mettre à jour votre profil.
             </label>
           </div>
         </div>

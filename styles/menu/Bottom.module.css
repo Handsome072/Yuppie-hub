@@ -45,6 +45,7 @@
   cursor: pointer;
   font-size: 0.9rem;
   height: 100%;
+  user-select: none;
 }
 
 .link:focus label {

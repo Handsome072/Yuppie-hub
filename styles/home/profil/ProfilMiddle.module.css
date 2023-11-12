@@ -16,7 +16,7 @@
   height: 7.5%;
   min-height: 7.5%;
   text-transform: uppercase;
-  gap: 0.25rem;
+  gap: 0.5rem;
   border-bottom: 2px solid var(--blue);
   background: var(--white);
 }
@@ -24,8 +24,8 @@
   border: none;
 }
 .top label {
+  user-select: none;
   font-weight: var(--bold);
-  font-size: 0.9rem;
 }
 .menu {
   display: flex;

@@ -13,7 +13,7 @@
   padding: 0.25rem;
   height: 7.5%;
   text-transform: uppercase;
-  gap: 0.5%;
+  gap: 0.5rem;
   border-bottom: 2px solid var(--blue);
   background: var(--white);
 }
@@ -21,8 +21,8 @@
   border: none;
 }
 .top label {
+  user-select: none;
   font-weight: var(--bold);
-  font-size: 0.9rem;
 }
 .top span {
   border: none;
@@ -42,7 +42,7 @@
 }
 .contenu h1 {
   font-weight: var(--bold);
-  font-size: 1.35rem;
+  font-size: 1.5rem;
   width: 100%;
   text-align: center;
   padding: 3% 0;

@@ -24,6 +24,9 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
     ? user.image[user.image.length - 1]
     : null;
   useEffect(() => {
+    setCanUpdate(false);
+  }, []);
+  useEffect(() => {
     if (newNote.obj !== user.note) {
       setNewNote((prev) => {
         let nwn = { ...prev };
@@ -34,6 +37,8 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
   }, [newNote.obj]);
   const handlesubmit = (e) => {
     e.preventDefault();
+    setCanUpdate(false);
+    console.log("submit");
   };
   return (
     <ClientOnly pr>
@@ -145,7 +150,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
             </div>
           </div>
           {user?.userType === "assistant" ? (
-            <div className={styles.middle}>
+            <div className={`${styles.middle} scr nbr`}>
               <div className={styles.more}>
                 <div className={styles.btn}>
                   <div
@@ -208,7 +213,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                                       return nwn;
                                     });
                                   }}
-                                  className={`${styles.textarea} scr`}
+                                  className={`${styles.textarea} ${styles.crt} scr`}
                                 />
                               ) : (
                                 <textarea

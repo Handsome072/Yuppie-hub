@@ -6,7 +6,7 @@
   border-right: 2px solid var(--gris-v-2);
 }
 .container * {
-  border: inheri;
+  border: none;
 }
 .container input:focus,
 .container textarea:focus {
@@ -39,6 +39,7 @@
 .top label {
   font-weight: var(--medium);
   font-size: 0.9rem;
+  user-select: none;
 }
 .contenu {
   position: relative;
@@ -47,11 +48,6 @@
   flex-direction: column;
   --f: 0.8rem;
   --fi: 0.75rem;
-}
-
-.contenu,
-.contenu * {
-  border: none;
 }
 .profil {
   display: flex;
@@ -91,6 +87,7 @@
 .profilImg {
   object-fit: cover;
   border-radius: 50%;
+  user-select: none;
 }
 
 .right h1 {
@@ -123,6 +120,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  user-select: none;
 }
 .shrInput {
   background: var(--white);
@@ -131,6 +129,7 @@
   border-radius: 0.25rem;
   width: 100%;
   font-size: var(--fi);
+  cursor: default;
 }
 .middle {
   padding: 3% 4%;
@@ -141,6 +140,8 @@
   align-items: center;
   position: relative;
   flex: 1;
+  max-height: 75%;
+  overflow: auto;
 }
 .middleh {
   height: 75%;
@@ -150,7 +151,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  min-height: 35%;
+  flex: 1;
 }
 .middleCli .more {
   flex: 1;
@@ -183,6 +184,7 @@
 }
 .btn div label {
   font-size: var(--f);
+  user-select: none;
 }
 .btn div.active {
   color: var(--blue);
@@ -202,17 +204,16 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: 100%;
   width: 100%;
   flex-direction: column;
   padding: 3% 0;
+  flex: 1;
 }
 .middleCli .add {
   height: 50%;
   padding: 2% 0;
   display: flex;
   flex-direction: column;
-  flex: 1;
 }
 .addnt {
   padding: 0%;
@@ -239,6 +240,7 @@
 .more .textarea {
   border-radius: 0.5rem;
   padding: 1.25% 2.25%;
+  cursor: default;
 }
 .moreInfos {
   display: flex;
@@ -249,7 +251,7 @@
   justify-content: center;
   align-items: center;
   padding: 0.5rem 0;
-  min-height: max-content;
+  min-height: 50%;
 }
 .moreInfos.mrf {
   padding: 0;
@@ -304,11 +306,17 @@
   width: 100%;
   background: var(--white);
   border-radius: 0.5rem 0.5rem 0 0;
+  user-select: none;
 }
 
 .note .textarea {
-  padding: 1.25rem 2% 2% 2%;
+  margin-top: 1rem;
+  border-radius: 0 0 0.5rem 0.5rem;
   height: 2.5rem;
+  cursor: default;
+}
+.note .crt {
+  cursor: text;
 }
 .op .lab {
   white-space: nowrap;
@@ -325,16 +333,19 @@
   font-size: 0.85rem;
   max-width: 100%;
   overflow: hidden;
+  user-select: none;
 }
 .op textarea {
   border-radius: 0.25rem;
   padding: 2.75%;
+  cursor: default;
 }
 .op input {
   width: 100%;
   border-radius: 0.25rem;
   padding: 0.25rem;
   font-size: 0.8rem;
+  cursor: default;
 }
 .op .shrInput {
   padding-right: 1.25rem;
@@ -384,6 +395,7 @@
 }
 .profilLink label span {
   font-size: 0.8rem;
+  user-select: none;
 }
 @media (max-width: 1000px) {
   .top i {

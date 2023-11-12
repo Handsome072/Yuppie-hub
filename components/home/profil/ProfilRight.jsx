@@ -5,6 +5,7 @@ import { isEmpty } from "@/lib/utils/isEmpty";
 import Image from "next/image";
 import { useEffect } from "react";
 import { useState } from "react";
+import { CgClose } from "react-icons/cg";
 import { useSelector } from "react-redux";
 import photo from "../../../assets/default_avatar.jpg";
 import styles from "../../../styles/home/profil/ProfilRight.module.css";
@@ -19,6 +20,9 @@ export default function ProfilRight({
     ? newImage.obj[newImage.obj.length - 1]
     : null;
   const [srcImg, setSrcImg] = useState(lastPhoto);
+  const [ancImg, setAncImg] = useState({ obj: null, value: false });
+  const [sbc, setSbc] = useState("");
+  const [activeCh, setActiveCh] = useState(false);
   useEffect(() => {
     if (user.bio !== newBio.obj?.trim() && newBio.obj?.trim().length > 5) {
       setNewBio((prev) => {
@@ -43,29 +47,49 @@ export default function ProfilRight({
       const res = await base64(e.target.files[0]).catch((error) =>
         console.log(error)
       );
+      setSbc("chc");
       setSrcImg(res);
       setNewImage((prev) => ({
         ...prev,
-        obj: [...prev.obj, res],
+        obj: [...user.image, res],
       }));
     }
   };
   const handleChangeBio = (e) =>
     setNewBio((prev) => {
-      let nwb = { ...prev };
-      nwb.obj = e.target.value;
-      return nwb;
+      let nwe = { ...prev };
+      nwe.obj = e.target.value;
+      return nwe;
     });
   const removeCurrentFile = () => {
     if (!isEmpty(lastPhoto)) {
       setNewImage((prev) => {
-        let nwp = { ...prev };
-        nwp.obj = nwp.obj.filter((f) => f !== lastPhoto);
-        return nwp;
+        let nwe = { ...prev };
+        nwe.obj = nwe.obj.filter((f) => f !== lastPhoto);
+        return nwe;
       });
     }
   };
-  const handleSelection = () => {};
+  const handleSelection = () => {
+    setActiveCh(true);
+    setAncImg({ obj: srcImg, value: false });
+  };
+  const handleChImg = (value) => {
+    setSrcImg(value);
+    setAncImg({ obj: null, value: false });
+    setActiveCh(false);
+    setNewImage((prev) => {
+      let nwe = { ...prev };
+      let newArray = [...user.image];
+      const indexToMove = newArray.indexOf(value);
+      if (indexToMove !== -1) {
+        newArray.splice(indexToMove, 1);
+      }
+      newArray.push(value);
+      nwe.obj = newArray;
+      return nwe;
+    });
+  };
   return (
     <ClientOnly>
       <div className={styles.container}>
@@ -79,21 +103,27 @@ export default function ProfilRight({
           />
         </div>
         <div className={styles.info}>
-          <div
-            className={
-              !isEmpty(lastPhoto)
-                ? `${styles.suppr}`
-                : `${styles.suppr}  ${styles.dis}`
-            }
-          >
-            <label onClick={() => removeCurrentFile()}>
-              Supprimer la photo actuelle
-            </label>
-          </div>
+          {!isEmpty(lastPhoto) ? (
+            <div className={styles.suppr}>
+              <label onClick={removeCurrentFile}>
+                Supprimer la photo actuelle
+              </label>
+            </div>
+          ) : (
+            <div className={`${styles.suppr}  ${styles.dis}`}>
+              <label>Supprimer la photo actuelle</label>
+            </div>
+          )}
           <div className={styles.photo}>
             <div>
               <Image
-                src={!isEmpty(srcImg) ? srcImg : photo}
+                src={
+                  !isEmpty(srcImg)
+                    ? !isEmpty(ancImg.obj)
+                      ? ancImg.obj
+                      : srcImg
+                    : photo
+                }
                 alt=""
                 fill
                 className={styles.photoImg}
@@ -114,12 +144,15 @@ export default function ProfilRight({
             </div>
           ) : (
             <div className={styles.choose}>
-              <label
-                className={newImage.value ? `${styles.dis}` : null}
-                onClick={handleSelection}
-              >
-                ou sélectionner une ancienne photo de profil
-              </label>
+              {sbc === "chc" ? (
+                <label className={styles.dis}>
+                  ou sélectionner une ancienne photo de profil
+                </label>
+              ) : (
+                <label onClick={handleSelection}>
+                  ou sélectionner une ancienne photo de profil
+                </label>
+              )}
             </div>
           )}
         </div>
@@ -133,6 +166,81 @@ export default function ProfilRight({
             />
           </div>
         </div>
+        {activeCh && (
+          <div className={styles.chi}>
+            <div>
+              <div className={styles.top}>
+                <div className={styles.logo}>
+                  <Image
+                    src={"/logo.png"}
+                    fill
+                    alt=""
+                    className={styles.logoImg}
+                  />
+                  <i
+                    onClick={() => setActiveCh(false)}
+                    className={styles.close}
+                  >
+                    <CgClose size={"1.5rem"} />
+                  </i>
+                </div>
+              </div>
+              <div className={styles.line} />
+
+              <div className={`${styles.contenu} scr nbr`}>
+                <div className={styles.ins}>
+                  <span>Cliquer sur la photo que vous voulez choisir.</span>
+                </div>
+                <div className={styles.contPhoto}>
+                  {user.image
+                    ?.slice()
+                    .reverse()
+                    .map((img, i) => {
+                      return (
+                        <div
+                          key={i}
+                          className={
+                            ancImg.obj === img
+                              ? `${styles.pht} ${styles.activeImg}`
+                              : `${styles.pht}`
+                          }
+                          onClick={() => setAncImg({ obj: img, value: true })}
+                        >
+                          <Image src={img} className={styles.ph} fill alt="" />
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+              <div className={styles.line} />
+              <div className={styles.bottom}>
+                <div
+                  className={
+                    !ancImg.value
+                      ? `${styles.contBtn} ${styles.dsb}`
+                      : `${styles.contBtn}`
+                  }
+                >
+                  <div className={styles.reset}>
+                    <button
+                      onClick={() => {
+                        setAncImg({ obj: null, value: false });
+                        setActiveCh(false);
+                      }}
+                    >
+                      Annuler
+                    </button>
+                  </div>
+                  <div className={styles.submit}>
+                    <button onClick={() => handleChImg(ancImg.obj)}>
+                      Choisir
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </ClientOnly>
   );
