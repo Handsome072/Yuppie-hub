@@ -107,13 +107,6 @@ export default function ProfilRight({
               />
             </>
           )}
-          <label htmlFor="file">Importer une nouvelle photo</label>
-          <input
-            type="file"
-            accept=".jpg, .jpeg, .png"
-            id="file"
-            onChange={handleChangeFile}
-          />
         </div>
         <div className={styles.info}>
           {!isEmpty(lastPhoto) ? (
