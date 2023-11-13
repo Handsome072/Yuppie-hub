@@ -152,9 +152,6 @@
   flex-direction: column;
   flex: 1;
 }
-.middleCli .more {
-  flex: 1;
-}
 .ccli {
   flex: 1;
   position: relative;
@@ -252,8 +249,10 @@
   padding: 0.5rem 0;
   min-height: 50%;
 }
+
 .moreInfos.mrf {
   padding: 0;
+  min-height: auto;
 }
 .middleCli .moreInfos {
   height: max-content;

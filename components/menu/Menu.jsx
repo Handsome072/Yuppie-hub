@@ -28,10 +28,10 @@ export default function Menu() {
     try {
       await logoutController(token);
       dispatch(removeUserInfos());
+      push("/login");
     } catch (error) {
       console.log(error.message);
     }
-    push("/login");
   };
   const handleProjet = async () => {};
   if (isEmpty(user)) {

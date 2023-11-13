@@ -343,7 +343,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
               </div>
             </div>
           ) : (
-            <div className={`${styles.middle} ${styles.middleCli}`}>
+            <div className={`${styles.middle} ${styles.middleCli} scr`}>
               <div className={styles.more}>
                 <div className={styles.bcl}>
                   <div className={styles.btn}>
