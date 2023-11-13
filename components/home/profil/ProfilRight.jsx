@@ -3,7 +3,7 @@ import ClientOnly from "@/components/ClientOnly";
 import base64 from "@/lib/controllers/base64.controller";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { useSelector } from "react-redux";
@@ -16,6 +16,7 @@ export default function ProfilRight({
   setNewBio,
 }) {
   const { user } = useSelector((state) => state.user);
+  const ref = useRef();
   const lastPhoto = !isEmpty(newImage.obj)
     ? newImage.obj[newImage.obj.length - 1]
     : null;
@@ -42,6 +43,21 @@ export default function ProfilRight({
       setSrcImg(updatedLastPhoto);
     }
   }, [newBio.obj, newImage.obj]);
+  useEffect(() => {
+    let handleClickOutside = () => {};
+    if (activeCh) {
+      handleClickOutside = (e) => {
+        if (ref.current && !ref.current.contains(e.target)) {
+          setAncImg({ obj: null, value: false });
+          setActiveCh(false);
+        }
+      };
+    }
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [ref, activeCh]);
   const handleChangeFile = async (e) => {
     if (e.target.files && e.target.files.length > 0) {
       const res = await base64(e.target.files[0]).catch((error) =>
@@ -174,7 +190,7 @@ export default function ProfilRight({
         </div>
         {activeCh && (
           <div className={styles.chi}>
-            <div>
+            <div ref={ref}>
               <div className={styles.top}>
                 <div className={styles.logo}>
                   <Image
@@ -193,7 +209,7 @@ export default function ProfilRight({
               </div>
               <div className={styles.line} />
 
-              <div className={`${styles.contenu} scr nbr`}>
+              <div className={`${styles.contenu} scr`}>
                 <div className={styles.ins}>
                   <span>Cliquer sur la photo que vous voulez choisir.</span>
                 </div>

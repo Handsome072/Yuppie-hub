@@ -88,29 +88,31 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                   {user.username}, {user.name}
                 </h1>
               )}
-              {!isEmpty(user.statutProfessionnelle) && (
-                <div className={styles.statut}>
-                  <label>{user.statutProfessionnelle}</label>
-                </div>
-              )}
-              {(!isEmpty(user.ville) || !isEmpty(user.pays)) && (
-                <div className={styles.loc}>
-                  <p>
-                    {user.pays}
-                    {!isEmpty(user.ville) && !isEmpty(user.province) ? (
-                      <>
-                        {", "}
-                        {user.province} - {user.ville}
-                      </>
-                    ) : (
-                      !isEmpty(user.ville) && (
+              {(!isEmpty(user.statutProfessionnelle) ||
+                !isEmpty(user.ville) ||
+                !isEmpty(user.pays)) && (
+                <div className={styles.ils}>
+                  {!isEmpty(user.statutProfessionnelle) && (
+                    <p>{user.statutProfessionnelle}</p>
+                  )}
+                  {(!isEmpty(user.ville) || !isEmpty(user.pays)) && (
+                    <p>
+                      {user.pays}
+                      {!isEmpty(user.ville) && !isEmpty(user.province) ? (
                         <>
                           {", "}
-                          {user.ville}
+                          {user.province} - {user.ville}
                         </>
-                      )
-                    )}
-                  </p>
+                      ) : (
+                        !isEmpty(user.ville) && (
+                          <>
+                            {", "}
+                            {user.ville}
+                          </>
+                        )
+                      )}
+                    </p>
+                  )}
                 </div>
               )}
               <div className={styles.stars}>
@@ -150,7 +152,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
             </div>
           </div>
           {user?.userType === "assistant" ? (
-            <div className={`${styles.middle} scr nbr`}>
+            <div className={`${styles.middle} scr`}>
               <div className={styles.more}>
                 <div className={styles.btn}>
                   <div

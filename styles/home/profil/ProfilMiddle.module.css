@@ -63,6 +63,7 @@
   max-height: 100%;
   overflow: hidden;
   white-space: nowrap;
+  user-select: none;
 }
 .menu div.active label {
   margin-top: -1.5%;

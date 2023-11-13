@@ -78,12 +78,33 @@ export default function CV({
       });
     }
   }, [cmp, newApp, newExpPro]);
+  useEffect(() => {
+    const compt = document.getElementById(showMenu.obj);
+    const handleClickOutside = (e) => {
+      if (!e.target.id !== compt) {
+        setShowMenu((prev) => {
+          let nwe = { ...prev };
+          nwe.obj = "";
+          nwe.value = false;
+          nwe.focus = false;
+          return nwe;
+        });
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [showMenu.obj]);
   return (
     <ClientOnly>
       <div className={styles.container}>
         <div>
           <div className={styles.l}>
-            <label htmlFor="cmp">Compétences</label>
+            <label htmlFor="cmp" className="usn">
+              Compétences
+            </label>
             <p>
               Veuillez sélectionner au maximum <span>3</span> compétences
               virtuelles.
@@ -107,11 +128,13 @@ export default function CV({
                         ? `${styles.inputR} ${styles.ic}`
                         : `${styles.inputR}`
                     }
+                    id={`cmp${i}`}
                   >
                     <input
                       type="text"
+                      placeholder={`Compétence  ${i + 1}`}
                       id={i === lastIndex ? "cmp" : `cmp${i}`}
-                      value={c.obj || "Compétence " + (i + 1)}
+                      value={c.obj}
                       readOnly
                       onFocus={() => {
                         showMenu.obj === `cmp${i}` &&
@@ -139,6 +162,7 @@ export default function CV({
                             })
                           : setShowMenu({ obj: `cmp${i}`, value: true });
                       }}
+                      className={styles.ina}
                     />
                     <i
                       onClick={() => {
@@ -158,7 +182,7 @@ export default function CV({
                       showMenu.value &&
                       cmp[i] === c && (
                         <div
-                          className={`${styles.menuDeroulant} ${styles.hidden}`}
+                          className={`${styles.menuDeroulant} ${styles.hidden} scr`}
                         >
                           <div className={styles.pays}>
                             {competVirt.map((p) => {
@@ -205,7 +229,9 @@ export default function CV({
 
         <div>
           <div className={styles.l}>
-            <label htmlFor="appWeb">Application web</label>
+            <label htmlFor="appWeb" className="usn">
+              Application web
+            </label>
             <p>Spécifiez l{"'"}application que vous maitrisez le mieux.</p>
           </div>
           <div className={styles.r}>
@@ -215,6 +241,7 @@ export default function CV({
                   ? `${styles.inputR} ${styles.ic}`
                   : `${styles.inputR}`
               }
+              id="appWeb"
             >
               <input
                 type="text"
@@ -225,8 +252,7 @@ export default function CV({
                   showMenu.obj === "appWeb" && showMenu.value && showMenu.focus
                     ? setShowMenu({ ...showMenu, value: !showMenu.value })
                     : setShowMenu({
-                        obj: "appWeb",
-                        value: true,
+                        ...showMenu,
                         focus: true,
                       });
                 }}
@@ -235,6 +261,7 @@ export default function CV({
                     ? setShowMenu({ ...showMenu, value: !showMenu.value })
                     : setShowMenu({ obj: "appWeb", value: true });
                 }}
+                className={styles.ina}
               />
               <i
                 onClick={() => {
@@ -246,7 +273,7 @@ export default function CV({
                 <GoTriangleDown size={"1.25rem"} className="try1" />
               </i>
               {showMenu.obj === "appWeb" && showMenu.value && (
-                <div className={`${styles.menuDeroulant} ${styles.hidden}`}>
+                <div className={`${styles.menuDeroulant} ${styles.hidden} scr`}>
                   <div className={styles.stat}>
                     {appWeb.map((p) => {
                       return (
@@ -283,7 +310,9 @@ export default function CV({
 
         <div>
           <div className={styles.l}>
-            <label htmlFor="expPro">Expérience professionnelle</label>
+            <label htmlFor="expPro" className="usn">
+              Expérience professionnelle
+            </label>
             <p>Depuis combien de temps possédez-vous ces compétences.</p>
           </div>
           <div className={styles.r}>
@@ -293,6 +322,7 @@ export default function CV({
                   ? `${styles.inputR} ${styles.ic}`
                   : `${styles.inputR}`
               }
+              id="expPro"
             >
               <input
                 type="text"
@@ -303,8 +333,7 @@ export default function CV({
                   showMenu.obj === "expPro" && showMenu.value && showMenu.focus
                     ? setShowMenu({ ...showMenu, value: !showMenu.value })
                     : setShowMenu({
-                        obj: "expPro",
-                        value: true,
+                        ...showMenu,
                         focus: true,
                       });
                 }}
@@ -313,6 +342,7 @@ export default function CV({
                     ? setShowMenu({ ...showMenu, value: !showMenu.value })
                     : setShowMenu({ obj: "expPro", value: true });
                 }}
+                className={styles.ina}
               />
               <i
                 onClick={() => {
@@ -324,7 +354,7 @@ export default function CV({
                 <GoTriangleDown size={"1.25rem"} className="try1" />
               </i>
               {showMenu.obj === "expPro" && showMenu.value && (
-                <div className={`${styles.menuDeroulant} ${styles.hidden}`}>
+                <div className={`${styles.menuDeroulant} ${styles.hidden} scr`}>
                   <div className={styles.stat}>
                     {expPro.map((p) => {
                       return (

@@ -140,28 +140,6 @@
 .container .grid .menuDeroulant * {
   border: none;
 }
-.menuDeroulant::-webkit-scrollbar {
-  width: 4px;
-}
-
-.menuDeroulant::-webkit-scrollbar-button:start,
-.menuDeroulant::-webkit-scrollbar-button:end {
-  display: none;
-}
-.menuDeroulant::-webkit-scrollbar-thumb {
-  background-color: var(--gris-v-1);
-  border-radius: 2rem;
-}
-.menuDeroulant::-webkit-scrollbar-thumb:hover {
-  background-color: var(--gris);
-}
-.menuDeroulant::-webkit-scrollbar-track {
-  background-color: transparent;
-  transition: 0.15s;
-}
-.container .grid .menuDeroulant * {
-  min-height: max-content;
-}
 .container .grid .stat > div {
   padding: 0.25rem 0;
 }
@@ -216,7 +194,9 @@
   align-items: center;
   transition: 0.1s;
 }
-
+.ina::placeholder {
+  color: var(--gris);
+}
 .container .chrt input::before {
   content: "";
   border-radius: 4px;

@@ -35,9 +35,6 @@
 .container div:first-child .r {
   width: 100%;
 }
-.container div:not(:first-child) * {
-  user-select: none;
-}
 .container .r {
   height: 100%;
   display: flex;
@@ -46,6 +43,13 @@
   gap: 10%;
   width: 30%;
   position: relative;
+}
+.container .inputR {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: relative;
+  flex-direction: column;
 }
 .container .r input {
   width: 100%;
@@ -58,16 +62,12 @@
   padding-right: 1.75rem;
   min-width: 8rem;
 }
+.r .ina::placeholder {
+  color: var(--gris);
+}
 .container .r.foc input:hover,
 .container .r.foc input:focus {
   outline: 1px solid var(--gris-v-2);
-}
-.container .inputR {
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  position: relative;
-  flex-direction: column;
 }
 
 .inputR i {

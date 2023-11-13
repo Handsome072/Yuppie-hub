@@ -119,6 +119,8 @@
 }
 .photoImg {
   object-fit: cover;
+  user-select: none;
+  border-radius: 50%;
 }
 
 .choose {
@@ -228,6 +230,7 @@
   animation: anim 0.75s;
   display: flex;
   flex-direction: column;
+  box-shadow: var(--box-shadow-form);
 }
 
 @keyframes anim {

@@ -1,7 +1,7 @@
 "use client";
 import styles from "../../../styles/home/profil/Infos.module.css";
 import { pays, clientPays, lang } from "@/lib/utils/menuDeroulant";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ClientOnly from "@/components/ClientOnly";
 import Image from "next/image";
 import frenchLogo from "../../../assets/french-1.png";
@@ -27,6 +27,7 @@ export default function Infos({
   setNewProvince,
 }) {
   const { user } = useSelector((state) => state.user);
+  const ref = useRef();
   const [togglePays, setTogglePays] = useState({
     obj: user?.pays,
   });
@@ -111,6 +112,28 @@ export default function Infos({
       });
     }
   }, [newUsername.obj, , newName.obj]);
+  useEffect(() => {
+    const compt = document.getElementById(showMenu.obj);
+    const handleClickOutside = (e) => {
+      if (
+        !e.target.id !== compt &&
+        ref.current &&
+        !ref.current.contains(e.target)
+      ) {
+        setShowMenu((prev) => {
+          let nwe = { ...prev };
+          nwe.obj = "";
+          nwe.value = false;
+          nwe.focus = false;
+          return nwe;
+        });
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [showMenu.obj, ref]);
   const handleChangeUsername = (e) => {
     setNewUsername((prev) => {
       let nwu = { ...prev };
@@ -130,7 +153,9 @@ export default function Infos({
       <div className={styles.container}>
         <div>
           <div className={styles.l}>
-            <label htmlFor="prenom">Nom</label>
+            <label htmlFor="prenom" className="usn">
+              Nom
+            </label>
             <p>Indiquez votre prénom et nom.</p>
           </div>
           <div className={`${styles.r} ${styles.foc}`}>
@@ -151,7 +176,9 @@ export default function Infos({
         </div>
         <div>
           <div className={styles.l}>
-            <label htmlFor="pays">Lieu de résidence</label>
+            <label htmlFor="pays" className="usn">
+              Lieu de résidence
+            </label>
             <p>Sélectionnez votre lieu de résidence.</p>
           </div>
           <div className={styles.r}>
@@ -164,6 +191,7 @@ export default function Infos({
                     ? `${styles.inputR} ${styles.ic}`
                     : `${styles.inputR}`
                 }
+                id="pays"
               >
                 <input
                   type="text"
@@ -171,15 +199,17 @@ export default function Infos({
                   onFocus={() => {
                     showMenu.obj === "pays" && showMenu.value
                       ? setShowMenu({ ...showMenu, value: !showMenu.value })
-                      : setShowMenu({ obj: "pays", value: true, focus: true });
+                      : setShowMenu({ ...showMenu, focus: true });
                   }}
                   onClick={() => {
                     showMenu.obj === "pays" && showMenu.value && !showMenu.focus
                       ? setShowMenu({ ...showMenu, value: !showMenu.value })
                       : setShowMenu({ obj: "pays", value: true });
                   }}
-                  value={newPays.obj || "Pays"}
+                  value={newPays.obj}
                   readOnly
+                  placeholder="Pays"
+                  className={styles.ina}
                 />
                 <i
                   onClick={() => {
@@ -191,7 +221,9 @@ export default function Infos({
                   <GoTriangleDown size={"1.25rem"} className="try1" />
                 </i>
                 {showMenu.obj === "pays" && showMenu.value && (
-                  <div className={`${styles.menuDeroulant} ${styles.hidden}`}>
+                  <div
+                    className={`${styles.menuDeroulant} ${styles.hidden} scr`}
+                  >
                     <div className={`${styles.pays}`}>
                       {user?.userType === "client"
                         ? clientPays.map((p) => {
@@ -293,6 +325,8 @@ export default function Infos({
                     ? `${styles.inputR} ${styles.ic}`
                     : `${styles.inputR}`
                 }
+                ref={ref}
+                id="ville"
               >
                 <input
                   type="text"
@@ -301,15 +335,13 @@ export default function Infos({
                       ? toggleProvince.obj + " - " + newVille.obj
                       : !isEmpty(toggleProvince.obj) && isEmpty(newVille.obj)
                       ? toggleProvince.obj + " - "
-                      : !isEmpty(newVille.obj)
-                      ? newVille.obj
-                      : "Ville"
+                      : newVille.obj
                   }
                   readOnly
                   onFocus={() => {
                     showMenu.obj === "ville" && showMenu.value
                       ? setShowMenu({ ...showMenu, value: !showMenu.value })
-                      : setShowMenu({ obj: "ville", value: true, focus: true });
+                      : setShowMenu({ ...showMenu, focus: true });
                   }}
                   onClick={() => {
                     showMenu.obj === "ville" &&
@@ -318,6 +350,8 @@ export default function Infos({
                       ? setShowMenu({ ...showMenu, value: !showMenu.value })
                       : setShowMenu({ obj: "ville", value: true });
                   }}
+                  placeholder="Ville"
+                  className={styles.ina}
                 />
 
                 <i
@@ -690,7 +724,9 @@ export default function Infos({
         {/* langue */}
         <div>
           <div className={styles.l}>
-            <label htmlFor="lang">Langue</label>
+            <label htmlFor="lang" className="usn">
+              Langue
+            </label>
             <p>
               Spécifiez votre langue de préférence pour recevoir les avis
               potentiels.
@@ -703,6 +739,7 @@ export default function Infos({
                   ? `${styles.inputR}  ${styles.inputL} ${styles.ic}`
                   : `${styles.inputR} ${styles.inputL}`
               }
+              id="langue"
             >
               <Image
                 src={newLang.obj === "fr" ? frenchLogo : englishLogo}
@@ -719,13 +756,14 @@ export default function Infos({
                 onFocus={() => {
                   showMenu.obj === "langue" && showMenu.value && showMenu.focus
                     ? setShowMenu({ ...showMenu, value: !showMenu.value })
-                    : setShowMenu({ obj: "langue", value: true, focus: true });
+                    : setShowMenu({ ...showMenu, focus: true });
                 }}
                 onClick={() => {
                   showMenu.obj === "langue" && showMenu.value && !showMenu.focus
                     ? setShowMenu({ ...showMenu, value: !showMenu.value })
                     : setShowMenu({ obj: "langue", value: true });
                 }}
+                className="usn"
               />
 
               <i
@@ -738,7 +776,7 @@ export default function Infos({
                 <GoTriangleDown size={"1.25rem"} className="try1" />
               </i>
               {showMenu.obj === "langue" && showMenu.value && (
-                <div className={`${styles.menuDeroulant} ${styles.hidden}`}>
+                <div className={`${styles.menuDeroulant} ${styles.hidden} scr`}>
                   <div className={styles.pays}>
                     {lang.map((p) => {
                       return (

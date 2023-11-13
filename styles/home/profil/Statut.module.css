@@ -41,6 +41,13 @@
   width: 100%;
   position: relative;
 }
+.container .inputR {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: relative;
+  flex-direction: column;
+}
 .container .r input {
   width: 100%;
   border: 1px solid var(--gris-v-2);
@@ -62,12 +69,11 @@
 .container .r.foc input:focus {
   outline: 1px solid var(--gris-v-2);
 }
-.container .inputR {
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  position: relative;
-  flex-direction: column;
+.container .r .ina::placeholder {
+  color: var(--gris);
+}
+.container .ina:focus::placeholder {
+  color: var(--gris);
 }
 .sh {
   position: absolute;

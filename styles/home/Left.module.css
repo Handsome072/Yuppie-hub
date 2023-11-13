@@ -96,8 +96,7 @@
   max-width: 100%;
   overflow: hidden;
 }
-.statut *,
-.loc * {
+.ils p {
   font-weight: var(--regular);
   font-size: 0.9rem;
   white-space: nowrap;
@@ -411,11 +410,7 @@
     max-width: 100%;
     white-space: nowrap;
   }
-  .loc p {
-    max-width: 100%;
-    overflow: hidden;
-    white-space: nowrap;
-  }
+
   .stars {
     max-width: 100%;
   }

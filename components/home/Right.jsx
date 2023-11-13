@@ -54,11 +54,11 @@ export default function Right() {
         <div className={styles.contenu}>
           <div className={styles.favoris}>
             <i>
-              <VscTriangleLeft className="try1" size={"1.25rem"} />
+              <VscTriangleLeft size={"1.25rem"} />
             </i>
-            <span>Client favoris</span>
+            <span className="usn">Client favoris</span>
             <i>
-              <VscTriangleRight className="try1" size={"1.25rem"} />
+              <VscTriangleRight size={"1.25rem"} />
             </i>
           </div>
           <div className={styles.nt}>

@@ -10,6 +10,7 @@ import { isEmpty } from "@/lib/utils/isEmpty";
 import { isValidLink } from "@/lib/controllers/http.controller";
 import { BsShare } from "react-icons/bs";
 import { GoTriangleDown } from "react-icons/go";
+import { useRef } from "react";
 export default function Offres({
   newOffres,
   setNewOffres,
@@ -21,6 +22,7 @@ export default function Offres({
   setNewMTF,
 }) {
   const { user } = useSelector((state) => state.user);
+  const ref = useRef(null);
   const [showMenu, setShowMenu] = useState({
     obj: "",
     value: false,
@@ -59,6 +61,24 @@ export default function Offres({
     }
   }, [newTh, newOffres.obj, newBenevolat.obj, newMTF.obj]);
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        setShowMenu((prev) => {
+          let nwe = { ...prev };
+          nwe.obj = "";
+          nwe.value = false;
+          nwe.focus = false;
+          return nwe;
+        });
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [ref]);
   const handleChangeOffres = (e) => {
     setNewOffres((prev) => {
       let nwo = { ...prev };
@@ -86,7 +106,9 @@ export default function Offres({
         {/* lienPro */}
         <div>
           <div className={styles.l}>
-            <label htmlFor="lang">Offres de service</label>
+            <label htmlFor="lang" className="usn">
+              Offres de service
+            </label>
             <p>Ajoutez un lien Dropbox, Google Forms, PDF, etc.</p>
           </div>
           <div className={`${styles.r} ${styles.foc}`}>
@@ -109,21 +131,23 @@ export default function Offres({
         </div>
         <div>
           <div className={styles.l}>
-            <label htmlFor="tarif">Tarifications</label>{" "}
+            <label htmlFor="tarif" className="usn">
+              Tarifications
+            </label>
             <p>
               Indiquez vos préférences de tarifications et si vous acceptez des
               contrats forfaitaires ou bénévolats.
             </p>
           </div>
-          <div className={styles.grid}>
+          <div className={styles.grid} ref={ref}>
             <div className={styles.tht}>
               <label htmlFor="tarif">Taux horaires</label>
             </div>
             <div
               className={
                 showMenu.obj === "tarif" && showMenu.value
-                  ? `${styles.inputR} ${styles.ic}`
-                  : `${styles.inputR}`
+                  ? `${styles.inputR} ${styles.ic} scr`
+                  : `${styles.inputR} scr`
               }
             >
               <input
@@ -145,6 +169,7 @@ export default function Offres({
                     ? setShowMenu({ ...showMenu, value: !showMenu.value })
                     : setShowMenu({ obj: "tarif", value: true });
                 }}
+                className={styles.ina}
               />
               <i
                 onClick={() => {
@@ -156,15 +181,13 @@ export default function Offres({
                 <GoTriangleDown size={"1.25rem"} className="try1" />
               </i>
               {showMenu.obj === "tarif" && showMenu.value && (
-                <div className={`${styles.menuDeroulant} ${styles.hidden}`}>
+                <div className={`${styles.menuDeroulant} ${styles.hidden} scr`}>
                   <div className={styles.stat}>
                     {tarifications.map((p) => {
                       return (
                         <div
                           key={p}
-                          className={
-                            newTh.obj === p ? `${styles.bg} ${styles.po}` : null
-                          }
+                          className={newTh.obj === p ? `${styles.po}` : null}
                           onClick={() => {
                             setNewTh((prev) => {
                               let nwe = { ...prev };

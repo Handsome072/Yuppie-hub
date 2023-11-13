@@ -1,7 +1,7 @@
 "use client";
 import styles from "../../../styles/home/profil/Statut.module.css";
 import { statut, statutCli } from "@/lib/utils/menuDeroulant";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import ClientOnly from "@/components/ClientOnly";
 import { useSelector } from "react-redux";
@@ -18,6 +18,7 @@ export default function Statut({
   newPortfolio,
 }) {
   const { user } = useSelector((state) => state.user);
+  const ref = useRef();
   const [showMenu, setShowMenu] = useState({
     obj: "",
     value: false,
@@ -49,6 +50,24 @@ export default function Statut({
       });
     }
   }, [newStatutPro.obj, newPortfolio.obj, newLienProfessionnelle.obj]);
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        setShowMenu((prev) => {
+          let nwe = { ...prev };
+          nwe.obj = "";
+          nwe.value = false;
+          nwe.focus = false;
+          return nwe;
+        });
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [ref]);
   const handleChangeLinkPro = (e) => {
     setNewLienProfessionnelle((prev) => {
       let nwlp = { ...prev };
@@ -68,15 +87,17 @@ export default function Statut({
       <div className={styles.container}>
         <div>
           <div className={styles.l}>
-            <label htmlFor="statutPro">Statut professionnel</label>
+            <label htmlFor="statutPro" className="usn">
+              Statut professionnel
+            </label>
             <p>Choisissez votre statut professionnel actuel.</p>
           </div>
           <div className={styles.r}>
-            <div className={styles.inputR}>
+            <div className={styles.inputR} ref={ref}>
               <input
                 type="text"
                 id="statutPro"
-                value={newStatutPro.obj || "Statut"}
+                value={newStatutPro.obj}
                 readOnly
                 onFocus={() => {
                   showMenu.obj === "statutPro" &&
@@ -96,6 +117,8 @@ export default function Statut({
                     ? setShowMenu({ ...showMenu, value: !showMenu.value })
                     : setShowMenu({ obj: "statutPro", value: true });
                 }}
+                placeholder="Statut"
+                className={styles.ina}
               />
               <i
                 onClick={() => {
@@ -171,7 +194,9 @@ export default function Statut({
         {/* lienPro */}
         <div>
           <div className={styles.l}>
-            <label htmlFor="lienPro">Lien professionnel</label>
+            <label htmlFor="lienPro" className="usn">
+              Lien professionnel
+            </label>
             <p>Ajoutez un lien d{"'"}un réseau social professionnel.</p>
           </div>
           <div className={`${styles.r} ${styles.foc}`}>
@@ -199,7 +224,9 @@ export default function Statut({
         {/* portfolio */}
         <div>
           <div className={styles.l}>
-            <label htmlFor="portfolio">Lien portfolio</label>
+            <label htmlFor="portfolio" className="usn">
+              Lien portfolio
+            </label>
             <p>
               Insérez un lien de vos projets sur lesquels vous avez récemment
               travaillé.

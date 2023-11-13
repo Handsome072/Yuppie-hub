@@ -13,7 +13,7 @@ export default function Middle() {
         </div>
         <div className={styles.contenu}>
           <div>
-            <h1>Aucun résultat</h1>
+            <h1 className="usn">Aucun résultat</h1>
             <label>
               Afin que l’algorithme puisse offrir des avis potentiels selon vos
               compétences, veuiller mettre à jour votre profil.
