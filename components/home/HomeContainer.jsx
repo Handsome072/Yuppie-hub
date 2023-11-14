@@ -9,7 +9,7 @@ import Right from "./Right";
 export default function HomeContainer() {
   const [isEditProfil, setIsEditProfil] = useState(false);
   return (
-    <ClientOnly spin pr>
+    <ClientOnly spin home loadJWT>
       <div className={styles.container}>
         <div className={styles.left}>
           <Left setIsEditProfil={setIsEditProfil} isEditProfil={isEditProfil} />

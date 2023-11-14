@@ -25,16 +25,19 @@
   border: none;
 }
 .logo {
-  height: 3rem;
   position: relative;
+  height: 3rem;
   width: 100%;
+  max-height: 3rem;
+  max-width: 100%;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .logoImg {
   object-fit: contain;
-  transform: scale(1.2);
+  transform: scale(1.25);
 }
 .menu {
   flex: 55%;

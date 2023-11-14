@@ -1,21 +1,24 @@
 "use client";
 
 import { isEmpty } from "@/lib/utils/isEmpty";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { UidContext } from "@/context/UidContext";
 import Spinner from "./Spinner";
 
-export default function ClientOnly({ pr, children, spin }) {
-  const [mounted, setMounted] = useState(false);
+export default function ClientOnly({ pr, home, children, spin, loadJWT, ndi }) {
   const { user } = useSelector((state) => state.user);
+  const { isLoadingJWT } = useContext(UidContext);
+  const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
   }, []);
   if (typeof window === "undefined" || (pr && isEmpty(user))) {
     return null;
-  } else if (!mounted) {
-    if (spin) return <Spinner />;
-    return null;
-  }
+  } else if (!mounted && spin) {
+    return <Spinner />;
+  } else if ((loadJWT && isLoadingJWT) || (home && isEmpty(user))) {
+    return <Spinner sans />;
+  } else if (!mounted) return null;
   return <>{children}</>;
 }

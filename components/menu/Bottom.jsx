@@ -1,5 +1,4 @@
 "use client";
-import { isEmpty } from "@/lib/utils/isEmpty";
 import Link from "next/link";
 import styles from "../../styles/menu/Bottom.module.css";
 import { MdPhoneInTalk } from "react-icons/md";
@@ -7,12 +6,7 @@ import { IoMdInformationCircle } from "react-icons/io";
 import { ImBooks } from "react-icons/im";
 import { FaCopyright } from "react-icons/fa";
 import ClientOnly from "../ClientOnly";
-import { useSelector } from "react-redux";
 export default function Bottom() {
-  const { user } = useSelector((state) => state.user);
-  if (isEmpty(user)) {
-    return null;
-  }
   return (
     <ClientOnly>
       <div className={styles.container}>

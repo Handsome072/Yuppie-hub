@@ -54,21 +54,24 @@ export const POST = async (req) => {
       token: accessToken,
       tokenName: authTokenName,
       infos: body?.infos,
-      persist: body?.persist,
+      persist: body.persist,
     });
     const { password, tokens, isAdmin, ...userInfos } = Object.assign(
       {},
       user.toJSON()
     );
     const res = new NextResponse(
-      JSON.stringify({ user: userInfos, token: accessToken }, { status: 200 })
+      JSON.stringify(
+        { user: { ...userInfos }, token: accessToken },
+        { status: 200 }
+      )
     );
     const options = {
       httpOnly: true,
       secure: true,
       sameSite: "strict",
     };
-    if (body?.persist) {
+    if (body.persist) {
       options.maxAge = maxAge;
     }
     res.cookies.set(cookieName, accessToken, options);

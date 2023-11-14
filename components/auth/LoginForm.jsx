@@ -1,5 +1,6 @@
 "use client";
 import { loginController } from "@/lib/controllers/auth.controller";
+import { updatePersistInfos } from "@/redux/slices/persistSlice";
 import { updateUserInfos } from "@/redux/slices/userSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,8 +13,9 @@ import Spinner from "../Spinner";
 export default function LoginForm(req) {
   const { push } = useRouter();
   const dispatch = useDispatch();
+  const persistInfos = useSelector((state) => state.persistInfos);
   const [spinner, setSpinner] = useState(false);
-  const [userType, setUserType] = useState("client");
+  const [userType, setUserType] = useState(persistInfos.userType);
   const [showPassword, setShowPassword] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
@@ -33,13 +35,16 @@ export default function LoginForm(req) {
       const res = await loginController({
         email: userEmail,
         password: userPassword,
+        userType,
+        persist: remember,
       });
       setSpinner(true);
       setIsLoading(false);
       if (res?.error) {
         push(`/fail?t=${res.error}`);
       } else {
-        dispatch(updateUserInfos({ user: res.user, token: res.token }));
+        dispatch(updateUserInfos({ user: res.user }));
+        dispatch(updatePersistInfos({ authToken: res.token, userType }));
         push("/home");
       }
     } catch (error) {
@@ -59,7 +64,11 @@ export default function LoginForm(req) {
                 <label>Connexion assistant</label>
               )}
             </div>
-            <div className={styles.formMiddle}>
+            <div
+              className={
+                isLoading ? `${styles.formMiddle} pen` : `${styles.formMiddle}`
+              }
+            >
               <div className={styles.inputs}>
                 <div>
                   <input

@@ -14,6 +14,7 @@ export default function ProfilRight({
   setNewImage,
   newBio,
   setNewBio,
+  isSubmit,
 }) {
   const { user } = useSelector((state) => state.user);
   const ref = useRef();
@@ -63,6 +64,7 @@ export default function ProfilRight({
       const res = await base64(e.target.files[0]).catch((error) =>
         console.log(error)
       );
+
       setSbc("chc");
       setSrcImg(res);
       setNewImage((prev) => ({
@@ -108,7 +110,11 @@ export default function ProfilRight({
   };
   return (
     <ClientOnly>
-      <div className={styles.container}>
+      <div
+        className={
+          isSubmit.is ? `${styles.container} pen` : `${styles.container}`
+        }
+      >
         <div className={styles.btn}>
           {isEmpty(ancImg.obj) && ancImg.value ? (
             <label className={styles.lbd}>Importer une nouvelle photo</label>

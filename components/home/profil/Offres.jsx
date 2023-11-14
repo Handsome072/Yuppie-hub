@@ -20,6 +20,7 @@ export default function Offres({
   setNewBenevolat,
   newMTF,
   setNewMTF,
+  isSubmit,
 }) {
   const { user } = useSelector((state) => state.user);
   const ref = useRef(null);
@@ -30,6 +31,7 @@ export default function Offres({
   });
   useEffect(() => {
     if (newTh.obj !== user?.tauxHoraire) {
+
       setNewTh((prev) => {
         let nwe = { ...prev };
         nwe.value = true;
@@ -41,6 +43,7 @@ export default function Offres({
       newOffres.obj?.trim() !== user.offresDeService &&
       isValidLink(newOffres.obj?.trim())
     ) {
+
       setNewOffres((prev) => {
         let nwo = { ...prev };
         nwo.value = true;
@@ -48,12 +51,14 @@ export default function Offres({
       });
     }
     if (newBenevolat.obj !== user?.benevolat) {
+
       setNewBenevolat({
         obj: newBenevolat.obj,
         value: true,
       });
     }
     if (newMTF.obj !== user?.montantForfaitaire) {
+
       setNewMTF({
         obj: newMTF.obj,
         value: true,
@@ -78,7 +83,7 @@ export default function Offres({
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [ref]);
+  }, []);
   const handleChangeOffres = (e) => {
     setNewOffres((prev) => {
       let nwo = { ...prev };
@@ -102,7 +107,11 @@ export default function Offres({
   };
   return (
     <ClientOnly>
-      <div className={styles.container}>
+      <div
+        className={
+          isSubmit.is ? `${styles.container} pen` : `${styles.container}`
+        }
+      >
         {/* lienPro */}
         <div>
           <div className={styles.l}>
@@ -129,6 +138,8 @@ export default function Offres({
             </div>
           </div>
         </div>
+
+        {/* tarif */}
         <div>
           <div className={styles.l}>
             <label htmlFor="tarif" className="usn">
@@ -153,7 +164,7 @@ export default function Offres({
               <input
                 type="text"
                 id="tarif"
-                value={!isEmpty(newTh.obj) ? newTh.obj + "$ / h" : "$ / h"}
+                value={!isEmpty(newTh.obj) ? newTh.obj + "$ / h" : ""}
                 readOnly
                 onFocus={() => {
                   showMenu.obj === "tarif" && showMenu.value && showMenu.focus
@@ -169,6 +180,7 @@ export default function Offres({
                     ? setShowMenu({ ...showMenu, value: !showMenu.value })
                     : setShowMenu({ obj: "tarif", value: true });
                 }}
+                placeholder="$ / h"
                 className={styles.ina}
               />
               <i

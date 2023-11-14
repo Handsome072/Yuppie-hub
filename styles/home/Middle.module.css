@@ -3,6 +3,8 @@
   width: 100%;
   position: relative;
   background: var(--gris-v-4);
+  display: flex;
+  flex-direction: column;
 }
 .top {
   display: flex;
@@ -32,12 +34,12 @@
 }
 
 .contenu {
-  height: 92.5%;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   position: relative;
   color: var(--gris);
+  flex: 1;
   padding: 2.5% 17%;
 }
 .contenu h1 {

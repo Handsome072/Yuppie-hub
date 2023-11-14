@@ -25,11 +25,12 @@ export default function Infos({
   newLang,
   newProvince,
   setNewProvince,
+  isSubmit,
 }) {
   const { user } = useSelector((state) => state.user);
   const ref = useRef();
   const [togglePays, setTogglePays] = useState({
-    obj: user?.pays,
+    obj: user.pays,
   });
   const [toggleProvince, setToggleProvince] = useState({
     obj: user?.province,
@@ -40,7 +41,7 @@ export default function Infos({
     focus: false,
   });
   const [residence, setResidence] = useState({
-    pays: user?.pays,
+    pays: user.pays,
     ville:
       user.userType === "client"
         ? clientPays.find((p) => p.pays === user?.pays)?.ville
@@ -48,7 +49,7 @@ export default function Infos({
     province: user?.province,
   });
   const [ville, setVille] = useState({
-    obj: user?.ville,
+    obj: user.ville,
   });
   const [langue, setLangue] = useState({
     obj: newLang.obj === "en" ? "Anglais" : "Français",
@@ -96,9 +97,9 @@ export default function Infos({
       newUsername.obj?.trim().length > 2
     ) {
       setNewUsername((prev) => {
-        let nwu = { ...prev };
-        nwu.value = true;
-        return nwu;
+        let nwe = { ...prev };
+        nwe.value = true;
+        return nwe;
       });
     }
     if (
@@ -106,9 +107,9 @@ export default function Infos({
       newName.obj?.trim().length > 2
     ) {
       setNewName((prev) => {
-        let nwu = { ...prev };
-        nwu.value = true;
-        return nwu;
+        let nwe = { ...prev };
+        nwe.value = true;
+        return nwe;
       });
     }
   }, [newUsername.obj, , newName.obj]);
@@ -136,21 +137,25 @@ export default function Infos({
   }, [showMenu.obj, ref]);
   const handleChangeUsername = (e) => {
     setNewUsername((prev) => {
-      let nwu = { ...prev };
-      nwu.obj = e.target.value;
-      return nwu;
+      let nwe = { ...prev };
+      nwe.obj = e.target.value;
+      return nwe;
     });
   };
   const handleChangeName = (e) => {
     setNewName((prev) => {
-      let nwu = { ...prev };
-      nwu.obj = e.target.value;
-      return nwu;
+      let nwe = { ...prev };
+      nwe.obj = e.target.value;
+      return nwe;
     });
   };
   return (
     <ClientOnly>
-      <div className={styles.container}>
+      <div
+        className={
+          isSubmit.is ? `${styles.container} pen` : `${styles.container}`
+        }
+      >
         <div>
           <div className={styles.l}>
             <label htmlFor="prenom" className="usn">

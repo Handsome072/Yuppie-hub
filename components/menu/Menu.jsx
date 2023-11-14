@@ -5,7 +5,6 @@ import styles from "../../styles/menu/Menu.module.css";
 import { usePathname, useRouter } from "next/navigation";
 import ClientOnly from "../ClientOnly";
 import { logoutController } from "@/lib/controllers/auth.controller";
-import { isEmpty } from "@/lib/utils/isEmpty";
 // home
 import { FaHome } from "react-icons/fa";
 // info
@@ -19,24 +18,19 @@ import { IoMdSettings } from "react-icons/io";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUserInfos } from "@/redux/slices/userSlice";
+import { updatePersistInfos } from "@/redux/slices/persistSlice";
 export default function Menu() {
+  const { push } = useRouter();
+  const { token, userType } = useSelector((state) => state.persistInfos);
   const path = usePathname();
   const dispatch = useDispatch();
-  const { user, token } = useSelector((state) => state.user);
-  const { push } = useRouter();
   const handleLogout = async () => {
-    try {
-      await logoutController(token);
-      dispatch(removeUserInfos());
-      push("/login");
-    } catch (error) {
-      console.log(error.message);
-    }
+    await logoutController(token).catch((err) => console.log(err.message));
+    dispatch(updatePersistInfos({ authToken: null }));
+    dispatch(removeUserInfos());
+    push("/login");
   };
   const handleProjet = async () => {};
-  if (isEmpty(user)) {
-    return null;
-  }
   return (
     <ClientOnly>
       <div className={styles.container}>
@@ -74,7 +68,7 @@ export default function Menu() {
                 <label>Acceuil</label>
               </Link>
             </div>
-            {user?.userType === "client" && (
+            {userType === "client" && (
               <div className={styles.div}>
                 <button
                   onClick={handleProjet}

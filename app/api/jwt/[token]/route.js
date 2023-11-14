@@ -17,7 +17,7 @@ export const GET = async (req, { params }) => {
         JSON.stringify({ invalidToken: "Invalid token" }, { status: 200 })
       );
     }
-    return new NextResponse(JSON.stringify(verify.infos, { status: 200 }));
+    return new NextResponse(JSON.stringify(verify, { status: 200 }));
   } catch (error) {
     return new NextResponse(
       JSON.stringify({ error: error.message }, { status: 500 })

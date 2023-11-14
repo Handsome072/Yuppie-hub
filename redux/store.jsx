@@ -1,9 +1,10 @@
 "use client";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
-import userSlice from "./slices/userSlice";
-
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
+
+import userSlice from "./slices/userSlice";
+import persistSlice from "./slices/persistSlice";
 
 const createNoopStorage = () => {
   return {
@@ -27,11 +28,12 @@ const storage =
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["user"],
+  whitelist: ["persistInfos"],
 };
 
 const rootReducer = combineReducers({
   user: userSlice,
+  persistInfos: persistSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -45,5 +47,5 @@ const store = configureStore({
 });
 
 const persistor = persistStore(store);
-export default store
+export default store;
 export { persistor };

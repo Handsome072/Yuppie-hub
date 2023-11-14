@@ -45,6 +45,7 @@ export default function ProfilMiddle({
   setNewMTF,
   newProvince,
   setNewProvince,
+  isSubmit,
 }) {
   const { user } = useSelector((state) => state.user);
   const [active, setActive] = useState("infos");
@@ -104,6 +105,7 @@ export default function ProfilMiddle({
                   setNewLang={setNewLang}
                   newProvince={newProvince}
                   setNewProvince={setNewProvince}
+                  isSubmit={isSubmit}
                 />
               </div>
             </>
@@ -118,6 +120,7 @@ export default function ProfilMiddle({
                   setNewLienProfessionnelle={setNewLienProfessionnelle}
                   setNewPortfolio={setNewPortfolio}
                   newPortfolio={newPortfolio}
+                  isSubmit={isSubmit}
                 />
               </div>
             </>
@@ -132,6 +135,7 @@ export default function ProfilMiddle({
                   setNewApp={setNewApp}
                   newExpPro={newExpPro}
                   setNewExpPro={setNewExpPro}
+                  isSubmit={isSubmit}
                 />
               </div>
             </>
@@ -148,6 +152,7 @@ export default function ProfilMiddle({
                   setNewBenevolat={setNewBenevolat}
                   newMTF={newMTF}
                   setNewMTF={setNewMTF}
+                  isSubmit={isSubmit}
                 />
               </div>
             </>
@@ -155,7 +160,12 @@ export default function ProfilMiddle({
         </div>
         <div className={styles.bottom}>
           <div>
-            <button type="reset" onClick={handleReset}>
+            <button
+              disabled={isSubmit.is}
+              className={isSubmit.is ? "pen" : null}
+              type="reset"
+              onClick={handleReset}
+            >
               <label>Annuler</label>
             </button>
             <div className={styles.switch}>
@@ -196,7 +206,18 @@ export default function ProfilMiddle({
                 <FaCircleArrowRight size={"1.8rem"} />
               </label>
             </div>
-            <button onClick={handleSubmit} type="submit">
+            <button
+              className={
+                !isSubmit.can && isSubmit.is
+                  ? `${styles.dis} pen`
+                  : !isSubmit.can
+                  ? "pen"
+                  : null
+              }
+              disabled={isSubmit.is || !isSubmit.can}
+              onClick={handleSubmit}
+              type="submit"
+            >
               <label>Soumettre</label>
             </button>
           </div>

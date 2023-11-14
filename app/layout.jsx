@@ -1,5 +1,4 @@
 import "./globals.css";
-import "../assets/mdi/css/materialdesignicons.min.css"; // icons
 import { UidContextProvider } from "@/context/UidContext";
 import ReduxProvider from "@/redux/ReduxProvider";
 import connectToMongo from "@/lib/db";

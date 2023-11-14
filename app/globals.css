@@ -23,7 +23,8 @@ body {
 
   --green: #badf5b;
   --blue: #036eff;
-  --blue-loading: rgba(3, 108, 255, 0.5);
+  --blue-loading: #036eff80;
+  --green-loading: #badf5b80;
   --blue-8: rgba(3, 108, 255, 0.8);
   --red: #ff5757;
   --white: #fff;
@@ -130,6 +131,9 @@ button {
 }
 .usn {
   user-select: none;
+}
+.pen {
+  pointer-events: none;
 }
 .scr {
   scrollbar-width: thin;

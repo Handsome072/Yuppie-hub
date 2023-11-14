@@ -19,7 +19,10 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
   const { user } = useSelector((state) => state.user);
   const [canUpdate, setCanUpdate] = useState(false);
   const [active, setActive] = useState({ obj: "", value: false });
-  const [newNote, setNewNote] = useState({ obj: user.note, value: false });
+  const [newNote, setNewNote] = useState({
+    obj: user.note,
+    value: false,
+  });
   const lastPhoto = !isEmpty(user?.image)
     ? user.image[user.image.length - 1]
     : null;
@@ -29,16 +32,22 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
   useEffect(() => {
     if (newNote.obj !== user.note) {
       setNewNote((prev) => {
-        let nwn = { ...prev };
-        nwn.value = true;
-        return nwn;
+        let nwe = { ...prev };
+        nwe.value = true;
+        return nwe;
       });
     }
   }, [newNote.obj]);
+  const handleChangeNote = (e) => {
+    setNewNote((prev) => {
+      let nwn = { ...prev };
+      nwn.obj = e.target.value;
+      return nwn;
+    });
+  };
   const handlesubmit = (e) => {
     e.preventDefault();
     setCanUpdate(false);
-    console.log("submit");
   };
   return (
     <ClientOnly pr>
@@ -82,7 +91,13 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                 />
               </div>
             </div>
-            <div className={styles.right}>
+            <div
+              className={
+                isEmpty(user.pays) || isEmpty(user.statutProfessionnelle)
+                  ? `${styles.right} ${styles.even}`
+                  : `${styles.right}`
+              }
+            >
               {!isEmpty(user) && (
                 <h1>
                   {user.username}, {user.name}
@@ -208,13 +223,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                                 <textarea
                                   value={newNote.obj}
                                   id="cp"
-                                  onChange={(e) => {
-                                    setNewNote((prev) => {
-                                      let nwn = { ...prev };
-                                      nwn.obj = e.target.value;
-                                      return nwn;
-                                    });
-                                  }}
+                                  onChange={handleChangeNote}
                                   className={`${styles.textarea} ${styles.crt} scr`}
                                 />
                               ) : (
@@ -233,7 +242,13 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                   )}
                 </div>
               </div>
-              <div className={styles.moreInfos}>
+              <div
+                className={
+                  active.obj === "disp" && active.value === true
+                    ? `${styles.moreInfos} ${styles.pdm}`
+                    : `${styles.moreInfos}`
+                }
+              >
                 <div className={styles.op}>
                   <div>
                     <label htmlFor="cp" className={styles.lab}>
@@ -242,7 +257,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                     <textarea
                       readOnly
                       id="cp"
-                      className={`${styles.textarea} scr`}
+                      className={`${styles.textarea} ${styles.def} scr`}
                       value={
                         user.competenceVirtuelle
                           ?.map((c, index, array) =>
@@ -264,7 +279,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                           ? user.tauxHoraire + "$/h"
                           : ""
                       }
-                      className={`${styles.textarea} scr`}
+                      className={`${styles.textarea} ${styles.def} scr`}
                     />
                   </div>
                 </div>

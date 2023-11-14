@@ -123,6 +123,11 @@
 .bottom button:last-child {
   background: var(--green);
 }
+.bottom button.dis {
+  filter: blur(0.25px);
+  pointer-events: none;
+  background: var(--green-loading);
+}
 .switch {
   display: flex;
   align-items: center;

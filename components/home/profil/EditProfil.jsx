@@ -83,6 +83,7 @@ export default function EditProfil({ setIsEditProfil }) {
     obj: user.image,
     value: false,
   });
+  const [isSubmit, setIsSubmit] = useState({ can: false, is: false });
   useEffect(() => {
     if (newUsername.value) {
       infosToUpdate.username = newUsername.obj;
@@ -158,19 +159,17 @@ export default function EditProfil({ setIsEditProfil }) {
     newBio,
     newImage,
   ]);
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
     if (!isEmpty(infosToUpdate)) {
-      infosToUpdate = { id: user._id, ...infosToUpdate };
-      const res = await updateUser(infosToUpdate).catch((error) =>
-        console.log(error)
-      );
-      if (!isEmpty(res.updatedUser)) {
-        dispatch(updateUserInfos({ user: res.updatedUser }));
-        setIsEditProfil(false);
+      if (!isSubmit.can) {
+        setIsSubmit((prev) => {
+          let nwe = { ...prev };
+          nwe.can = true;
+          return nwe;
+        });
       }
     }
-  };
+  }, [infosToUpdate]);
   const handleReset = async () => {
     setNewUsername({ obj: user.username, value: false });
     setNewName({ obj: user.name, value: false });
@@ -199,6 +198,27 @@ export default function EditProfil({ setIsEditProfil }) {
     setNewBio({ obj: user.bio, value: false });
     setIsEditProfil(false);
     setNewImage({ obj: user.image, value: false });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmit((prev) => {
+      let nwe = { ...prev };
+      nwe.is = true;
+      return nwe;
+    });
+
+    if (!isEmpty(infosToUpdate)) {
+      infosToUpdate = { id: user._id, ...infosToUpdate };
+      const res = await updateUser(infosToUpdate).catch((error) =>
+        console.log(error)
+      );
+      if (!isEmpty(res.updatedUser)) {
+        dispatch(updateUserInfos({ user: res.updatedUser }));
+        setIsEditProfil(false);
+      }
+    } else {
+      handleReset();
+    }
   };
   return (
     <ClientOnly>
@@ -245,6 +265,8 @@ export default function EditProfil({ setIsEditProfil }) {
             newProvince={newProvince}
             setNewProvince={setNewProvince}
             handleReset={handleReset}
+            isSubmit={isSubmit}
+            setIsSubmit={setIsSubmit}
           />
         </div>
         <div className={styles.editProfilRight}>
@@ -253,6 +275,8 @@ export default function EditProfil({ setIsEditProfil }) {
             setNewImage={setNewImage}
             newBio={newBio}
             setNewBio={setNewBio}
+            isSubmit={isSubmit}
+            setIsSubmit={setIsSubmit}
           />
         </div>
       </form>

@@ -16,6 +16,7 @@ export default function Statut({
   setNewLienProfessionnelle,
   setNewPortfolio,
   newPortfolio,
+  isSubmit,
 }) {
   const { user } = useSelector((state) => state.user);
   const ref = useRef();
@@ -34,9 +35,9 @@ export default function Statut({
     }
     if (newPortfolio.obj !== user.portfolio && isValidLink(newPortfolio.obj)) {
       setNewPortfolio((prev) => {
-        let nwp = { ...prev };
-        nwp.value = true;
-        return nwp;
+        let nwe = { ...prev };
+        nwe.value = true;
+        return nwe;
       });
     }
     if (
@@ -44,9 +45,9 @@ export default function Statut({
       isValidLink(newLienProfessionnelle.obj)
     ) {
       setNewLienProfessionnelle((prev) => {
-        let nwlp = { ...prev };
-        nwlp.value = true;
-        return nwlp;
+        let nwe = { ...prev };
+        nwe.value = true;
+        return nwe;
       });
     }
   }, [newStatutPro.obj, newPortfolio.obj, newLienProfessionnelle.obj]);
@@ -70,21 +71,25 @@ export default function Statut({
   }, [ref]);
   const handleChangeLinkPro = (e) => {
     setNewLienProfessionnelle((prev) => {
-      let nwlp = { ...prev };
-      nwlp.obj = e.target.value;
-      return nwlp;
+      let nwe = { ...prev };
+      nwe.obj = e.target.value;
+      return nwe;
     });
   };
   const handleChangePortfolio = (e) => {
     setNewPortfolio((prev) => {
-      let nwp = { ...prev };
-      nwp.obj = e.target.value;
-      return nwp;
+      let nwe = { ...prev };
+      nwe.obj = e.target.value;
+      return nwe;
     });
   };
   return (
     <ClientOnly>
-      <div className={styles.container}>
+      <div
+        className={
+          isSubmit.is ? `${styles.container} pen` : `${styles.container}`
+        }
+      >
         <div>
           <div className={styles.l}>
             <label htmlFor="statutPro" className="usn">
@@ -220,7 +225,6 @@ export default function Statut({
             </Link>
           </div>
         </div>
-
         {/* portfolio */}
         <div>
           <div className={styles.l}>

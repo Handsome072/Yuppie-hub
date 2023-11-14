@@ -6,9 +6,9 @@ import { NextResponse } from "next/server";
 
 export const GET = async (req, { params }) => {
   try {
-    await connectToMongo();
     let user;
     const { id } = params;
+    await connectToMongo();
     if (!isValidObjectId(id)) {
       user = await UserModel.find({ name: id });
       return new NextResponse(JSON.stringify({ user }, { status: 404 }));
@@ -22,7 +22,9 @@ export const GET = async (req, { params }) => {
       {},
       user.toJSON()
     );
-    return new NextResponse(JSON.stringify({ userInfos }, { status: 200 }));
+    return new NextResponse(
+      JSON.stringify({ user: userInfos }, { status: 200 })
+    );
   } catch (err) {
     return new NextResponse(
       JSON.stringify({ error: err.message }, { status: 500 })

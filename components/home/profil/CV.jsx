@@ -14,6 +14,7 @@ export default function CV({
   setNewApp,
   newExpPro,
   setNewExpPro,
+  isSubmit,
 }) {
   const { user } = useSelector((state) => state.user);
   const [cmp, setCmp] = useState(() => {
@@ -63,6 +64,7 @@ export default function CV({
           });
       });
     }
+
     if (newApp.obj !== user.applicationWeb) {
       setNewApp((prev) => {
         let nwe = { ...prev };
@@ -99,7 +101,11 @@ export default function CV({
   }, [showMenu.obj]);
   return (
     <ClientOnly>
-      <div className={styles.container}>
+      <div
+        className={
+          isSubmit.is ? `${styles.container} pen` : `${styles.container}`
+        }
+      >
         <div>
           <div className={styles.l}>
             <label htmlFor="cmp" className="usn">
@@ -226,7 +232,7 @@ export default function CV({
             })}
           </div>
         </div>
-
+        {/* app web */}
         <div>
           <div className={styles.l}>
             <label htmlFor="appWeb" className="usn">
@@ -246,7 +252,7 @@ export default function CV({
               <input
                 type="text"
                 id="appWeb"
-                value={newApp.obj || "Application Web"}
+                value={newApp.obj}
                 readOnly
                 onFocus={() => {
                   showMenu.obj === "appWeb" && showMenu.value && showMenu.focus
@@ -261,6 +267,7 @@ export default function CV({
                     ? setShowMenu({ ...showMenu, value: !showMenu.value })
                     : setShowMenu({ obj: "appWeb", value: true });
                 }}
+                placeholder="Application Web"
                 className={styles.ina}
               />
               <i
@@ -308,6 +315,7 @@ export default function CV({
           </div>
         </div>
 
+        {/* exp pro */}
         <div>
           <div className={styles.l}>
             <label htmlFor="expPro" className="usn">
@@ -327,7 +335,7 @@ export default function CV({
               <input
                 type="text"
                 id="expPro"
-                value={newExpPro.obj || "Expérience professionnelle"}
+                value={newExpPro.obj}
                 readOnly
                 onFocus={() => {
                   showMenu.obj === "expPro" && showMenu.value && showMenu.focus
@@ -342,6 +350,7 @@ export default function CV({
                     ? setShowMenu({ ...showMenu, value: !showMenu.value })
                     : setShowMenu({ obj: "expPro", value: true });
                 }}
+                placeholder="Expérience professionnelle"
                 className={styles.ina}
               />
               <i
