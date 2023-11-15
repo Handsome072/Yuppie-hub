@@ -19,15 +19,21 @@ import { AiFillPlusCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUserInfos } from "@/redux/slices/userSlice";
 import { updatePersistInfos } from "@/redux/slices/persistSlice";
+import { UidContext } from "@/context/UidContext";
+import { useContext } from "react";
 export default function Menu() {
   const { push } = useRouter();
   const { token, userType } = useSelector((state) => state.persistInfos);
+  const { loadLogout, isLoadingLogout } = useContext(UidContext);
   const path = usePathname();
   const dispatch = useDispatch();
   const handleLogout = async () => {
     await logoutController(token).catch((err) => console.log(err.message));
     dispatch(updatePersistInfos({ authToken: null }));
     dispatch(removeUserInfos());
+    if (!isLoadingLogout) {
+      loadLogout(true);
+    }
     push("/login");
   };
   const handleProjet = async () => {};

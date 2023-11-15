@@ -36,7 +36,6 @@
   padding: 0.55rem 0.65rem;
   width: 100%;
   background: var(--white);
-  color: var(--gris);
   font-weight: var(--bold);
   border: 2px solid var(--gris);
   width: 100%;
@@ -45,6 +44,9 @@
   text-align: center;
   cursor: default;
 }
+.btc::placeholder {
+  color: var(--black-input-5);
+}
 .btc:hover,
 .btc:active,
 .btc:focus {
@@ -52,7 +54,10 @@
 }
 
 .container div.active .btc {
-  color: var(--blue);
   background: var(--green);
   border-color: var(--green);
+  box-shadow: var(--box-shadow);
+}
+.container div.active .btc::placeholder {
+  color: var(--blue);
 }

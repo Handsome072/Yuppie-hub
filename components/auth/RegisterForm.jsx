@@ -2,7 +2,7 @@
 import { registerController } from "@/lib/controllers/auth.controller";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useState } from "react";
 import styles from "../../styles/auth/RegisterForm.module.css";
 import ClientOnly from "../ClientOnly";
@@ -14,6 +14,7 @@ import { FaCircleArrowLeft } from "react-icons/fa6";
 import { isEmpty } from "@/lib/utils/isEmpty";
 export default function RegisterForm() {
   const { push } = useRouter();
+  const cPass = useRef();
   const [spinner, setSpinner] = useState(false);
   const [userType, setUserType] = useState({
     obj: "userType",
@@ -83,6 +84,10 @@ export default function RegisterForm() {
       }
     } else if (passwordUser.value !== cPasswordUser.value) {
       setCPasswordUser({ ...cPasswordUser, error: true, submit: true });
+      cPass.current.setCustomValidity(
+        "Les mots de passes ne correspondent pas."
+      );
+      cPass.current.reportValidity();
     }
   };
   if (spinner) return <Spinner />;
@@ -95,7 +100,13 @@ export default function RegisterForm() {
             : `${styles.container} ${styles.ov}`
         }
       >
-        <div className={styles.formContainer}>
+        <div
+          className={
+            isLoading
+              ? `${styles.formContainer} pen`
+              : `${styles.formContainer}`
+          }
+        >
           <form onSubmit={handleSubmit}>
             <div className={styles.switchBtn}>
               <Link href={"/login"} className={styles.link}>
@@ -148,12 +159,13 @@ export default function RegisterForm() {
                     <input
                       type="password"
                       autoComplete="new-password"
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        cPass.current.setCustomValidity("");
                         setPasswordUser({
                           ...passwordUser,
                           value: e.target.value,
-                        })
-                      }
+                        });
+                      }}
                       value={passwordUser.value}
                       placeholder={`Mot de passe`}
                       required
@@ -161,20 +173,17 @@ export default function RegisterForm() {
                   </div>
                   <div>
                     <input
-                      className={
-                        cPasswordUser.submit && cPasswordUser.error
-                          ? `${styles.red}`
-                          : null
-                      }
+                      ref={cPass}
                       type="password"
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        cPass.current.setCustomValidity("");
                         setCPasswordUser({
                           ...cPasswordUser,
                           value: e.target.value,
                           submit: false,
                           error: false,
-                        })
-                      }
+                        });
+                      }}
                       value={cPasswordUser.value}
                       required
                       placeholder={`Confirmer mot de passe`}
@@ -184,13 +193,7 @@ export default function RegisterForm() {
                 <div className={styles.registerChoice}>
                   S{"'"}inscrire en tant que
                 </div>
-                <div
-                  className={
-                    userType.value === "" && userType.submit
-                      ? `${styles.btn} ${styles.red}`
-                      : `${styles.btn}`
-                  }
-                >
+                <div className={styles.btn}>
                   <Btn
                     setUserType={setUserType}
                     setIsHovered={setIsHovered}

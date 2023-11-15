@@ -290,7 +290,7 @@
 }
 .chi .line::before {
   content: "";
-  height: 2px;
+  height: 1px;
   width: 100%;
   background: var(--gris-v-4);
 }
@@ -382,7 +382,6 @@
   border-radius: 0.35rem;
   cursor: pointer;
   box-shadow: var(--box-shadow);
-  border: 2px solid transparent;
   transition: 0.1s ease;
 }
 
@@ -396,19 +395,12 @@
 .submit button {
   background: var(--green);
 }
-
 .dsb .submit button {
   background: var(--gris);
   pointer-events: none;
   box-shadow: none;
 }
-.dsb .reset button {
-  box-shadow: none;
-  background: transparent;
-  border-color: var(--gris-v-2);
-  color: var(--gris);
-  pointer-events: none;
-}
+
 @keyframes t {
   0% {
     opacity: 0.5;

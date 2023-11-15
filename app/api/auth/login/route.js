@@ -13,13 +13,18 @@ export const POST = async (req) => {
     let infos = null;
     let max = 60 * 60;
     const body = await req.json();
-    if (isEmpty(body)) {
+    if (
+      isEmpty(body) ||
+      isEmpty(body?.email) ||
+      isEmpty(body?.password) ||
+      isEmpty(body?.userType)
+    ) {
       return new NextResponse(
         JSON.stringify({ error: "Data required." }, { status: 400 })
       );
     }
     if (!emailController(body.email)) {
-      infos = { ...body, invalidLoginEmail: true };
+      infos = { ...body, invalidLoginEmailError: true };
       token = createToken(infos, max);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 401 }) // Changed status to 401 for invalid email
@@ -28,7 +33,7 @@ export const POST = async (req) => {
     await connectToMongo();
     const user = await UserModel.findOne({ email: body.email });
     if (isEmpty(user)) {
-      infos = { ...body, ukEmail: true };
+      infos = { ...body, ukEmailLoginError: true };
       token = createToken(infos, max);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 404 }) // Changed status to 404 for user not found
@@ -36,7 +41,14 @@ export const POST = async (req) => {
     }
     const validUser = await bcrypt.compare(body.password, user.password);
     if (!validUser) {
-      infos = { ...body, invalidLoginPassword: true };
+      infos = { ...body, invalidLoginPasswordError: true };
+      token = createToken(infos, max);
+      return new NextResponse(
+        JSON.stringify({ error: token }, { status: 403 }) // Changed status to 403 for invalid password
+      );
+    }
+    if (user.userType !== body.userType) {
+      infos = { ...body, invalidLoginUserTypeError: true };
       token = createToken(infos, max);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 403 }) // Changed status to 403 for invalid password

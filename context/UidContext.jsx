@@ -8,6 +8,7 @@ import { protecedPaths } from "@/lib/utils/paths";
 import { removeUserInfos, updateUserInfos } from "@/redux/slices/userSlice";
 import { updatePersistInfos } from "@/redux/slices/persistSlice";
 import { fetchUserInfos } from "@/lib/controllers/user.controller";
+import { logoutController } from "@/lib/controllers/auth.controller";
 
 export const UidContext = createContext();
 export const UidContextProvider = ({ children }) => {
@@ -16,6 +17,7 @@ export const UidContextProvider = ({ children }) => {
     (state) => state.persistInfos
   );
   const [isLoadingJWT, setIsLoadingJWT] = useState(false);
+  const [isLoadingLogout, setIsLoadingLogout] = useState(false);
   const { push } = useRouter();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -55,10 +57,14 @@ export const UidContextProvider = ({ children }) => {
       }
     })();
   }, []);
-
+  const loadLogout = (value) => {
+    setIsLoadingLogout(value);
+  };
   if (typeof window !== "undefined")
     return (
-      <UidContext.Provider value={{ isLoadingJWT }}>
+      <UidContext.Provider
+        value={{ isLoadingJWT, loadLogout, isLoadingLogout }}
+      >
         <>{children}</>
       </UidContext.Provider>
     );

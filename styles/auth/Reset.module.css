@@ -5,40 +5,31 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  text-align: center;
   flex-wrap: wrap;
   box-shadow: var(--box-shadow);
   min-height: 400px;
+  text-align: center;
 }
-.container.ov {
-  overflow: hidden;
-}
-
 .container form {
-  max-width: 475px;
-  width: 90%;
+  width: 74%;
+  min-width: 475px;
   height: 95%;
   background: var(--white);
-  padding: 0 2rem;
+  padding: 4% 5%;
+  gap: 2%;
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
   position: relative;
   box-shadow: var(--box-shadow-form);
-}
-.contenu {
-  width: 100%;
 }
 
 .switchBtn {
   display: flex;
   position: relative;
-  padding: 1rem 0;
   height: max-content;
   align-self: flex-start;
-  margin-top: 1rem;
 }
 .link:focus .switchIcon,
 .link:hover .switchIcon,
@@ -51,46 +42,53 @@
   transition: 0.1s;
 }
 
-.inputs {
+.contenu {
+  width: 100%;
+  height: 100%;
+  padding: 0 1.5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6%;
+}
+.contenu div {
   display: flex;
   flex-direction: column;
   width: 100%;
   gap: 0.5rem;
   position: relative;
 }
-.inputs label {
+.title label {
   color: var(--blue);
-  margin-bottom: 1rem;
   font-weight: var(--medium);
 }
-.inputs > div {
+
+.inputs {
   width: 100%;
   position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   border-radius: 0.35rem;
+  flex-direction: column;
+  gap: 0.5rem;
 }
-.inputs > div input {
+.inputs input {
   position: relative;
   width: 100%;
   border: 2px solid var(--gris);
   padding: 0.65rem 2rem 0.65rem 1rem;
   border-radius: 0.35rem;
-  font-size: 0.95rem;
   color: var(--black-input);
   text-align: center;
 }
 
-.inputs > div input:focus {
+.inputs input:focus,
+.inputs input:hover {
   outline: 1px solid var(--gris-v-2);
 }
 
 .submit {
-  padding: 0.5rem 0;
-  margin: 0.5rem 0 1rem 0;
-}
-.submit button {
   padding: 0.65rem;
   width: 100%;
   background: var(--blue);
@@ -100,38 +98,103 @@
   border-radius: 0.45rem;
   cursor: pointer;
   transition: 0.1s;
+  box-shadow: var(--box-shadow);
 }
-.submit button:hover,
-.submit button:focus {
+.submit:hover,
+.submit:focus {
   box-shadow: var(--box-shadow-btn);
 }
+.submit.submitLoading {
+  filter: blur(0.25px);
+  background: var(--blue-loading);
+  pointer-events: none;
+}
 
+.hr {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem 0;
+}
+.hr::before {
+  content: "";
+  width: 100%;
+  height: 2px;
+  position: absolute;
+  background: var(--gris-v-3);
+}
+
+.notRegistered {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+.notRegistered label {
+  color: var(--blue);
+  font-weight: var(--medium);
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+}
+
+.switch {
+  padding: 0.65rem;
+  position: relative;
+  width: 100%;
+  color: var(--white);
+  font-weight: var(--bold);
+  border: none;
+  width: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.1s;
+  box-shadow: var(--box-shadow);
+}
+.switch:hover,
+.switch:focus {
+  box-shadow: var(--box-shadow-btn);
+}
+.login {
+  background: var(--blue);
+}
+.register {
+  background: var(--green);
+}
+.loadLink,
+.loadLink:focus {
+  background: var(--green-loading);
+  filter: blur(0.25px);
+  pointer-events: none;
+  box-shadow: var(--box-shadow);
+}
 @media (max-width: 1000px) {
   .container {
     box-shadow: none;
     height: 100%;
     display: flex;
     align-items: flex-end;
+    position: relative;
   }
   .container form {
     max-width: 425px;
-    height: 96.5%;
-    border-radius: 2rem 2rem 1.25rem 1.25rem;
+    border-radius: 2.5rem 2.5rem 1.25rem 1.25rem;
+    padding: 0 3rem;
+    height: 97%;
   }
-  .inputs label {
-    line-height: 1.25;
-    font-size: 1rem;
+  .switchBtn {
+    position: absolute;
+    top: -6%;
+    left: -5%;
+    background: var(--white);
+    height: max-content;
+    border-radius: 50%;
+    z-index: 0;
   }
 }
-
-@media (max-height: 600px) {
-  .container {
-    height: 90%;
-    align-self: center;
-  }
+@media (max-width: 450px) {
   .container form {
-    max-width: 400px;
-    height: 60%;
-    align-self: center;
+    padding: 0 2rem;
   }
 }

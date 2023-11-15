@@ -44,7 +44,7 @@ export default function Conditions({
           <div className={styles.top}>
             <div className={styles.logo}>
               <Image src={"/logo.png"} fill alt="" className={styles.logoImg} />
-              <span
+              <i
                 onClick={() =>
                   setActivePopup((prev) => {
                     const nwe = { ...prev };
@@ -55,7 +55,7 @@ export default function Conditions({
                 className={styles.close}
               >
                 <CgClose size={"1.5rem"} />
-              </span>
+              </i>
             </div>
             <div className={styles.line} />
           </div>
@@ -282,7 +282,8 @@ export default function Conditions({
                 </>
               )}
             </div>
-            <div className={styles.sp} />
+
+            <div className={styles.lastLine} />
             <div className={styles.li}>
               <Terms
                 setAcceptconditions={setAcceptconditions}

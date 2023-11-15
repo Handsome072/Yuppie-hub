@@ -10,15 +10,13 @@
   min-height: 400px;
   text-align: center;
 }
-.container.ov {
-  overflow: hidden;
-}
-
 .container form {
-  width: 72%;
+  width: 74%;
+  min-width: 475px;
   height: 95%;
   background: var(--white);
-  padding: 0 4%;
+  padding: 4% 5%;
+  gap: 2%;
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
@@ -28,18 +26,17 @@
 }
 .contenu {
   width: 100%;
-  height: 36.5%;
-  padding: 0 1.5%;
+  height: 100%;
+  padding: 0 2%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  gap: 6%;
 }
 
 .switchBtn {
   display: flex;
   position: relative;
-  padding: 5% 0;
   height: max-content;
   align-self: flex-start;
 }
@@ -54,58 +51,53 @@
   transition: 0.1s;
 }
 
-.inputs {
+.contenu div {
   display: flex;
   flex-direction: column;
   width: 100%;
   gap: 0.5rem;
   position: relative;
 }
-.inputs h1 {
+.title h1 {
   color: var(--red);
   font-weight: var(--medium);
   font-style: italic;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
 }
-.inputs label {
-  margin: 4%;
+.rais label {
   font-weight: var(--regular);
-  line-height: 1.25;
   color: var(--gris);
 }
-.inputs label span {
-  color: var(--gris);
-  font-size: 1.1rem;
-  font-style: italic;
+.rais label span {
   font-weight: var(--medium);
+  text-decoration: underline;
 }
-.inputs > div {
+.inputs {
   width: 100%;
   position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   border-radius: 0.35rem;
+  flex-direction: column;
+  gap: 0.5rem;
 }
-.inputs > div input {
+.inputs input {
   position: relative;
   width: 100%;
   border: 2px solid var(--gris);
   padding: 0.65rem 2rem 0.65rem 1rem;
   border-radius: 0.35rem;
-  font-size: 0.95rem;
   color: var(--black-input);
   text-align: center;
 }
 
-.inputs > div input:focus {
+.inputs input:focus,
+.inputs input:hover {
   outline: 1px solid var(--gris-v-2);
 }
 
 .submit {
-  width: 100%;
-}
-.submit button {
   padding: 0.65rem;
   width: 100%;
   background: var(--blue);
@@ -115,15 +107,171 @@
   border-radius: 0.45rem;
   cursor: pointer;
   transition: 0.1s;
+  box-shadow: var(--box-shadow);
 }
-.submit button:hover,
-.submit button:focus {
+.submit:hover,
+.submit:focus {
   box-shadow: var(--box-shadow-btn);
 }
-.submit.submitLoading button {
+.submit.submitLoading {
   filter: blur(0.25px);
   background: var(--blue-loading);
   pointer-events: none;
+}
+.ubtn {
+  padding: 0.55rem 0.65rem;
+  width: 100%;
+  background: var(--white);
+  font-weight: var(--bold);
+  color: var(--green);
+  border: 2px solid var(--green);
+  width: 100%;
+  border-radius: 4px;
+  transition: 0.1s;
+  text-align: center;
+  cursor: default;
+}
+.ubtn:hover,
+.ubtn:active,
+.ubtn:focus {
+  box-shadow: var(--box-shadow);
+}
+.ubtn.active {
+  background: var(--green);
+  border-color: var(--green);
+  box-shadow: var(--box-shadow);
+  color: var(--blue);
+}
+.forgot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.link {
+  width: max-content;
+}
+.forgot .link span {
+  color: var(--blue);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.1s;
+}
+
+.forgot .link:hover span:first-child,
+.forgot .link:focus span:first-child {
+  text-decoration: underline;
+}
+
+.remember {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--gris-text);
+  gap: 0.25rem;
+  padding: 0;
+  user-select: none;
+  height: 0;
+}
+.remember span {
+  font-size: 0.9rem;
+}
+.remember input {
+  cursor: pointer;
+  appearance: none;
+  color: var(--white);
+  border-radius: 4px;
+  border: 2px solid var(--gris-text);
+  transform: scale(0.75);
+  width: inherit;
+  padding: inherit;
+}
+.remember input::before {
+  content: "";
+  border-radius: 4px;
+  width: 0.65rem;
+  height: 0.65rem;
+  font-size: 0.7rem;
+  padding: 0.1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  transform-origin: bottom center;
+  transform: translate(-50%, 15%) scale(0);
+  transition: transform 0.2s ease-in;
+}
+
+.remember input:hover,
+.remember input:focus {
+  box-shadow: var(--box-shadow);
+}
+.remember input:checked {
+  border-color: transparent;
+  transform: scale(1);
+  box-shadow: none;
+  outline: none;
+}
+.remember input:checked:before {
+  background-color: var(--blue);
+  content: "\2713";
+  transform: translate(0) scale(1);
+}
+.hr {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem 0;
+}
+.hr::before {
+  content: "";
+  width: 100%;
+  height: 2px;
+  position: absolute;
+  background: var(--gris-v-3);
+}
+.notRegistered {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+.notRegistered label {
+  color: var(--blue);
+  font-weight: var(--medium);
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+}
+.switch {
+  padding: 0.65rem;
+  position: relative;
+  width: 100%;
+  color: var(--white);
+  font-weight: var(--bold);
+  border: none;
+  width: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.1s;
+  box-shadow: var(--box-shadow);
+}
+.switch:hover,
+.switch:focus {
+  box-shadow: var(--box-shadow-btn);
+}
+.login {
+  background: var(--blue);
+}
+.register {
+  background: var(--green);
+}
+.register.loadLink {
+  background: var(--green-loading);
+  filter: blur(0.25px);
+  pointer-events: none;
+  box-shadow: var(--box-shadow);
 }
 @media (max-width: 1000px) {
   .container {

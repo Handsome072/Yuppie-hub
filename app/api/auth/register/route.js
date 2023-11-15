@@ -28,16 +28,19 @@ export const POST = async (req) => {
         JSON.stringify({ error: "Data required" }, { status: 400 })
       );
     }
+    console.log("body", body);
     if (nameError) {
       return new NextResponse(
         JSON.stringify({ error: nameError }, { status: 400 })
       );
     }
+    console.log("ici 1");
     if (usernameError && !isEmpty(usernameError)) {
       return new NextResponse(
         JSON.stringify({ error: usernameError }, { status: 400 })
       );
     }
+    console.log("ici 2");
     if (!emailController(body.email)) {
       infos = { ...body, invalidEmail: true };
       token = createToken(infos, max);
@@ -45,11 +48,13 @@ export const POST = async (req) => {
         JSON.stringify({ error: token }, { status: 400 })
       );
     }
+    console.log("ici 3");
     if (passWordError) {
       return new NextResponse(
         JSON.stringify({ error: passWordError }, { status: 400 })
       );
     }
+    console.log("ici 4");
     await connectToMongo();
     const verifyExistUser = await UserModel.findOne({ email: body.email });
     if (!isEmpty(verifyExistUser)) {
@@ -59,6 +64,7 @@ export const POST = async (req) => {
         JSON.stringify({ error: token }, { status: 400 })
       );
     }
+    console.log("ici 5");
     username = body.username.charAt(0).toUpperCase() + body.username.slice(1);
     const user = await UserModel.create({
       email: body.email,
@@ -67,6 +73,7 @@ export const POST = async (req) => {
       username,
       userType: body.userType,
     });
+    console.log("ici 6");
     if (!user) {
       return new NextResponse(
         JSON.stringify(
@@ -79,6 +86,7 @@ export const POST = async (req) => {
       );
     }
 
+    console.log("ici 7");
     const res = await nodeMailer({
       to: user.email,
       subject: "Inscription réussie",
@@ -88,8 +96,9 @@ export const POST = async (req) => {
         userType: user.userType,
       }),
     });
+    console.log("ici 8");
     if (!isEmpty(res?.error)) {
-      console.log("confirm register with email", res.error);
+      console.log("Error to confirm register with email", res.error);
       return new NextResponse(
         JSON.stringify(
           { sendEmailError: "Erreur d'envoi de l'email" },
@@ -99,6 +108,7 @@ export const POST = async (req) => {
     }
     infos = { newUser: true, email: user.email, id: user._id };
     token = createToken(infos, max);
+    console.log("ici 9");
     return new NextResponse(JSON.stringify({ token }, { status: 200 }));
   } catch (err) {
     return new NextResponse(

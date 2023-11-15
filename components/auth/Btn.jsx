@@ -61,7 +61,7 @@ export default function Btn({
               setIsHovered({ obj: "", value: false });
             }}
           >
-            <input value={"Assistant"} readOnly className={styles.btc} />
+            <input placeholder={"Assistant"} readOnly className={styles.btc} />
             {isHovered.obj === "assistant" && isHovered.value && (
               <div
                 className={styles.assistantDef}
@@ -107,7 +107,7 @@ export default function Btn({
               setIsHovered({ obj: "", value: false });
             }}
           >
-            <input value={"Client"} readOnly className={styles.btc} />
+            <input placeholder={"Client"} readOnly className={styles.btc} />
 
             {isHovered.obj === "client" && isHovered.value && (
               <div

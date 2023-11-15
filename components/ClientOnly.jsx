@@ -8,7 +8,7 @@ import Spinner from "./Spinner";
 
 export default function ClientOnly({ pr, home, children, spin, loadJWT, ndi }) {
   const { user } = useSelector((state) => state.user);
-  const { isLoadingJWT } = useContext(UidContext);
+  const { isLoadingJWT, isLoadingLogout } = useContext(UidContext);
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
@@ -18,6 +18,7 @@ export default function ClientOnly({ pr, home, children, spin, loadJWT, ndi }) {
   } else if (!mounted && spin) {
     return <Spinner />;
   } else if ((loadJWT && isLoadingJWT) || (home && isEmpty(user))) {
+    if (isLoadingLogout) return null;
     return <Spinner sans />;
   } else if (!mounted) return null;
   return <>{children}</>;

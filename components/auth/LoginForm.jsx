@@ -1,10 +1,11 @@
 "use client";
+import { UidContext } from "@/context/UidContext";
 import { loginController } from "@/lib/controllers/auth.controller";
 import { updatePersistInfos } from "@/redux/slices/persistSlice";
 import { updateUserInfos } from "@/redux/slices/userSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../../styles/auth/LoginForm.module.css";
@@ -14,6 +15,7 @@ export default function LoginForm(req) {
   const { push } = useRouter();
   const dispatch = useDispatch();
   const persistInfos = useSelector((state) => state.persistInfos);
+  const { loadLogout, isLoadingLogout } = useContext(UidContext);
   const [spinner, setSpinner] = useState(false);
   const [userType, setUserType] = useState(persistInfos.userType);
   const [showPassword, setShowPassword] = useState(false);
@@ -21,8 +23,11 @@ export default function LoginForm(req) {
   const [userPassword, setUserPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [remember, setRemember] = useState(false);
+  const [loadLink, setLoadLink] = useState(false);
   useEffect(() => {
-    setSpinner(false);
+    if (isLoadingLogout) {
+      loadLogout(false);
+    }
   }, []);
   const handleUserType = (e) => {
     e.preventDefault();
@@ -30,25 +35,21 @@ export default function LoginForm(req) {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      setIsLoading(true);
-      const res = await loginController({
-        email: userEmail,
-        password: userPassword,
-        userType,
-        persist: remember,
-      });
-      setSpinner(true);
-      setIsLoading(false);
-      if (res?.error) {
-        push(`/fail?t=${res.error}`);
-      } else {
-        dispatch(updateUserInfos({ user: res.user }));
-        dispatch(updatePersistInfos({ authToken: res.token, userType }));
-        push("/home");
-      }
-    } catch (error) {
-      console.log(error.message);
+    setIsLoading(true);
+    const res = await loginController({
+      email: userEmail,
+      password: userPassword,
+      userType,
+      persist: remember,
+    }).catch((error) => console.log(error.message));
+    setSpinner(true);
+    setIsLoading(false);
+    if (res?.error) {
+      push(`/fail?t=${res.error}`);
+    } else {
+      dispatch(updateUserInfos({ user: res.user }));
+      dispatch(updatePersistInfos({ authToken: res.token, userType }));
+      push("/home");
     }
   };
   if (spinner) return <Spinner />;
@@ -151,7 +152,17 @@ export default function LoginForm(req) {
               <div className={styles.notRegistered}>
                 <label>Vous n{"'"}avez pas de compte ?</label>
               </div>
-              <Link href={"/register"} className={styles.register}>
+              <Link
+                onClick={() => {
+                  setLoadLink(true);
+                }}
+                href={"/register"}
+                className={
+                  loadLink
+                    ? `${styles.register} ${styles.loadLink}`
+                    : `${styles.register}`
+                }
+              >
                 <span>S{"'"}inscrire</span>
               </Link>
             </div>
