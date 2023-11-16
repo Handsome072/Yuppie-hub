@@ -15,6 +15,7 @@ export default function Success() {
   const sendEmailError = useSearchParams().get("s");
   const { push } = useRouter();
   const [spinner, setSpinner] = useState(false);
+  const [loadLink, setLoadLink] = useState(false);
   const [scr, setSCR] = useState({
     obj: false,
     email: false,
@@ -61,9 +62,23 @@ export default function Success() {
             <div className={styles.contenu}>
               <label>Félicitations! Votre compte a été créé avec succès.</label>
               {scr.email ? (
-                <p>
-                  La confirmation par email a échoué. Veuillez vous connecter.
-                </p>
+                <>
+                  <p>
+                    La confirmation par email a échoué. Veuillez vous connecter.
+                  </p>
+                  <div className={styles.hr} />
+                  <Link
+                    onClick={() => setLoadLink(true)}
+                    href={"/login"}
+                    className={
+                      loadLink
+                        ? `${styles.switch} ${styles.register} ${styles.loadLink}`
+                        : `${styles.switch} ${styles.register}`
+                    }
+                  >
+                    <span>Se connecter</span>
+                  </Link>
+                </>
               ) : (
                 <p>
                   Cliquer sur le lien qui vous a été envoyé par email pour

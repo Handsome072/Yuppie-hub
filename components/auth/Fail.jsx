@@ -5,25 +5,30 @@ import {
 } from "@/lib/controllers/auth.controller";
 import { verifyJWT } from "@/lib/controllers/jwt.controller";
 import { isEmpty } from "@/lib/utils/isEmpty";
+import { updatePersistInfos } from "@/redux/slices/persistSlice";
 import { updateUserInfos } from "@/redux/slices/userSlice";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useState } from "react";
+import { AiOutlineCopy } from "react-icons/ai";
 import { FaCircleArrowLeft } from "react-icons/fa6";
+import { VscCheckAll } from "react-icons/vsc";
 import { useDispatch } from "react-redux";
 import styles from "../../styles/auth/Fail.module.css";
 import ClientOnly from "../ClientOnly";
 import Spinner from "../Spinner";
-
+const contactEmail = process.env.CONTACT_EMAIL;
 export default function Fail() {
   const token = useSearchParams().get("t");
   const { push } = useRouter();
   const dispatch = useDispatch();
+  const cPass = useRef();
   const [isLoading, setIsLoading] = useState(false);
-  const [isValid, setIsValid] = useState(false);
+  const [spinner, setSpinner] = useState(false);
   const [initialData, setInitialData] = useState(null);
   const [loadLink, setLoadLink] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [error, setError] = useState({
     // register errors
     minNameRegisterError: false,
@@ -44,6 +49,7 @@ export default function Fail() {
     invalidLoginUserTypeError: false,
 
     // options
+    failToCreateNewUser: false,
     expires: false,
     login: false,
     register: false,
@@ -51,12 +57,16 @@ export default function Fail() {
   const [newUser, setNewUser] = useState({});
   useEffect(() => {
     (async () => {
-      setIsValid(false);
-      let res;
-      res = await verifyJWT(token);
-      setIsValid(true);
-      if (!isEmpty(res?.infos)) {
+      setSpinner(true);
+      const res = await verifyJWT(token);
+      setSpinner(false);
+      if (!isEmpty(res?.infos) && (res?.infos?.register || res?.infos?.login)) {
         setInitialData(res.infos);
+        setNewUser(() => {
+          let nwe = res.infos;
+          nwe.valid = false;
+          return nwe;
+        });
         if (res.infos?.minNameRegisterError) {
           setError((prev) => {
             let nwe = { ...prev };
@@ -67,7 +77,6 @@ export default function Fail() {
             nwe.minNameRegisterError = true;
             return nwe;
           });
-          setNewUser(res.infos);
         } else if (res.infos?.maxNameRegisterError) {
           setError((prev) => {
             let nwe = { ...prev };
@@ -78,7 +87,6 @@ export default function Fail() {
             nwe.maxNameRegisterError = true;
             return nwe;
           });
-          setNewUser(res.infos);
         } else if (res.infos?.minUsernameRegisterError) {
           setError((prev) => {
             let nwe = { ...prev };
@@ -89,7 +97,6 @@ export default function Fail() {
             nwe.minUsernameRegisterError = true;
             return nwe;
           });
-          setNewUser(res.infos);
         } else if (res.infos?.maxUsernameRegisterError) {
           setError((prev) => {
             let nwe = { ...prev };
@@ -100,7 +107,6 @@ export default function Fail() {
             nwe.maxUsernameRegisterError = true;
             return nwe;
           });
-          setNewUser(res.infos);
         } else if (res.infos?.invalidRegisterEmailError) {
           setError((prev) => {
             let nwe = { ...prev };
@@ -111,7 +117,6 @@ export default function Fail() {
             nwe.invalidRegisterEmailError = true;
             return nwe;
           });
-          setNewUser(res.infos);
         } else if (res.infos?.alreadyExistRegisterEmailError) {
           setError((prev) => {
             let nwe = { ...prev };
@@ -122,19 +127,25 @@ export default function Fail() {
             nwe.alreadyExistRegisterEmailError = true;
             return nwe;
           });
-          setNewUser(res.infos);
         } else if (res.infos?.minPasswordRegisterError) {
           setError((prev) => {
             let nwe = { ...prev };
             for (const key in nwe) {
               nwe[key] = false;
             }
+            nwe.valid = false;
             nwe.register = true;
             nwe.minPasswordRegisterError = true;
             return nwe;
           });
-          setNewUser((prev) => {
+          setInitialData(() => {
             let nwe = res.infos;
+            nwe.cPassword = "";
+            return nwe;
+          });
+          setNewUser(() => {
+            let nwe = res.infos;
+            nwe.valid = false;
             nwe.cPassword = "";
             return nwe;
           });
@@ -148,7 +159,6 @@ export default function Fail() {
             nwe.ukEmailLoginError = true;
             return nwe;
           });
-          setNewUser(res.infos);
         } else if (res.infos?.invalidLoginEmailError) {
           setError((prev) => {
             let nwe = { ...prev };
@@ -159,7 +169,6 @@ export default function Fail() {
             nwe.invalidLoginEmailError = true;
             return nwe;
           });
-          setNewUser(res.infos);
         } else if (res.infos?.invalidLoginPasswordError) {
           setError((prev) => {
             let nwe = { ...prev };
@@ -170,7 +179,6 @@ export default function Fail() {
             nwe.invalidLoginPasswordError = true;
             return nwe;
           });
-          setNewUser(res.infos);
         } else if (res.infos?.invalidLoginUserTypeError) {
           setError((prev) => {
             let nwe = { ...prev };
@@ -181,80 +189,145 @@ export default function Fail() {
             nwe.invalidLoginUserTypeError = true;
             return nwe;
           });
-          setNewUser(res.infos);
-        }
-      } else if (!isEmpty(res?.invalidToken)) {
-        setError((prev) => {
-          let nwe = { ...prev };
-          nwe.obj = res.email;
-          for (const key in nwe) {
-            if (key !== "obj") {
+        } else if (res.infos?.failToCreateNewUser) {
+          setError((prev) => {
+            let nwe = { ...prev };
+            for (const key in nwe) {
               nwe[key] = false;
             }
+            nwe.register = true;
+            nwe.valid = true;
+            nwe.failToCreateNewUser = true;
+            return nwe;
+          });
+        }
+      } else if (!isEmpty(res?.expiredTokenError)) {
+        setError((prev) => {
+          let nwe = { ...prev };
+          for (const key in nwe) {
+            nwe[key] = false;
           }
           nwe.login = true;
           nwe.expires = true;
           return nwe;
         });
       } else {
-        console.log("else token", token);
-        // push("/login");
+        push("/login");
       }
-      console.log("token", token);
-      console.log("res verifyJWT", res);
     })();
   }, [token]);
   useEffect(() => {
-    if (newUser?.email?.trim() !== initialData?.email) {
+    if (newUser?.name?.trim() !== initialData?.name && !newUser.valid) {
       setNewUser((prev) => {
         let nwe = { ...prev };
         nwe.valid = true;
         return nwe;
       });
     }
-  }, [newUser.email]);
-  if (isEmpty(token)) {
-    push("/login");
-  }
+    if (newUser?.username?.trim() !== initialData?.username && !newUser.valid) {
+      setNewUser((prev) => {
+        let nwe = { ...prev };
+        nwe.valid = true;
+        return nwe;
+      });
+    }
+    if (newUser?.email?.trim() !== initialData?.email && !newUser.valid) {
+      setNewUser((prev) => {
+        let nwe = { ...prev };
+        nwe.valid = true;
+        return nwe;
+      });
+    }
+    if (newUser?.password !== initialData?.password && !newUser.valid) {
+      setNewUser((prev) => {
+        let nwe = { ...prev };
+        nwe.valid = true;
+        return nwe;
+      });
+    }
+    if (newUser?.userType !== initialData?.userType && !newUser.valid) {
+      setNewUser((prev) => {
+        let nwe = { ...prev };
+        nwe.valid = true;
+        return nwe;
+      });
+    }
+    if (
+      newUser?.minPasswordRegisterError &&
+      newUser?.cPassword !== initialData?.password &&
+      !newUser.valid
+    ) {
+      setNewUser((prev) => {
+        let nwe = { ...prev };
+        nwe.valid = true;
+        return nwe;
+      });
+    }
+  }, [newUser]);
+  console.log("initialData", initialData, "new user", newUser);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!newUser?.valid) {
-      return;
+      return null;
+    } else if (
+      newUser?.minPasswordRegisterError &&
+      newUser.password !== newUser.cPassword
+    ) {
+      setNewUser((prev) => {
+        let nwe = { ...prev };
+        nwe.valid = false;
+        return nwe;
+      });
+      cPass.current.setCustomValidity(
+        "Les mots de passes ne correspondent pas."
+      );
+      cPass.current.reportValidity();
     } else if (error.login) {
       setIsLoading(true);
       const res = await loginController({
         email: newUser.email,
         password: newUser.password,
-      });
+        userType: newUser.userType,
+        remember: newUser.remember,
+      }).catch((error) => console.log(error));
+      setSpinner(true);
       setIsLoading(false);
       if (res?.error) {
         push(`/fail?t=${res.error}`);
       } else {
-        dispatch(updateUserInfos({ user: res.user, token: res.token }));
+        dispatch(updateUserInfos({ user: res.user }));
+        dispatch(
+          updatePersistInfos({
+            authToken: res.token,
+            userType: newUser.userType,
+          })
+        );
         push("/home");
       }
-    } else if (error.register) {
+    } else if (newUser.password === newUser.cPassword && error.register) {
       setIsLoading(true);
       const res = await registerController({
         name: newUser.name,
         username: newUser.username,
         email: newUser.email,
         password: newUser.password,
-        persist: newUser.persist,
+        remember: newUser.remember,
         userType: newUser.userType,
-      });
+      }).catch((error) => console.log(error));
+      setSpinner(true);
       setIsLoading(false);
-      if (res?.id) {
-        push("/home");
-      } else if (res?.error) {
+      if (res?.error) {
         push(`/fail?t=${res.error}`);
-      } else if (res?.message) {
-        push(`/success?t=${res.t}`);
+      } else if (res?.token && res?.sendEmailError) {
+        push(`/success?s=${res.token}`);
       } else {
+        push(`/success?t=${res.token}`);
       }
     }
   };
-  if (!isValid || isLoading) return <Spinner />;
+  if (isEmpty(token) && typeof window !== "undefined") {
+    push("/login");
+  } else if (spinner) return <Spinner />;
   return (
     <ClientOnly spin>
       <div className={styles.container}>
@@ -291,13 +364,13 @@ export default function Fail() {
                   <input
                     type="text"
                     id="name"
-                    onChange={(e) => {
+                    onChange={(e) =>
                       setNewUser((prev) => {
                         let nwe = { ...prev };
                         nwe.name = e.target.value;
                         return nwe;
-                      });
-                    }}
+                      })
+                    }
                     value={newUser.name}
                     required
                     placeholder={`Nom`}
@@ -309,27 +382,27 @@ export default function Fail() {
                       type="checkbox"
                       checked={newUser.remember}
                       id="remember"
-                      onChange={() => {
+                      onChange={() =>
                         setNewUser((prev) => {
                           let nwe = { ...prev };
                           nwe.remember === true
                             ? (nwe.remember = false)
                             : (nwe.remember = true);
                           return nwe;
-                        });
-                      }}
+                        })
+                      }
                     />
                     <span>Se souvenir de moi</span>
                   </label>
                 )}
-                <div>
+                <div className={!newUser.valid ? "pen" : null}>
                   <button
                     className={
                       isLoading
                         ? `${styles.submit} ${styles.submitLoading}`
                         : `${styles.submit}`
                     }
-                    disabled={isLoading}
+                    disabled={isLoading || !newUser.valid}
                     type="submit"
                   >
                     Valider
@@ -371,13 +444,13 @@ export default function Fail() {
                   <input
                     type="text"
                     id="name"
-                    onChange={(e) => {
+                    onChange={(e) =>
                       setNewUser((prev) => {
                         let nwe = { ...prev };
                         nwe.name = e.target.value;
                         return nwe;
-                      });
-                    }}
+                      })
+                    }
                     value={newUser.name}
                     required
                     placeholder={`Nom`}
@@ -389,27 +462,27 @@ export default function Fail() {
                       type="checkbox"
                       checked={newUser.remember}
                       id="remember"
-                      onChange={() => {
+                      onChange={() =>
                         setNewUser((prev) => {
                           let nwe = { ...prev };
                           nwe.remember === true
                             ? (nwe.remember = false)
                             : (nwe.remember = true);
                           return nwe;
-                        });
-                      }}
+                        })
+                      }
                     />
                     <span>Se souvenir de moi</span>
                   </label>
                 )}
-                <div>
+                <div className={!newUser.valid ? "pen" : null}>
                   <button
                     className={
                       isLoading
                         ? `${styles.submit} ${styles.submitLoading}`
                         : `${styles.submit}`
                     }
-                    disabled={isLoading}
+                    disabled={isLoading || !newUser.valid}
                     type="submit"
                   >
                     Valider
@@ -451,13 +524,13 @@ export default function Fail() {
                   <input
                     type="text"
                     id="username"
-                    onChange={(e) => {
+                    onChange={(e) =>
                       setNewUser((prev) => {
                         let nwe = { ...prev };
                         nwe.username = e.target.value;
                         return nwe;
-                      });
-                    }}
+                      })
+                    }
                     value={newUser.username}
                     required
                     placeholder={`Prénom`}
@@ -469,27 +542,27 @@ export default function Fail() {
                       type="checkbox"
                       checked={newUser.remember}
                       id="remember"
-                      onChange={() => {
+                      onChange={() =>
                         setNewUser((prev) => {
                           let nwe = { ...prev };
                           nwe.remember === true
                             ? (nwe.remember = false)
                             : (nwe.remember = true);
                           return nwe;
-                        });
-                      }}
+                        })
+                      }
                     />
                     <span>Se souvenir de moi</span>
                   </label>
                 )}
-                <div>
+                <div className={!newUser.valid ? "pen" : null}>
                   <button
                     className={
                       isLoading
                         ? `${styles.submit} ${styles.submitLoading}`
                         : `${styles.submit}`
                     }
-                    disabled={isLoading}
+                    disabled={isLoading || !newUser.valid}
                     type="submit"
                   >
                     Valider
@@ -531,13 +604,13 @@ export default function Fail() {
                   <input
                     type="text"
                     id="username"
-                    onChange={(e) => {
+                    onChange={(e) =>
                       setNewUser((prev) => {
                         let nwe = { ...prev };
                         nwe.username = e.target.value;
                         return nwe;
-                      });
-                    }}
+                      })
+                    }
                     value={newUser.username}
                     required
                     placeholder={`Prénom`}
@@ -549,27 +622,27 @@ export default function Fail() {
                       type="checkbox"
                       checked={newUser.remember}
                       id="remember"
-                      onChange={() => {
+                      onChange={() =>
                         setNewUser((prev) => {
                           let nwe = { ...prev };
                           nwe.remember === true
                             ? (nwe.remember = false)
                             : (nwe.remember = true);
                           return nwe;
-                        });
-                      }}
+                        })
+                      }
                     />
                     <span>Se souvenir de moi</span>
                   </label>
                 )}
-                <div>
+                <div className={!newUser.valid ? "pen" : null}>
                   <button
                     className={
                       isLoading
                         ? `${styles.submit} ${styles.submitLoading}`
                         : `${styles.submit}`
                     }
-                    disabled={isLoading}
+                    disabled={isLoading || !newUser.valid}
                     type="submit"
                   >
                     Valider
@@ -613,13 +686,13 @@ export default function Fail() {
                   <input
                     type="text"
                     id="mail"
-                    onChange={(e) => {
+                    onChange={(e) =>
                       setNewUser((prev) => {
                         let nwe = { ...prev };
                         nwe.email = e.target.value;
                         return nwe;
-                      });
-                    }}
+                      })
+                    }
                     value={newUser.email}
                     required
                     placeholder={`Adresse email`}
@@ -631,27 +704,27 @@ export default function Fail() {
                       type="checkbox"
                       checked={newUser.remember}
                       id="remember"
-                      onChange={() => {
+                      onChange={() =>
                         setNewUser((prev) => {
                           let nwe = { ...prev };
                           nwe.remember === true
                             ? (nwe.remember = false)
                             : (nwe.remember = true);
                           return nwe;
-                        });
-                      }}
+                        })
+                      }
                     />
                     <span>Se souvenir de moi</span>
                   </label>
                 )}
-                <div>
+                <div className={!newUser.valid ? "pen" : null}>
                   <button
                     className={
                       isLoading
                         ? `${styles.submit} ${styles.submitLoading}`
                         : `${styles.submit}`
                     }
-                    disabled={isLoading}
+                    disabled={isLoading || !newUser.valid}
                     type="submit"
                   >
                     Valider
@@ -695,13 +768,13 @@ export default function Fail() {
                   <input
                     type="text"
                     id="mail"
-                    onChange={(e) => {
+                    onChange={(e) =>
                       setNewUser((prev) => {
                         let nwe = { ...prev };
                         nwe.email = e.target.value;
                         return nwe;
-                      });
-                    }}
+                      })
+                    }
                     value={newUser.email}
                     required
                     placeholder={`Adresse email`}
@@ -713,27 +786,27 @@ export default function Fail() {
                       type="checkbox"
                       checked={newUser.remember}
                       id="remember"
-                      onChange={() => {
+                      onChange={() =>
                         setNewUser((prev) => {
                           let nwe = { ...prev };
                           nwe.remember === true
                             ? (nwe.remember = false)
                             : (nwe.remember = true);
                           return nwe;
-                        });
-                      }}
+                        })
+                      }
                     />
                     <span>Se souvenir de moi</span>
                   </label>
                 )}
-                <div>
+                <div className={!newUser.valid ? "pen" : null}>
                   <button
                     className={
                       isLoading
                         ? `${styles.submit} ${styles.submitLoading}`
                         : `${styles.submit}`
                     }
-                    disabled={isLoading}
+                    disabled={isLoading || !newUser.valid}
                     type="submit"
                   >
                     Valider
@@ -775,26 +848,27 @@ export default function Fail() {
                   <input
                     type="password"
                     id="password"
-                    onChange={(e) => {
+                    onChange={(e) =>
                       setNewUser((prev) => {
                         let nwe = { ...prev };
                         nwe.password = e.target.value;
                         return nwe;
-                      });
-                    }}
+                      })
+                    }
                     value={newUser.password}
                     required
                     placeholder={`Mot de passe`}
                   />
                   <input
                     type="password"
-                    onChange={(e) => {
+                    ref={cPass}
+                    onChange={(e) =>
                       setNewUser((prev) => {
                         let nwe = { ...prev };
                         nwe.cPassword = e.target.value;
                         return nwe;
-                      });
-                    }}
+                      })
+                    }
                     value={newUser.cPassword}
                     required
                     placeholder={`Confirmer mot de passe`}
@@ -806,27 +880,27 @@ export default function Fail() {
                       type="checkbox"
                       checked={newUser.remember}
                       id="remember"
-                      onChange={() => {
+                      onChange={() =>
                         setNewUser((prev) => {
                           let nwe = { ...prev };
                           nwe.remember === true
                             ? (nwe.remember = false)
                             : (nwe.remember = true);
                           return nwe;
-                        });
-                      }}
+                        })
+                      }
                     />
                     <span>Se souvenir de moi</span>
                   </label>
                 )}
-                <div>
+                <div className={!newUser.valid ? "pen" : null}>
                   <button
                     className={
                       isLoading
                         ? `${styles.submit} ${styles.submitLoading}`
                         : `${styles.submit}`
                     }
-                    disabled={isLoading}
+                    disabled={isLoading || !newUser.valid}
                     type="submit"
                   >
                     Valider
@@ -872,13 +946,13 @@ export default function Fail() {
                   <input
                     type="text"
                     id="mail"
-                    onChange={(e) => {
+                    onChange={(e) =>
                       setNewUser((prev) => {
                         let nwe = { ...prev };
                         nwe.email = e.target.value;
                         return nwe;
-                      });
-                    }}
+                      })
+                    }
                     value={newUser.email}
                     required
                     placeholder={`Adresse email`}
@@ -886,13 +960,13 @@ export default function Fail() {
                   <input
                     type="password"
                     id="password"
-                    onChange={(e) => {
+                    onChange={(e) =>
                       setNewUser((prev) => {
                         let nwe = { ...prev };
                         nwe.password = e.target.value;
                         return nwe;
-                      });
-                    }}
+                      })
+                    }
                     value={newUser.password}
                     required
                     placeholder={`Mot de passe`}
@@ -904,27 +978,27 @@ export default function Fail() {
                       type="checkbox"
                       checked={newUser.remember}
                       id="remember"
-                      onChange={() => {
+                      onChange={() =>
                         setNewUser((prev) => {
                           let nwe = { ...prev };
                           nwe.remember === true
                             ? (nwe.remember = false)
                             : (nwe.remember = true);
                           return nwe;
-                        });
-                      }}
+                        })
+                      }
                     />
                     <span>Se souvenir de moi</span>
                   </label>
                 )}
-                <div>
+                <div className={!newUser.valid ? "pen" : null}>
                   <button
                     className={
                       isLoading
                         ? `${styles.submit} ${styles.submitLoading}`
                         : `${styles.submit}`
                     }
-                    disabled={isLoading}
+                    disabled={isLoading || !newUser.valid}
                     type="submit"
                   >
                     Valider
@@ -968,13 +1042,13 @@ export default function Fail() {
                   <input
                     type="text"
                     id="mail"
-                    onChange={(e) => {
+                    onChange={(e) =>
                       setNewUser((prev) => {
                         let nwe = { ...prev };
                         nwe.email = e.target.value;
                         return nwe;
-                      });
-                    }}
+                      })
+                    }
                     value={newUser.email}
                     required
                     placeholder={`Adresse email`}
@@ -982,13 +1056,13 @@ export default function Fail() {
                   <input
                     type="password"
                     id="password"
-                    onChange={(e) => {
+                    onChange={(e) =>
                       setNewUser((prev) => {
                         let nwe = { ...prev };
                         nwe.password = e.target.value;
                         return nwe;
-                      });
-                    }}
+                      })
+                    }
                     value={newUser.password}
                     required
                     placeholder={`Mot de passe`}
@@ -1000,22 +1074,22 @@ export default function Fail() {
                       type="checkbox"
                       checked={newUser.remember}
                       id="remember"
-                      onChange={() => {
+                      onChange={() =>
                         setNewUser((prev) => {
                           let nwe = { ...prev };
                           nwe.remember === true
                             ? (nwe.remember = false)
                             : (nwe.remember = true);
                           return nwe;
-                        });
-                      }}
+                        })
+                      }
                     />
                     <span>Se souvenir de moi</span>
                   </label>
                 )}
-                <div>
+                <div className={!newUser.valid ? "pen" : null}>
                   <button
-                    disabled={isLoading}
+                    disabled={isLoading || !newUser.valid}
                     className={
                       isLoading
                         ? `${styles.submit} ${styles.submitLoading}`
@@ -1062,13 +1136,13 @@ export default function Fail() {
                   <input
                     type="text"
                     id="mail"
-                    onChange={(e) => {
+                    onChange={(e) =>
                       setNewUser((prev) => {
                         let nwe = { ...prev };
                         nwe.email = e.target.value;
                         return nwe;
-                      });
-                    }}
+                      })
+                    }
                     value={newUser.email}
                     required
                     placeholder={`Adresse email`}
@@ -1076,13 +1150,13 @@ export default function Fail() {
                   <input
                     type="password"
                     id="password"
-                    onChange={(e) => {
+                    onChange={(e) =>
                       setNewUser((prev) => {
                         let nwe = { ...prev };
                         nwe.password = e.target.value;
                         return nwe;
-                      });
-                    }}
+                      })
+                    }
                     value={newUser.password}
                     required
                     placeholder={`Mot de passe`}
@@ -1094,28 +1168,28 @@ export default function Fail() {
                       type="checkbox"
                       checked={newUser.remember}
                       id="remember"
-                      onChange={() => {
+                      onChange={() =>
                         setNewUser((prev) => {
                           let nwe = { ...prev };
                           nwe.remember === true
                             ? (nwe.remember = false)
                             : (nwe.remember = true);
                           return nwe;
-                        });
-                      }}
+                        })
+                      }
                     />
                     <span>Se souvenir de moi</span>
                   </label>
                 )}
 
-                <div>
+                <div className={!newUser.valid ? "pen" : null}>
                   <button
                     className={
                       isLoading
                         ? `${styles.submit} ${styles.submitLoading}`
                         : `${styles.submit}`
                     }
-                    disabled={isLoading}
+                    disabled={isLoading || !newUser.valid}
                     type="submit"
                   >
                     Valider
@@ -1162,13 +1236,13 @@ export default function Fail() {
                   <input
                     type="text"
                     id="mail"
-                    onChange={(e) => {
+                    onChange={(e) =>
                       setNewUser((prev) => {
                         let nwe = { ...prev };
                         nwe.email = e.target.value;
                         return nwe;
-                      });
-                    }}
+                      })
+                    }
                     value={newUser.email}
                     required
                     placeholder={`Adresse email`}
@@ -1201,14 +1275,14 @@ export default function Fail() {
                   </button>
                 </div>
 
-                <div>
+                <div className={!newUser.valid ? "pen" : null}>
                   <button
                     className={
                       isLoading
                         ? `${styles.submit} ${styles.submitLoading}`
                         : `${styles.submit}`
                     }
-                    disabled={isLoading}
+                    disabled={isLoading || !newUser.valid}
                     type="submit"
                   >
                     Valider
@@ -1235,6 +1309,103 @@ export default function Fail() {
               </>
             )}
 
+            {/* failToCreateNewUser */}
+            {error.failToCreateNewUser && (
+              <>
+                <div className={styles.title}>
+                  <h1>Désolé, La création de votre compte a échoué</h1>
+                </div>
+                {!isEmpty(contactEmail) && (
+                  <div className={styles.rais}>
+                    <label htmlFor="email">
+                      Vous pouvez essayer de retenter l{"'"}inscription en
+                      cliquant sur revalider ou si le problème persiste vous
+                      pouvez nous contacter par l{"'"}adresse email :{" "}
+                      <label
+                        onClick={() => {
+                          navigator.clipboard.writeText(contactEmail);
+                          setCopied(true);
+                          setTimeout(() => {
+                            setCopied(false);
+                          }, 1500);
+                        }}
+                        className={styles.adr}
+                      >
+                        {contactEmail}{" "}
+                        <span className={styles.copy}>
+                          {copied ? <VscCheckAll /> : <AiOutlineCopy />}
+                          <span className={styles.badge}>
+                            {copied ? "Copié" : "Copier"}
+                          </span>
+                        </span>
+                      </label>
+                    </label>
+                  </div>
+                )}
+                <div className={styles.inputs}>
+                  <input
+                    type="text"
+                    id="email"
+                    onChange={(e) =>
+                      setNewUser((prev) => {
+                        let nwe = { ...prev };
+                        nwe.email = e.target.value;
+                        return nwe;
+                      })
+                    }
+                    value={newUser.email}
+                    required
+                    placeholder={`Adresse email`}
+                  />
+                </div>
+                {!initialData.remember && (
+                  <label htmlFor="remember" className={styles.remember}>
+                    <input
+                      type="checkbox"
+                      checked={newUser.remember}
+                      id="remember"
+                      onChange={() =>
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.remember === true
+                            ? (nwe.remember = false)
+                            : (nwe.remember = true);
+                          return nwe;
+                        })
+                      }
+                    />
+                    <span>Se souvenir de moi</span>
+                  </label>
+                )}
+                <div>
+                  <button
+                    className={
+                      isLoading
+                        ? `${styles.submit} ${styles.submitLoading}`
+                        : `${styles.submit}`
+                    }
+                    disabled={isLoading}
+                    type="submit"
+                  >
+                    Revalider
+                  </button>
+                </div>
+                <div className={styles.hr} />
+                <Link
+                  onClick={() => {
+                    setLoadLink(true);
+                  }}
+                  href={"/login"}
+                  className={
+                    loadLink
+                      ? `${styles.switch} ${styles.register} ${styles.loadLink}`
+                      : `${styles.switch} ${styles.register}`
+                  }
+                >
+                  <span>S{"'"}inscrire</span>
+                </Link>
+              </>
+            )}
             {/* expires */}
             {error.expires && (
               <>

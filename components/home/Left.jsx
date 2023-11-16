@@ -441,9 +441,13 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                         className={styles.shrInput}
                         value={user?.portfolio}
                       />
-                      <span className={styles.sh}>
+                      <Link
+                        target={"_blank"}
+                        href={user?.portfolio || "#"}
+                        className={styles.sh}
+                      >
                         <BsShare size={".8rem"} className="try1" />
-                      </span>
+                      </Link>
                     </div>
                   </div>
                 </div>

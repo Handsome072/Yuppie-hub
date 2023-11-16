@@ -142,6 +142,51 @@
   box-shadow: var(--box-shadow);
   color: var(--blue);
 }
+
+.adr {
+  position: relative;
+  color: var(--blue);
+}
+.copy {
+  position: absolute;
+  right: -1.5rem;
+  cursor: pointer;
+  color: var(--black-input);
+  transition: 0.1s;
+  opacity: 0;
+}
+.adr:hover .copy {
+  opacity: 1;
+}
+
+.badge {
+  position: absolute;
+  top: -1.8rem;
+  right: -0.35rem;
+  font-size: 0.75rem;
+  background: var(--black-input);
+  padding: 0.15rem 0.3rem;
+  border-radius: 2px;
+  box-shadow: var(--box-shadow);
+  color: var(--white);
+  z-index: 3;
+  animation: t 0.5s;
+  display: none;
+}
+.adr:hover .badge {
+  display: block;
+}
+.badge::before {
+  content: "";
+  position: absolute;
+  background: var(--black-input);
+  height: 0.5rem;
+  width: 0.5rem;
+  bottom: -0.25rem;
+  left: 65%;
+  transform: rotate(45deg);
+  z-index: 2;
+}
 .forgot {
   display: flex;
   justify-content: center;

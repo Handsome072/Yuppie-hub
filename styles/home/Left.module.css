@@ -145,11 +145,7 @@
   align-items: center;
   position: relative;
   flex: 1;
-  max-height: 75%;
   overflow: auto;
-}
-.middleh {
-  height: 75%;
 }
 .more {
   position: relative;
@@ -196,11 +192,6 @@
   background: var(--blue);
   color: var(--white);
 }
-.middle.middleCli {
-  height: 67.5%;
-  max-height: initial;
-  min-height: initial;
-}
 .add {
   position: relative;
   display: flex;
@@ -210,6 +201,8 @@
   flex-direction: column;
   padding-top: 3%;
   flex: 1;
+  overflow: hidden;
+  border-radius: 0.5rem;
 }
 .middleCli .add {
   height: 50%;
@@ -237,7 +230,7 @@
 .bcl {
   display: flex;
   flex-direction: column;
-  height: 38%;
+  flex: 1;
 }
 .more .textarea {
   border-radius: 0.5rem;
@@ -266,7 +259,7 @@
 }
 .middleCli .moreInfos {
   height: max-content;
-  margin-bottom: 3%;
+  margin-bottom: 0.5rem;
 }
 .op {
   display: flex;
@@ -292,12 +285,12 @@
   overflow: hidden;
 }
 .ccli .note {
-  flex: 1;
+  /* flex: 1; */
 }
 .note div {
   position: relative;
-  height: 100%;
   overflow: hidden;
+  border-radius: 0.5rem;
 }
 .ntlab {
   position: absolute;
@@ -317,7 +310,6 @@
 .note .textarea {
   margin-top: 1rem;
   border-radius: 0 0 0.5rem 0.5rem;
-  height: 2.5rem;
   cursor: default;
 }
 .note .crt {
@@ -332,7 +324,7 @@
   color: var(--white);
 }
 .middleCli .op .lab {
-  padding: 1.5% 0 1.5% 0.1rem;
+  padding: 0 0 1% 0.1rem;
 }
 .lab span {
   font-size: 0.85rem;

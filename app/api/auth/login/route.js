@@ -17,6 +17,7 @@ export const POST = async (req) => {
       isEmpty(body) ||
       isEmpty(body?.email) ||
       isEmpty(body?.password) ||
+      isEmpty(body?.remember) ||
       isEmpty(body?.userType)
     ) {
       return new NextResponse(
@@ -24,7 +25,7 @@ export const POST = async (req) => {
       );
     }
     if (!emailController(body.email)) {
-      infos = { ...body, invalidLoginEmailError: true };
+      infos = { ...body, login: true, invalidLoginEmailError: true };
       token = createToken(infos, max);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 401 }) // Changed status to 401 for invalid email
@@ -33,7 +34,7 @@ export const POST = async (req) => {
     await connectToMongo();
     const user = await UserModel.findOne({ email: body.email });
     if (isEmpty(user)) {
-      infos = { ...body, ukEmailLoginError: true };
+      infos = { ...body, login: true, ukEmailLoginError: true };
       token = createToken(infos, max);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 404 }) // Changed status to 404 for user not found
@@ -41,14 +42,14 @@ export const POST = async (req) => {
     }
     const validUser = await bcrypt.compare(body.password, user.password);
     if (!validUser) {
-      infos = { ...body, invalidLoginPasswordError: true };
+      infos = { ...body, login: true, invalidLoginPasswordError: true };
       token = createToken(infos, max);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 403 }) // Changed status to 403 for invalid password
       );
     }
     if (user.userType !== body.userType) {
-      infos = { ...body, invalidLoginUserTypeError: true };
+      infos = { ...body, login: true, invalidLoginUserTypeError: true };
       token = createToken(infos, max);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 403 }) // Changed status to 403 for invalid password
@@ -66,7 +67,7 @@ export const POST = async (req) => {
       token: accessToken,
       tokenName: authTokenName,
       infos: body?.infos,
-      persist: body.persist,
+      persist: body.remember,
     });
     const { password, tokens, isAdmin, ...userInfos } = Object.assign(
       {},
@@ -83,7 +84,7 @@ export const POST = async (req) => {
       secure: true,
       sameSite: "strict",
     };
-    if (body.persist) {
+    if (body.remember) {
       options.maxAge = maxAge;
     }
     res.cookies.set(cookieName, accessToken, options);

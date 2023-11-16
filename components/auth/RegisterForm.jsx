@@ -72,7 +72,7 @@ export default function RegisterForm() {
         username: usernameUser.value,
         email: emailUser.value,
         password: passwordUser.value,
-        persist: remember ? remember : null,
+        remember,
         userType: userType.value,
       }).catch((error) => console.log(error.message));
       setSpinner(true);

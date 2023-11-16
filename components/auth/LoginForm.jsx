@@ -40,8 +40,8 @@ export default function LoginForm(req) {
       email: userEmail,
       password: userPassword,
       userType,
-      persist: remember,
-    }).catch((error) => console.log(error.message));
+      remember,
+    }).catch((error) => console.log(error));
     setSpinner(true);
     setIsLoading(false);
     if (res?.error) {

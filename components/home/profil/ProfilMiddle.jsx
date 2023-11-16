@@ -46,6 +46,7 @@ export default function ProfilMiddle({
   newProvince,
   setNewProvince,
   isSubmit,
+  setIsSubmit,
 }) {
   const { user } = useSelector((state) => state.user);
   const [active, setActive] = useState("infos");
@@ -215,7 +216,13 @@ export default function ProfilMiddle({
                   : null
               }
               disabled={isSubmit.is || !isSubmit.can}
-              onClick={handleSubmit}
+              onClick={() =>
+                setIsSubmit((prev) => {
+                  let nwe = { ...prev };
+                  nwe.is = true;
+                  return nwe;
+                })
+              }
               type="submit"
             >
               <label>Soumettre</label>

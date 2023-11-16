@@ -27,48 +27,56 @@ export const POST = async (req) => {
     const { minUsernameRegisterError, maxUsernameRegisterError } =
       validateUsername(body.username);
     const { minPasswordRegisterError } = validatePassword(body.password);
-    if (isEmpty(body)) {
+    if (
+      isEmpty(body) ||
+      isEmpty(body?.name) ||
+      isEmpty(body?.username) ||
+      isEmpty(body?.email) ||
+      isEmpty(body?.password) ||
+      isEmpty(body?.userType) ||
+      isEmpty(body?.remember)
+    ) {
       return new NextResponse(
         JSON.stringify({ error: "Data required" }, { status: 400 })
       );
     }
     if (minNameRegisterError) {
-      infos = { ...body, minNameRegisterError: true };
+      infos = { ...body, register: true, minNameRegisterError: true };
       token = createToken(infos, max);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 400 })
       );
     }
     if (maxNameRegisterError) {
-      infos = { ...body, maxNameRegisterError: true };
+      infos = { ...body, register: true, maxNameRegisterError: true };
       token = createToken(infos, max);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 400 })
       );
     }
     if (minUsernameRegisterError) {
-      infos = { ...body, minUsernameRegisterError: true };
+      infos = { ...body, register: true, minUsernameRegisterError: true };
       token = createToken(infos, max);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 400 })
       );
     }
     if (maxUsernameRegisterError) {
-      infos = { ...body, maxUsernameRegisterError: true };
+      infos = { ...body, register: true, maxUsernameRegisterError: true };
       token = createToken(infos, max);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 400 })
       );
     }
     if (!emailController(body.email)) {
-      infos = { ...body, invalidRegisterEmailError: true };
+      infos = { ...body, register: true, invalidRegisterEmailError: true };
       token = createToken(infos, max);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 400 })
       );
     }
     if (minPasswordRegisterError) {
-      infos = { ...body, minPasswordRegisterError: true };
+      infos = { ...body, register: true, minPasswordRegisterError: true };
       token = createToken(infos, max);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 400 })
@@ -77,7 +85,7 @@ export const POST = async (req) => {
     await connectToMongo();
     const verifyExistUser = await UserModel.findOne({ email: body.email });
     if (!isEmpty(verifyExistUser)) {
-      infos = { ...body, alreadyExistRegisterEmailError: true };
+      infos = { ...body, register: true, alreadyExistRegisterEmailError: true };
       token = createToken(infos, max);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 400 })
@@ -90,9 +98,10 @@ export const POST = async (req) => {
       name: body.name,
       username,
       userType: body.userType,
+      persist: body.remember,
     });
     if (isEmpty(user)) {
-      infos = { ...body, failToCreateNewUser: true };
+      infos = { ...body, register: true, failToCreateNewUser: true };
       token = createToken(infos, max);
       return new NextResponse(
         JSON.stringify(
