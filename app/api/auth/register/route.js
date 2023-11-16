@@ -17,76 +17,98 @@ export const POST = async (req) => {
   try {
     let token = null;
     let infos = null;
+    let user = null;
     let username = null;
     let max = 60 * 60;
     const body = await req.json();
-    const { nameError } = validateName(body.name);
-    const { usernameError } = validateUsername(body.username);
-    const { passWordError } = validatePassword(body.password);
+    const { minNameRegisterError, maxNameRegisterError } = validateName(
+      body.name
+    );
+    const { minUsernameRegisterError, maxUsernameRegisterError } =
+      validateUsername(body.username);
+    const { minPasswordRegisterError } = validatePassword(body.password);
     if (isEmpty(body)) {
       return new NextResponse(
         JSON.stringify({ error: "Data required" }, { status: 400 })
       );
     }
-    console.log("body", body);
-    if (nameError) {
-      return new NextResponse(
-        JSON.stringify({ error: nameError }, { status: 400 })
-      );
-    }
-    console.log("ici 1");
-    if (usernameError && !isEmpty(usernameError)) {
-      return new NextResponse(
-        JSON.stringify({ error: usernameError }, { status: 400 })
-      );
-    }
-    console.log("ici 2");
-    if (!emailController(body.email)) {
-      infos = { ...body, invalidEmail: true };
+    if (minNameRegisterError) {
+      infos = { ...body, minNameRegisterError: true };
       token = createToken(infos, max);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 400 })
       );
     }
-    console.log("ici 3");
-    if (passWordError) {
+    if (maxNameRegisterError) {
+      infos = { ...body, maxNameRegisterError: true };
+      token = createToken(infos, max);
       return new NextResponse(
-        JSON.stringify({ error: passWordError }, { status: 400 })
+        JSON.stringify({ error: token }, { status: 400 })
       );
     }
-    console.log("ici 4");
+    if (minUsernameRegisterError) {
+      infos = { ...body, minUsernameRegisterError: true };
+      token = createToken(infos, max);
+      return new NextResponse(
+        JSON.stringify({ error: token }, { status: 400 })
+      );
+    }
+    if (maxUsernameRegisterError) {
+      infos = { ...body, maxUsernameRegisterError: true };
+      token = createToken(infos, max);
+      return new NextResponse(
+        JSON.stringify({ error: token }, { status: 400 })
+      );
+    }
+    if (!emailController(body.email)) {
+      infos = { ...body, invalidRegisterEmailError: true };
+      token = createToken(infos, max);
+      return new NextResponse(
+        JSON.stringify({ error: token }, { status: 400 })
+      );
+    }
+    if (minPasswordRegisterError) {
+      infos = { ...body, minPasswordRegisterError: true };
+      token = createToken(infos, max);
+      return new NextResponse(
+        JSON.stringify({ error: token }, { status: 400 })
+      );
+    }
     await connectToMongo();
     const verifyExistUser = await UserModel.findOne({ email: body.email });
     if (!isEmpty(verifyExistUser)) {
-      infos = { ...body, emailExist: true };
+      infos = { ...body, alreadyExistRegisterEmailError: true };
       token = createToken(infos, max);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 400 })
       );
     }
-    console.log("ici 5");
     username = body.username.charAt(0).toUpperCase() + body.username.slice(1);
-    const user = await UserModel.create({
+    user = await UserModel.create({
       email: body.email,
       password: body.password,
       name: body.name,
       username,
       userType: body.userType,
     });
-    console.log("ici 6");
-    if (!user) {
+    if (isEmpty(user)) {
+      infos = { ...body, failToCreateNewUser: true };
+      token = createToken(infos, max);
       return new NextResponse(
         JSON.stringify(
           {
-            error:
-              "Une erreur est survenue lors de la création de l'utilisateur",
+            error: token,
           },
           { status: 500 }
         )
       );
     }
-
-    console.log("ici 7");
+    infos = {
+      newUser: true,
+      email: user.email,
+      id: user._id,
+    };
+    token = createToken(infos, max);
     const res = await nodeMailer({
       to: user.email,
       subject: "Inscription réussie",
@@ -94,21 +116,14 @@ export const POST = async (req) => {
         name: user.name,
         username: user.username,
         userType: user.userType,
+        link: token,
       }),
     });
-    console.log("ici 8");
     if (!isEmpty(res?.error)) {
-      console.log("Error to confirm register with email", res.error);
       return new NextResponse(
-        JSON.stringify(
-          { sendEmailError: "Erreur d'envoi de l'email" },
-          { status: 400 }
-        )
+        JSON.stringify({ token, sendEmailError: true }, { status: 400 })
       );
     }
-    infos = { newUser: true, email: user.email, id: user._id };
-    token = createToken(infos, max);
-    console.log("ici 9");
     return new NextResponse(JSON.stringify({ token }, { status: 200 }));
   } catch (err) {
     return new NextResponse(

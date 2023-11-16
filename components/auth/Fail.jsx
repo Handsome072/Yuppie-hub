@@ -57,46 +57,87 @@ export default function Fail() {
       setIsValid(true);
       if (!isEmpty(res?.infos)) {
         setInitialData(res.infos);
-        if (res.infos?.invalidRegisterEmailError) {
+        if (res.infos?.minNameRegisterError) {
           setError((prev) => {
             let nwe = { ...prev };
-            nwe.obj = res.email;
             for (const key in nwe) {
-              if (key !== "obj") {
-                nwe[key] = false;
-              }
+              nwe[key] = false;
             }
             nwe.register = true;
-            nwe.invalidEmail = true;
+            nwe.minNameRegisterError = true;
+            return nwe;
+          });
+          setNewUser(res.infos);
+        } else if (res.infos?.maxNameRegisterError) {
+          setError((prev) => {
+            let nwe = { ...prev };
+            for (const key in nwe) {
+              nwe[key] = false;
+            }
+            nwe.register = true;
+            nwe.maxNameRegisterError = true;
+            return nwe;
+          });
+          setNewUser(res.infos);
+        } else if (res.infos?.minUsernameRegisterError) {
+          setError((prev) => {
+            let nwe = { ...prev };
+            for (const key in nwe) {
+              nwe[key] = false;
+            }
+            nwe.register = true;
+            nwe.minUsernameRegisterError = true;
+            return nwe;
+          });
+          setNewUser(res.infos);
+        } else if (res.infos?.maxUsernameRegisterError) {
+          setError((prev) => {
+            let nwe = { ...prev };
+            for (const key in nwe) {
+              nwe[key] = false;
+            }
+            nwe.register = true;
+            nwe.maxUsernameRegisterError = true;
+            return nwe;
+          });
+          setNewUser(res.infos);
+        } else if (res.infos?.invalidRegisterEmailError) {
+          setError((prev) => {
+            let nwe = { ...prev };
+            for (const key in nwe) {
+              nwe[key] = false;
+            }
+            nwe.register = true;
+            nwe.invalidRegisterEmailError = true;
             return nwe;
           });
           setNewUser(res.infos);
         } else if (res.infos?.alreadyExistRegisterEmailError) {
           setError((prev) => {
             let nwe = { ...prev };
-            nwe.obj = res.email;
             for (const key in nwe) {
-              if (key !== "obj") {
-                nwe[key] = false;
-              }
+              nwe[key] = false;
             }
             nwe.register = true;
-            nwe.alreadyExist = true;
+            nwe.alreadyExistRegisterEmailError = true;
             return nwe;
           });
-          const { invalidEmail, ...nwu } = res;
-          setNewUser(nwu);
-        } else if (res.infos?.invalidLoginEmailError) {
+          setNewUser(res.infos);
+        } else if (res.infos?.minPasswordRegisterError) {
           setError((prev) => {
             let nwe = { ...prev };
             for (const key in nwe) {
               nwe[key] = false;
             }
-            nwe.login = true;
-            nwe.invalidLoginEmailError = true;
+            nwe.register = true;
+            nwe.minPasswordRegisterError = true;
             return nwe;
           });
-          setNewUser(res.infos);
+          setNewUser((prev) => {
+            let nwe = res.infos;
+            nwe.cPassword = "";
+            return nwe;
+          });
         } else if (res.infos?.ukEmailLoginError) {
           setError((prev) => {
             let nwe = { ...prev };
@@ -105,6 +146,17 @@ export default function Fail() {
             }
             nwe.login = true;
             nwe.ukEmailLoginError = true;
+            return nwe;
+          });
+          setNewUser(res.infos);
+        } else if (res.infos?.invalidLoginEmailError) {
+          setError((prev) => {
+            let nwe = { ...prev };
+            for (const key in nwe) {
+              nwe[key] = false;
+            }
+            nwe.login = true;
+            nwe.invalidLoginEmailError = true;
             return nwe;
           });
           setNewUser(res.infos);
@@ -222,96 +274,583 @@ export default function Fail() {
           </div>
           <div className={styles.contenu}>
             {/* register errors */}
-
-            {error.alreadyExist && (
+            {error.minNameRegisterError && (
               <>
-                <div className={styles.inputs}>
+                <div className={styles.title}>
                   <h1>
                     Désolé, Votre compte n{"'"}a pas été créé pour la raison
                     suivante :
                   </h1>
-
-                  <label htmlFor="mail">
-                    L{"'"}adresse email :{" "}
-                    <span className={styles.mail}>{initialData.email}</span> est
-                    déjà associé à un compte.
+                </div>
+                <div className={styles.rais}>
+                  <label htmlFor="name">
+                    Le nom doit faire au moins 3 caractères.
                   </label>
-
-                  <div>
+                </div>
+                <div className={styles.inputs}>
+                  <input
+                    type="text"
+                    id="name"
+                    onChange={(e) => {
+                      setNewUser((prev) => {
+                        let nwe = { ...prev };
+                        nwe.name = e.target.value;
+                        return nwe;
+                      });
+                    }}
+                    value={newUser.name}
+                    required
+                    placeholder={`Nom`}
+                  />
+                </div>
+                {!initialData.remember && (
+                  <label htmlFor="remember" className={styles.remember}>
                     <input
-                      type="text"
-                      id="mail"
-                      onChange={(e) => {
+                      type="checkbox"
+                      checked={newUser.remember}
+                      id="remember"
+                      onChange={() => {
                         setNewUser((prev) => {
                           let nwe = { ...prev };
-                          nwe.email = e.target.value;
+                          nwe.remember === true
+                            ? (nwe.remember = false)
+                            : (nwe.remember = true);
                           return nwe;
                         });
                       }}
-                      value={newUser?.email || ""}
-                      required
-                      placeholder={`Adresse email`}
                     />
-                  </div>
-                </div>
-                <div
-                  className={
-                    isLoading
-                      ? `${styles.submit} ${styles.submitLoading}`
-                      : `${styles.submit}`
-                  }
-                >
-                  <button disabled={isLoading} type="submit">
+                    <span>Se souvenir de moi</span>
+                  </label>
+                )}
+                <div>
+                  <button
+                    className={
+                      isLoading
+                        ? `${styles.submit} ${styles.submitLoading}`
+                        : `${styles.submit}`
+                    }
+                    disabled={isLoading}
+                    type="submit"
+                  >
                     Valider
                   </button>
                 </div>
+                <div className={styles.hr} />
+                <div className={styles.notRegistered}>
+                  <label>Vous avez déjà un compte ?</label>
+                </div>
+                <Link
+                  onClick={() => {
+                    setLoadLink(true);
+                  }}
+                  href={"/login"}
+                  className={
+                    loadLink
+                      ? `${styles.switch} ${styles.register} ${styles.loadLink}`
+                      : `${styles.switch} ${styles.register}`
+                  }
+                >
+                  <span>Se connecter</span>
+                </Link>
+              </>
+            )}
+            {error.maxNameRegisterError && (
+              <>
+                <div className={styles.title}>
+                  <h1>
+                    Désolé, Votre compte n{"'"}a pas été créé pour la raison
+                    suivante :
+                  </h1>
+                </div>
+                <div className={styles.rais}>
+                  <label htmlFor="name">
+                    Le nom doit pas dépasser les 50 caractères.
+                  </label>
+                </div>
+                <div className={styles.inputs}>
+                  <input
+                    type="text"
+                    id="name"
+                    onChange={(e) => {
+                      setNewUser((prev) => {
+                        let nwe = { ...prev };
+                        nwe.name = e.target.value;
+                        return nwe;
+                      });
+                    }}
+                    value={newUser.name}
+                    required
+                    placeholder={`Nom`}
+                  />
+                </div>
+                {!initialData.remember && (
+                  <label htmlFor="remember" className={styles.remember}>
+                    <input
+                      type="checkbox"
+                      checked={newUser.remember}
+                      id="remember"
+                      onChange={() => {
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.remember === true
+                            ? (nwe.remember = false)
+                            : (nwe.remember = true);
+                          return nwe;
+                        });
+                      }}
+                    />
+                    <span>Se souvenir de moi</span>
+                  </label>
+                )}
+                <div>
+                  <button
+                    className={
+                      isLoading
+                        ? `${styles.submit} ${styles.submitLoading}`
+                        : `${styles.submit}`
+                    }
+                    disabled={isLoading}
+                    type="submit"
+                  >
+                    Valider
+                  </button>
+                </div>
+                <div className={styles.hr} />
+                <div className={styles.notRegistered}>
+                  <label>Vous avez déjà un compte ?</label>
+                </div>
+                <Link
+                  onClick={() => {
+                    setLoadLink(true);
+                  }}
+                  href={"/login"}
+                  className={
+                    loadLink
+                      ? `${styles.switch} ${styles.register} ${styles.loadLink}`
+                      : `${styles.switch} ${styles.register}`
+                  }
+                >
+                  <span>Se connecter</span>
+                </Link>
+              </>
+            )}
+            {error.minUsernameRegisterError && (
+              <>
+                <div className={styles.title}>
+                  <h1>
+                    Désolé, Votre compte n{"'"}a pas été créé pour la raison
+                    suivante :
+                  </h1>
+                </div>
+                <div className={styles.rais}>
+                  <label htmlFor="username">
+                    Le prénom doit faire au moins 3 caractères.
+                  </label>
+                </div>
+                <div className={styles.inputs}>
+                  <input
+                    type="text"
+                    id="username"
+                    onChange={(e) => {
+                      setNewUser((prev) => {
+                        let nwe = { ...prev };
+                        nwe.username = e.target.value;
+                        return nwe;
+                      });
+                    }}
+                    value={newUser.username}
+                    required
+                    placeholder={`Prénom`}
+                  />
+                </div>
+                {!initialData.remember && (
+                  <label htmlFor="remember" className={styles.remember}>
+                    <input
+                      type="checkbox"
+                      checked={newUser.remember}
+                      id="remember"
+                      onChange={() => {
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.remember === true
+                            ? (nwe.remember = false)
+                            : (nwe.remember = true);
+                          return nwe;
+                        });
+                      }}
+                    />
+                    <span>Se souvenir de moi</span>
+                  </label>
+                )}
+                <div>
+                  <button
+                    className={
+                      isLoading
+                        ? `${styles.submit} ${styles.submitLoading}`
+                        : `${styles.submit}`
+                    }
+                    disabled={isLoading}
+                    type="submit"
+                  >
+                    Valider
+                  </button>
+                </div>
+                <div className={styles.hr} />
+                <div className={styles.notRegistered}>
+                  <label>Vous avez déjà un compte ?</label>
+                </div>
+                <Link
+                  onClick={() => {
+                    setLoadLink(true);
+                  }}
+                  href={"/login"}
+                  className={
+                    loadLink
+                      ? `${styles.switch} ${styles.register} ${styles.loadLink}`
+                      : `${styles.switch} ${styles.register}`
+                  }
+                >
+                  <span>Se connecter</span>
+                </Link>
+              </>
+            )}
+            {error.maxUsernameRegisterError && (
+              <>
+                <div className={styles.title}>
+                  <h1>
+                    Désolé, Votre compte n{"'"}a pas été créé pour la raison
+                    suivante :
+                  </h1>
+                </div>
+                <div className={styles.rais}>
+                  <label htmlFor="username">
+                    Le prénom ne doit pas dépasser les 50 caractères.
+                  </label>
+                </div>
+                <div className={styles.inputs}>
+                  <input
+                    type="text"
+                    id="username"
+                    onChange={(e) => {
+                      setNewUser((prev) => {
+                        let nwe = { ...prev };
+                        nwe.username = e.target.value;
+                        return nwe;
+                      });
+                    }}
+                    value={newUser.username}
+                    required
+                    placeholder={`Prénom`}
+                  />
+                </div>
+                {!initialData.remember && (
+                  <label htmlFor="remember" className={styles.remember}>
+                    <input
+                      type="checkbox"
+                      checked={newUser.remember}
+                      id="remember"
+                      onChange={() => {
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.remember === true
+                            ? (nwe.remember = false)
+                            : (nwe.remember = true);
+                          return nwe;
+                        });
+                      }}
+                    />
+                    <span>Se souvenir de moi</span>
+                  </label>
+                )}
+                <div>
+                  <button
+                    className={
+                      isLoading
+                        ? `${styles.submit} ${styles.submitLoading}`
+                        : `${styles.submit}`
+                    }
+                    disabled={isLoading}
+                    type="submit"
+                  >
+                    Valider
+                  </button>
+                </div>
+                <div className={styles.hr} />
+                <div className={styles.notRegistered}>
+                  <label>Vous avez déjà un compte ?</label>
+                </div>
+                <Link
+                  onClick={() => {
+                    setLoadLink(true);
+                  }}
+                  href={"/login"}
+                  className={
+                    loadLink
+                      ? `${styles.switch} ${styles.register} ${styles.loadLink}`
+                      : `${styles.switch} ${styles.register}`
+                  }
+                >
+                  <span>Se connecter</span>
+                </Link>
               </>
             )}
             {error.invalidRegisterEmailError && (
               <>
-                <div className={styles.inputs}>
+                <div className={styles.title}>
                   <h1>
                     Désolé, Votre compte n{"'"}a pas été créé pour la raison
                     suivante :
                   </h1>
-
+                </div>
+                <div className={styles.rais}>
                   <label htmlFor="mail">
                     L{"'"}adresse email :{" "}
                     <span className={styles.mail}>{initialData.email}</span> que
                     vous avez entré est invalide.
                   </label>
-
-                  <div>
+                </div>
+                <div className={styles.inputs}>
+                  <input
+                    type="text"
+                    id="mail"
+                    onChange={(e) => {
+                      setNewUser((prev) => {
+                        let nwe = { ...prev };
+                        nwe.email = e.target.value;
+                        return nwe;
+                      });
+                    }}
+                    value={newUser.email}
+                    required
+                    placeholder={`Adresse email`}
+                  />
+                </div>
+                {!initialData.remember && (
+                  <label htmlFor="remember" className={styles.remember}>
                     <input
-                      type="text"
-                      id="mail"
-                      onChange={(e) => {
+                      type="checkbox"
+                      checked={newUser.remember}
+                      id="remember"
+                      onChange={() => {
                         setNewUser((prev) => {
                           let nwe = { ...prev };
-                          nwe.email = e.target.value;
+                          nwe.remember === true
+                            ? (nwe.remember = false)
+                            : (nwe.remember = true);
                           return nwe;
                         });
                       }}
-                      value={newUser?.email || ""}
-                      required
-                      placeholder={`Adresse email`}
                     />
-                  </div>
-                </div>
-                <div
-                  className={
-                    isLoading
-                      ? `${styles.submit} ${styles.submitLoading}`
-                      : `${styles.submit}`
-                  }
-                >
-                  <button disabled={isLoading} type="submit">
+                    <span>Se souvenir de moi</span>
+                  </label>
+                )}
+                <div>
+                  <button
+                    className={
+                      isLoading
+                        ? `${styles.submit} ${styles.submitLoading}`
+                        : `${styles.submit}`
+                    }
+                    disabled={isLoading}
+                    type="submit"
+                  >
                     Valider
                   </button>
                 </div>
+                <div className={styles.hr} />
+                <div className={styles.notRegistered}>
+                  <label>Vous avez déjà un compte ?</label>
+                </div>
+                <Link
+                  onClick={() => {
+                    setLoadLink(true);
+                  }}
+                  href={"/login"}
+                  className={
+                    loadLink
+                      ? `${styles.switch} ${styles.register} ${styles.loadLink}`
+                      : `${styles.switch} ${styles.register}`
+                  }
+                >
+                  <span>Se connecter</span>
+                </Link>
               </>
             )}
-
+            {error.alreadyExistRegisterEmailError && (
+              <>
+                <div className={styles.title}>
+                  <h1>
+                    Désolé, Votre compte n{"'"}a pas été créé pour la raison
+                    suivante :
+                  </h1>
+                </div>
+                <div className={styles.rais}>
+                  <label htmlFor="mail">
+                    L{"'"}adresse email :{" "}
+                    <span className={styles.mail}>{initialData.email}</span> est
+                    déjà associé à un compte.
+                  </label>
+                </div>
+                <div className={styles.inputs}>
+                  <input
+                    type="text"
+                    id="mail"
+                    onChange={(e) => {
+                      setNewUser((prev) => {
+                        let nwe = { ...prev };
+                        nwe.email = e.target.value;
+                        return nwe;
+                      });
+                    }}
+                    value={newUser.email}
+                    required
+                    placeholder={`Adresse email`}
+                  />
+                </div>
+                {!initialData.remember && (
+                  <label htmlFor="remember" className={styles.remember}>
+                    <input
+                      type="checkbox"
+                      checked={newUser.remember}
+                      id="remember"
+                      onChange={() => {
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.remember === true
+                            ? (nwe.remember = false)
+                            : (nwe.remember = true);
+                          return nwe;
+                        });
+                      }}
+                    />
+                    <span>Se souvenir de moi</span>
+                  </label>
+                )}
+                <div>
+                  <button
+                    className={
+                      isLoading
+                        ? `${styles.submit} ${styles.submitLoading}`
+                        : `${styles.submit}`
+                    }
+                    disabled={isLoading}
+                    type="submit"
+                  >
+                    Valider
+                  </button>
+                </div>
+                <div className={styles.hr} />
+                <div className={styles.notRegistered}>
+                  <label>Vous avez déjà un compte ?</label>
+                </div>
+                <Link
+                  onClick={() => {
+                    setLoadLink(true);
+                  }}
+                  href={"/login"}
+                  className={
+                    loadLink
+                      ? `${styles.switch} ${styles.register} ${styles.loadLink}`
+                      : `${styles.switch} ${styles.register}`
+                  }
+                >
+                  <span>Se connecter</span>
+                </Link>
+              </>
+            )}
+            {error.minPasswordRegisterError && (
+              <>
+                <div className={styles.title}>
+                  <h1>
+                    Désolé, Votre compte n{"'"}a pas été créé pour la raison
+                    suivante :
+                  </h1>
+                </div>
+                <div className={styles.rais}>
+                  <label htmlFor="password">
+                    Le mot de passe doit faire au moins 6 caractères.
+                  </label>
+                </div>
+                <div className={styles.inputs}>
+                  <input
+                    type="password"
+                    id="password"
+                    onChange={(e) => {
+                      setNewUser((prev) => {
+                        let nwe = { ...prev };
+                        nwe.password = e.target.value;
+                        return nwe;
+                      });
+                    }}
+                    value={newUser.password}
+                    required
+                    placeholder={`Mot de passe`}
+                  />
+                  <input
+                    type="password"
+                    onChange={(e) => {
+                      setNewUser((prev) => {
+                        let nwe = { ...prev };
+                        nwe.cPassword = e.target.value;
+                        return nwe;
+                      });
+                    }}
+                    value={newUser.cPassword}
+                    required
+                    placeholder={`Confirmer mot de passe`}
+                  />
+                </div>
+                {!initialData.remember && (
+                  <label htmlFor="remember" className={styles.remember}>
+                    <input
+                      type="checkbox"
+                      checked={newUser.remember}
+                      id="remember"
+                      onChange={() => {
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.remember === true
+                            ? (nwe.remember = false)
+                            : (nwe.remember = true);
+                          return nwe;
+                        });
+                      }}
+                    />
+                    <span>Se souvenir de moi</span>
+                  </label>
+                )}
+                <div>
+                  <button
+                    className={
+                      isLoading
+                        ? `${styles.submit} ${styles.submitLoading}`
+                        : `${styles.submit}`
+                    }
+                    disabled={isLoading}
+                    type="submit"
+                  >
+                    Valider
+                  </button>
+                </div>
+                <div className={styles.hr} />
+                <div className={styles.notRegistered}>
+                  <label>Vous avez déjà un compte ?</label>
+                </div>
+                <Link
+                  onClick={() => {
+                    setLoadLink(true);
+                  }}
+                  href={"/login"}
+                  className={
+                    loadLink
+                      ? `${styles.switch} ${styles.register} ${styles.loadLink}`
+                      : `${styles.switch} ${styles.register}`
+                  }
+                >
+                  <span>Se connecter</span>
+                </Link>
+              </>
+            )}
             {/* login errors */}
 
             {error.invalidLoginEmailError && (
@@ -340,7 +879,7 @@ export default function Fail() {
                         return nwe;
                       });
                     }}
-                    value={newUser?.email || ""}
+                    value={newUser.email}
                     required
                     placeholder={`Adresse email`}
                   />
@@ -354,7 +893,7 @@ export default function Fail() {
                         return nwe;
                       });
                     }}
-                    value={newUser?.password || ""}
+                    value={newUser.password}
                     required
                     placeholder={`Mot de passe`}
                   />
@@ -363,7 +902,7 @@ export default function Fail() {
                   <label htmlFor="remember" className={styles.remember}>
                     <input
                       type="checkbox"
-                      checked={newUser?.remember}
+                      checked={newUser.remember}
                       id="remember"
                       onChange={() => {
                         setNewUser((prev) => {
@@ -436,7 +975,7 @@ export default function Fail() {
                         return nwe;
                       });
                     }}
-                    value={newUser?.email || ""}
+                    value={newUser.email}
                     required
                     placeholder={`Adresse email`}
                   />
@@ -450,7 +989,7 @@ export default function Fail() {
                         return nwe;
                       });
                     }}
-                    value={newUser?.password || ""}
+                    value={newUser.password}
                     required
                     placeholder={`Mot de passe`}
                   />
@@ -459,7 +998,7 @@ export default function Fail() {
                   <label htmlFor="remember" className={styles.remember}>
                     <input
                       type="checkbox"
-                      checked={newUser?.remember}
+                      checked={newUser.remember}
                       id="remember"
                       onChange={() => {
                         setNewUser((prev) => {
@@ -530,7 +1069,7 @@ export default function Fail() {
                         return nwe;
                       });
                     }}
-                    value={newUser?.email || ""}
+                    value={newUser.email}
                     required
                     placeholder={`Adresse email`}
                   />
@@ -544,7 +1083,7 @@ export default function Fail() {
                         return nwe;
                       });
                     }}
-                    value={newUser?.password || ""}
+                    value={newUser.password}
                     required
                     placeholder={`Mot de passe`}
                   />
@@ -553,7 +1092,7 @@ export default function Fail() {
                   <label htmlFor="remember" className={styles.remember}>
                     <input
                       type="checkbox"
-                      checked={newUser?.remember}
+                      checked={newUser.remember}
                       id="remember"
                       onChange={() => {
                         setNewUser((prev) => {
@@ -630,7 +1169,7 @@ export default function Fail() {
                         return nwe;
                       });
                     }}
-                    value={newUser?.email || ""}
+                    value={newUser.email}
                     required
                     placeholder={`Adresse email`}
                   />
@@ -702,13 +1241,13 @@ export default function Fail() {
                 <div className={styles.rais}>
                   <label>La session est expirée.</label>
                 </div>
+                <div className={styles.hr} />
                 <Link
                   href={"/login"}
                   className={`${styles.switch} ${styles.login}`}
                 >
                   <span>Se connecter</span>
                 </Link>
-                <div className={styles.hr} />
                 <div className={styles.notRegistered}>
                   <label>Vous n{"'"}avez pas de compte ?</label>
                 </div>

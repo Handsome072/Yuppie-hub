@@ -79,7 +79,9 @@ export default function RegisterForm() {
       setIsLoading(false);
       if (res?.error) {
         push(`/fail?t=${res.error}`);
-      } else if (res?.token) {
+      } else if (res?.token && res?.sendEmailError) {
+        push(`/success?s=${res.token}`);
+      } else {
         push(`/success?t=${res.token}`);
       }
     } else if (passwordUser.value !== cPasswordUser.value) {

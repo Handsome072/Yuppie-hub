@@ -1,5 +1,4 @@
 import { verifyToken } from "@/lib/jwt";
-import UserModel from "@/lib/models/user.model";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import { NextResponse } from "next/server";
 

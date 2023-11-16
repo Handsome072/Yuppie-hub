@@ -12,28 +12,41 @@ import Spinner from "../Spinner";
 
 export default function Success() {
   const token = useSearchParams().get("t");
+  const sendEmailError = useSearchParams().get("s");
   const { push } = useRouter();
   const [spinner, setSpinner] = useState(false);
-  const [scr, setSCR] = useState(false);
-  useEffect(() => {
-    setSpinner(false);
-  }, []);
+  const [scr, setSCR] = useState({
+    obj: false,
+    email: false,
+  });
   useEffect(() => {
     (async () => {
       setSpinner(true);
       const res = await verifyJWT(token);
       setSpinner(false);
       if (res?.newUser) {
-        setSCR(true);
+        setSCR({ obj: true, email: false });
       } else {
         push("/login");
       }
     })();
   }, [token]);
-  if (isEmpty(token)) {
+  useEffect(() => {
+    (async () => {
+      setSpinner(true);
+      const res = await verifyJWT(sendEmailError);
+      setSpinner(false);
+      if (res?.newUser && res?.sendEmailError) {
+        setSCR({ obj: true, email: true });
+      } else {
+        push("/login");
+      }
+    })();
+  }, [sendEmailError]);
+  if (isEmpty(token) && isEmpty(sendEmailError)) {
     push("/login");
   } else if (spinner) return <Spinner />;
-  else if (scr)
+  else if (scr.obj)
     return (
       <ClientOnly spin>
         <div className={styles.container}>
@@ -47,7 +60,16 @@ export default function Success() {
             </div>
             <div className={styles.contenu}>
               <label>Félicitations! Votre compte a été créé avec succès.</label>
-              <p>Un message vous a été envoyé par email</p>
+              {scr.email ? (
+                <p>
+                  La confirmation par email a échoué. Veuillez vous connecter.
+                </p>
+              ) : (
+                <p>
+                  Cliquer sur le lien qui vous a été envoyé par email pour
+                  activer votre compte.
+                </p>
+              )}
             </div>
           </form>
         </div>
