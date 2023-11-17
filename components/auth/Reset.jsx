@@ -40,7 +40,6 @@ export default function Reset() {
         setSpinner(true);
         const res = await verifyJWT(token);
         setSpinner(false);
-        console.log("res verify jwt", res);
         if (!isEmpty(res?.infos)) {
           setNewUser(res.infos);
           if (res.infos?.invalidResetEmailError) {
@@ -129,7 +128,6 @@ export default function Reset() {
       const res = await sendMailResetPasswordController(newUser.email).catch(
         (error) => console.log(error)
       );
-      console.log("res send email", res);
       setSpinner(true);
       setIsLoading(false);
       if (res?.token) {
