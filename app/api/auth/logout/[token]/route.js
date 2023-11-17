@@ -6,7 +6,7 @@ import { isEmpty } from "@/lib/utils/isEmpty";
 import { NextResponse } from "next/server";
 export const GET = async (req, { params }) => {
   try {
-    let user = null;
+    let user;
     const { token } = params;
     // const token = req.cookies.get(cookieName);
     if (isEmpty(token)) {

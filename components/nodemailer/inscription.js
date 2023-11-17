@@ -61,6 +61,7 @@ export const generateEmail = ({ name, username, userType }) => {
                                   font-size: 1.5rem;
                                   text-align: center;
                                   margin: 0.5rem 0;
+                                  text-transform: uppercase;
                                 "
                               >
                                INSCRIPTION
@@ -152,7 +153,8 @@ export const generateEmail = ({ name, username, userType }) => {
                                   font-size: 1.5rem;
                                   text-align: center;
                                   margin: 0.5rem 0;
-                                "
+                                  text-transform: uppercase;
+                                  "
                               >
                                INSCRIPTION
                               </td>

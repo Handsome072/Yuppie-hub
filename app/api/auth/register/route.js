@@ -125,7 +125,8 @@ export const POST = async (req) => {
         name: user.name,
         username: user.username,
         userType: user.userType,
-        link: token,
+        lang: user.lang,
+        token,
       }),
     });
     if (!isEmpty(res?.error)) {

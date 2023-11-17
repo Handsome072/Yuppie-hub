@@ -50,7 +50,7 @@ export default function Fail() {
 
     // options
     failToCreateNewUser: false,
-    expires: false,
+    expiredTokenError: false,
     login: false,
     register: false,
   });
@@ -201,14 +201,14 @@ export default function Fail() {
             return nwe;
           });
         }
-      } else if (!isEmpty(res?.expiredTokenError)) {
+      } else if (res?.invalidTokenSession) {
         setError((prev) => {
           let nwe = { ...prev };
           for (const key in nwe) {
             nwe[key] = false;
           }
           nwe.login = true;
-          nwe.expires = true;
+          nwe.expiredTokenError = true;
           return nwe;
         });
       } else {
@@ -264,7 +264,6 @@ export default function Fail() {
       });
     }
   }, [newUser]);
-  console.log("initialData", initialData, "new user", newUser);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!newUser?.valid) {
@@ -862,13 +861,14 @@ export default function Fail() {
                   <input
                     type="password"
                     ref={cPass}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      cPass.current.setCustomValidity("");
                       setNewUser((prev) => {
                         let nwe = { ...prev };
                         nwe.cPassword = e.target.value;
                         return nwe;
-                      })
-                    }
+                      });
+                    }}
                     value={newUser.cPassword}
                     required
                     placeholder={`Confirmer mot de passe`}
@@ -1407,7 +1407,7 @@ export default function Fail() {
               </>
             )}
             {/* expires */}
-            {error.expires && (
+            {error.expiredTokenError && (
               <>
                 <div className={styles.rais}>
                   <label>La session est expirée.</label>

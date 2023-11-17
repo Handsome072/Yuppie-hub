@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="${lang}">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -23,15 +23,29 @@
         border: inherit;
         outline: inherit;
         font-family: 'Archivo', sans-serif;
-        padding: 2rem;
+        padding: 0 2rem 2rem 2rem;
       "
     >
       <tr>
         <td>
-          <table style="width: 100%; height: 90%">
+          <p></p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table style="width: 100%">
             <tr>
               <td style="width: 100%; text-align: center">
-                <img src="http://localhost:3000/logo.png" alt="" />
+                <img
+                  style="height: 3rem; scale: 2"
+                  src="https://yuppie-project.vercel.app/logo.png"
+                  alt="Yuppie HUB"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p></p>
               </td>
             </tr>
             <tr>
@@ -40,7 +54,7 @@
                   background: #fff;
                   padding: 20px;
                   width: 100%;
-                  border-radius: 18.5px;
+                  border-radius: 4px;
                   height: 100%;
                   box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
                 "
@@ -54,29 +68,78 @@
                       font-size: 1.5rem;
                       text-align: center;
                       margin: 0.5rem 0;
+                      text-transform: uppercase;
                     "
                   >
-                    <p
-                      style="
-                        color: #036eff;
-                        font-weight: 500;
-                        font-size: 1.5rem;
-                        text-align: center;
-                      "
-                    >
-                      INSCRIPTION
-                    </p>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="width: 100%; font-weight: 600; text-align: center">
-                    Bonjour <span class="nm"> ${htmlData} </span>
+                    Réinitialisation de mot de passe
                   </td>
                 </tr>
                 <tr>
                   <td style="width: 100%; color: #888; text-align: center">
-                    Vous êtes inscrit en tant var( qu'assistant || que client )
-                    sur l'application yuppie hub.
+                    <p>
+                      Vous avez demandez une réinitialisation de votre mot de
+                      passe (<span style="color: #036eff">${email}</span>) en
+                      tant qu'assistant.
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 100%; color: #888; text-align: center">
+                    <a
+                      href="${src}/reset?t=${token}"
+                      style="
+                        padding: 0.65rem 1rem;
+                        position: relative;
+                        width: 100%;
+                        color: #fff;
+                        font-weight: bold;
+                        border: none;
+                        border-radius: 0.5rem;
+                        cursor: pointer;
+                        transition: 0.1s ease-out;
+                        box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+                          rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+                        text-transform: uppercase;
+                        text-decoration: none;
+                        background: linear-gradient(135deg, #badf5b, #036eff);
+                      "
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onmouseover="this.style.boxShadow='rgba(0, 0, 0, 0.15) 0px 2px 14px 2px, rgba(0, 0, 0, 0.3) 0px 1px 5px 2px'"
+                      onmouseout="this.style.boxShadow='rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px'"
+                    >
+                      Réinitialiser
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style="
+                      width: 100%;
+                      color: rgba(0, 0, 0, 0.7);
+                      font-weight: bold;
+                      text-align: center;
+                    "
+                  >
+                    En cas de difficulté, n'hésitez pas à nous contacter.
+                  </td>
+                </tr>
+
+                <tr>
+                  <td
+                    style="
+                      width: 100%;
+                      color: rgba(0, 0, 0, 0.7);
+                      font-weight: bold;
+                      text-align: center;
+                    "
+                  >
+                    A bientôt.
                   </td>
                 </tr>
               </table>

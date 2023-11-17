@@ -70,6 +70,16 @@ export default function ProfilMiddle({
             onClick={() => setActive("statut")}
             className={active === "statut" ? `${styles.active}` : null}
           >
+            {/* 
+            <Link
+            href={{
+              pathname: '/about',
+              query: { name: 'test' },
+            }}
+          >
+            About us
+        </Link>
+            */}
             <label>Statut professionnel</label>
           </div>
           {user?.userType === "assistant" && (

@@ -66,7 +66,6 @@ export const POST = async (req) => {
       id: user._doc._id,
       token: accessToken,
       tokenName: authTokenName,
-      infos: body?.infos,
       persist: body.remember,
     });
     const { password, tokens, isAdmin, ...userInfos } = Object.assign(

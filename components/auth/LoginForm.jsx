@@ -111,7 +111,7 @@ export default function LoginForm(req) {
                   </button>
                 </div>
               </div>
-              <div className={styles.forgot}>
+              <div className={styles.rmb}>
                 <label htmlFor="remember" className={styles.remember}>
                   <input
                     type="checkbox"
@@ -121,9 +121,6 @@ export default function LoginForm(req) {
                   />
                   <span>Se souvenir de moi</span>
                 </label>
-                <Link href={"/reset"} className={styles.link}>
-                  <span>Mot de passe oublié</span> <span>?</span>
-                </Link>
               </div>
               <div className={styles.btn}>
                 <div
@@ -147,6 +144,11 @@ export default function LoginForm(req) {
                     )}
                   </button>
                 </div>
+              </div>
+              <div className={styles.forgot}>
+                <Link href={"/reset"} className={styles.link}>
+                  <span>Mot de passe oublié</span> <span>?</span>
+                </Link>
               </div>
               <div className={styles.hr} />
               <div className={styles.notRegistered}>
