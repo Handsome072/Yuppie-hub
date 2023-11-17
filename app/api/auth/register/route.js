@@ -9,8 +9,6 @@ import { NextResponse } from "next/server";
 import { createToken } from "@/lib/jwt";
 import { nodeMailer } from "@/components/nodemailer";
 import { generateEmail } from "@/components/nodemailer/inscription";
-import path from "path";
-import convertImageToBase64 from "@/lib/controllers/nodemailer";
 import { emailController } from "@/lib/controllers/email.controller";
 import connectToMongo from "@/lib/db";
 export const POST = async (req) => {
@@ -138,18 +136,6 @@ export const POST = async (req) => {
   } catch (err) {
     return new NextResponse(
       JSON.stringify({ error: err.message }, { status: 500 })
-    );
-  }
-};
-
-export const GET = async () => {
-  try {
-    const imagePath = path.join("assets", "logo.png");
-    const src = await convertImageToBase64(imagePath);
-    return new NextResponse(JSON.stringify({ src }, { status: 200 }));
-  } catch (error) {
-    return new NextResponse(
-      JSON.stringify({ error: error.message }, { status: 200 })
     );
   }
 };
