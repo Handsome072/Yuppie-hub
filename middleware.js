@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
-import { cookieName } from "./constants";
+import { cookieName } from "./lib/constants";
 import { isEmpty } from "./lib/utils/isEmpty";
 export function middleware(req) {
   if (req.nextUrl.pathname === "/") {

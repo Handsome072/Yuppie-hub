@@ -28,12 +28,12 @@ export default function Menu() {
   const path = usePathname();
   const dispatch = useDispatch();
   const handleLogout = async () => {
-    await logoutController(token).catch((err) => console.log(err.message));
-    dispatch(updatePersistInfos({ authToken: null }));
-    dispatch(removeUserInfos());
     if (!isLoadingLogout) {
       loadLogout(true);
     }
+    await logoutController(token).catch((err) => console.log(err.message));
+    dispatch(updatePersistInfos({ authToken: null }));
+    dispatch(removeUserInfos());
     push("/login");
   };
   const handleProjet = async () => {};

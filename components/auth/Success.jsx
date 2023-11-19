@@ -1,5 +1,5 @@
 "use client";
-import { verifyJWT } from "@/lib/controllers/jwt.controller";
+import { verifyJWTController } from "@/lib/controllers/jwt.controller";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -23,7 +23,7 @@ export default function Success() {
   useEffect(() => {
     (async () => {
       setSpinner(true);
-      const res = await verifyJWT(token);
+      const res = await verifyJWTController(token);
       setSpinner(false);
       if (res?.newUser) {
         setSCR({ obj: true, email: false });
@@ -35,7 +35,7 @@ export default function Success() {
   useEffect(() => {
     (async () => {
       setSpinner(true);
-      const res = await verifyJWT(sendEmailError);
+      const res = await verifyJWTController(sendEmailError);
       setSpinner(false);
       if (res?.newUser && res?.sendEmailError) {
         setSCR({ obj: true, email: true });

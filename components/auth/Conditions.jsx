@@ -9,7 +9,7 @@ import {
   interpretations,
   middle,
 } from "@/lib/utils/terms";
-import { removeHTTPPrefix } from "@/lib/controllers/http.controller";
+import { removeHTTPPrefixController } from "@/lib/controllers/http.controller";
 import Terms from "./Terms";
 import { CgClose } from "react-icons/cg";
 import ClientOnly from "../ClientOnly";
@@ -98,7 +98,7 @@ export default function Conditions({
                                                         href={`${l[2].link}`}
                                                         target="_blank"
                                                       >
-                                                        {removeHTTPPrefix(
+                                                        {removeHTTPPrefixController(
                                                           l[2].link
                                                         )}
                                                       </Link>

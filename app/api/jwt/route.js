@@ -1,4 +1,4 @@
-import { authTokenName, cookieName } from "@/constants";
+import { authTokenName, cookieName } from "@/lib/constants";
 import connectToMongo from "@/lib/db";
 import { verifyToken } from "@/lib/jwt";
 import UserModel from "@/lib/models/user.model";

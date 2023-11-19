@@ -4,13 +4,14 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    updateUserInfos: (state, action) => {
+    fetchUserInfos: (state, action) => {
       const { user } = action.payload;
-      let nwe = { ...state };
-      if (user) {
-        nwe.user = user;
-      }
-      return nwe;
+      return user ? { ...state, user } : { ...state };
+    },
+    updateUserInfos: (state, action) => {
+      const data = action.payload;
+      let newState = { ...state, ...data };
+      return newState;
     },
     removeUserInfos: () => {
       return initialState;
@@ -18,5 +19,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { updateUserInfos, removeUserInfos } = userSlice.actions;
+export const { fetchUserInfos, updateUserInfos, removeUserInfos } =
+  userSlice.actions;
 export default userSlice.reducer;

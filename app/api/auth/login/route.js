@@ -3,16 +3,23 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { addNewToken, createToken } from "@/lib/jwt";
 import { isEmpty } from "@/lib/utils/isEmpty";
-import { authTokenName, cookieName, maxAge } from "@/constants";
+import {
+  authTokenName,
+  cookieName,
+  maxAgeAuthToken,
+  maxAgeErrorToken,
+} from "@/lib/constants";
 import { emailController } from "@/lib/controllers/email.controller";
 import connectToMongo from "@/lib/db";
 
 export const POST = async (req) => {
   try {
-    let token = null;
-    let infos = null;
-    let max = 60 * 60;
+    let user;
+    let token;
+    let infos;
+
     const body = await req.json();
+
     if (
       isEmpty(body) ||
       isEmpty(body?.email) ||
@@ -24,69 +31,95 @@ export const POST = async (req) => {
         JSON.stringify({ error: "Data required." }, { status: 400 })
       );
     }
+
+    // error invalid email
     if (!emailController(body.email)) {
       infos = { ...body, login: true, invalidLoginEmailError: true };
-      token = createToken(infos, max);
+      token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 401 }) // Changed status to 401 for invalid email
       );
     }
+
     await connectToMongo();
-    const user = await UserModel.findOne({ email: body.email });
+    user = await UserModel.findOne({ email: body.email });
+
+    // error user not found
     if (isEmpty(user)) {
       infos = { ...body, login: true, ukEmailLoginError: true };
-      token = createToken(infos, max);
+      token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 404 }) // Changed status to 404 for user not found
       );
     }
+
     const validUser = await bcrypt.compare(body.password, user.password);
+
+    // error incorrect password
     if (!validUser) {
       infos = { ...body, login: true, invalidLoginPasswordError: true };
-      token = createToken(infos, max);
+      token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 403 }) // Changed status to 403 for invalid password
       );
     }
+
+    // error invalid userType
     if (user.userType !== body.userType) {
       infos = { ...body, login: true, invalidLoginUserTypeError: true };
-      token = createToken(infos, max);
+      token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 403 }) // Changed status to 403 for invalid password
       );
     }
+
     infos = {
       id: user._doc._id,
       userType: user._doc.userType,
       isAdmin: user._doc.isAdmin,
       lang: user._doc.lang,
     };
-    const accessToken = createToken(infos);
-    await addNewToken({
+    const authToken = createToken(infos, maxAgeAuthToken);
+
+    // add new auth token
+    const { tokenAdded } = await addNewToken({
       id: user._doc._id,
-      token: accessToken,
+      token: authToken,
       tokenName: authTokenName,
       persist: body.remember,
     });
+
+    if (!tokenAdded) {
+      infos = { ...body, login: true, failToAddToken: true };
+      token = createToken(infos, maxAgeErrorToken);
+      return new NextResponse(
+        JSON.stringify({ error: token }, { status: 500 })
+      );
+    }
+
     const { password, tokens, isAdmin, ...userInfos } = Object.assign(
       {},
       user.toJSON()
     );
+
     const res = new NextResponse(
       JSON.stringify(
-        { user: { ...userInfos }, token: accessToken },
+        { user: { ...userInfos }, token: authToken },
         { status: 200 }
       )
     );
+
     const options = {
       httpOnly: true,
       secure: true,
       sameSite: "strict",
     };
     if (body.remember) {
-      options.maxAge = maxAge;
+      options.maxAge = maxAgeAuthToken;
     }
-    res.cookies.set(cookieName, accessToken, options);
+
+    // adding cookies
+    res.cookies.set(cookieName, authToken, options);
     return res;
   } catch (err) {
     return new NextResponse(

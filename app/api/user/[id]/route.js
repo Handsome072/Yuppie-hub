@@ -9,19 +9,25 @@ export const GET = async (req, { params }) => {
     let user;
     const { id } = params;
     await connectToMongo();
+
     if (!isValidObjectId(id)) {
       user = await UserModel.find({ name: id });
       return new NextResponse(JSON.stringify({ user }, { status: 404 }));
     }
+
     user = await UserModel.findById(id);
+
+    // error user not found
     if (isEmpty(user))
       return new NextResponse(
         JSON.stringify({ error: "Aucun utilisateur trouvé" }, { status: 404 })
       );
+
     const { password, tokens, isAdmin, ...userInfos } = Object.assign(
       {},
       user.toJSON()
     );
+
     return new NextResponse(
       JSON.stringify({ user: userInfos }, { status: 200 })
     );

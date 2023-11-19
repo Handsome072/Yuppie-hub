@@ -1,6 +1,10 @@
 import { nodeMailer } from "@/components/nodemailer";
 import { resetPassword } from "@/components/nodemailer/resetPassword";
-import { maxResetPassword, resetPasswordTokenName } from "@/constants";
+import {
+  maxAgeErrorToken,
+  maxResetPassword,
+  resetPasswordTokenName,
+} from "@/lib/constants";
 import { emailController } from "@/lib/controllers/email.controller";
 import connectToMongo from "@/lib/db";
 import { addNewToken, createToken } from "@/lib/jwt";
@@ -14,25 +18,32 @@ export const GET = async (req, { params }) => {
     let infos;
     let res;
     const { email } = params;
-    const max = 60 * 60;
+
+    // error invalid email
     if (!emailController(email)) {
       infos = { email, invalidResetEmailError: true };
-      token = createToken(infos, max);
+      token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(JSON.stringify({ token }, { status: 400 }));
     }
+
     await connectToMongo();
     user = await UserModel.findOne({ email });
+
+    //  error user not found
     if (isEmpty(user)) {
       infos = { email, userNotFound: true };
-      token = createToken(infos, max);
-      return new NextResponse(JSON.stringify({ token }, { status: 400 }));
+      token = createToken(infos, maxAgeErrorToken);
+      return new NextResponse(JSON.stringify({ token }, { status: 404 }));
     }
+
     infos = {
       resetPassword: true,
       email: user.email,
       id: user._id,
     };
     token = createToken(infos, maxResetPassword);
+
+    // sending reset password email
     res = await nodeMailer({
       to: user.email,
       subject: "Réinitialisation de mot de passe",
@@ -44,23 +55,27 @@ export const GET = async (req, { params }) => {
       }),
     });
 
+    // error while sending email
     if (!isEmpty(res?.error)) {
-      infos = { email, sendEmailError: true };
-      token = createToken(infos, max);
+      infos = { email, error: res.error, sendEmailError: true };
+      token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(JSON.stringify({ token }, { status: 400 }));
     }
+
     user = await addNewToken({
       email,
       token,
       id: user._id,
       tokenName: resetPasswordTokenName,
     });
+
     infos = {
       emailSent: true,
       email: user.email,
       id: user._id,
     };
-    token = createToken(infos, max);
+    token = createToken(infos, maxAgeErrorToken);
+
     return new NextResponse(JSON.stringify({ token }, { status: 200 }));
   } catch (error) {
     return new NextResponse(

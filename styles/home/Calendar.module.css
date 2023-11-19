@@ -7,9 +7,7 @@
   color: var(--white);
   padding: 2% 0;
 }
-.container.cli {
-  height: auto;
-}
+
 .left {
   display: flex;
   flex-direction: column;
@@ -30,15 +28,7 @@
   justify-content: space-evenly;
   flex-direction: column;
 }
-
-.left i {
-  color: var(--white);
-  font-size: 0.9rem;
-}
-.upd i {
-  font-size: 1rem;
-}
-.container button[type="submit"] {
+.submit {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -48,7 +38,10 @@
   box-shadow: var(--box-shadow);
   cursor: pointer;
 }
-.container .labc {
+.submitLoading {
+  background: var(--green-loading);
+}
+.edit {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -100,6 +93,7 @@
   margin-top: 25.5%;
   overflow: hidden;
   box-shadow: 1px 1px 1px var(--black-25);
+  cursor: pointer;
 }
 .right .d span::before {
   content: "";
@@ -109,21 +103,11 @@
   height: 100%;
   transition: 0.15s;
 }
-
-.right .d span:hover::before {
-  background: var(--gris);
-}
 .right .d .jca::before {
   background: var(--green);
 }
 .right .d .jcd::before {
   background: var(--red);
-}
-.right .d .jca:hover::before {
-  background: rgba(var(--green));
-}
-.right .d .jcd:hover::before {
-  background: rgba(var(--red));
 }
 
 @media (max-width: 1000px) {

@@ -7,7 +7,7 @@ import ClientOnly from "@/components/ClientOnly";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { isEmpty } from "@/lib/utils/isEmpty";
-import { isValidLink } from "@/lib/controllers/http.controller";
+import { isValidLinkController } from "@/lib/controllers/http.controller";
 import { BsShare } from "react-icons/bs";
 import { GoTriangleDown } from "react-icons/go";
 import { useRef } from "react";
@@ -41,7 +41,7 @@ export default function Offres({
 
     if (
       newOffres.obj?.trim() !== user.offresDeService &&
-      isValidLink(newOffres.obj?.trim())
+      isValidLinkController(newOffres.obj?.trim())
     ) {
 
       setNewOffres((prev) => {
@@ -130,7 +130,7 @@ export default function Offres({
               />
               <Link
                 target={"_blank"}
-                href={isValidLink(newOffres.obj) ? newOffres.obj : "#"}
+                href={isValidLinkController(newOffres.obj) ? newOffres.obj : "#"}
                 className={styles.sh}
               >
                 <BsShare className="try1" />

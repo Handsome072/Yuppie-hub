@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import ClientOnly from "@/components/ClientOnly";
 import { useSelector } from "react-redux";
-import { isValidLink } from "@/lib/controllers/http.controller";
+import { isValidLinkController } from "@/lib/controllers/http.controller";
 import { BsShare } from "react-icons/bs";
 import { GoTriangleDown } from "react-icons/go";
 
@@ -33,7 +33,10 @@ export default function Statut({
         return nwe;
       });
     }
-    if (newPortfolio.obj !== user.portfolio && isValidLink(newPortfolio.obj)) {
+    if (
+      newPortfolio.obj !== user.portfolio &&
+      isValidLinkController(newPortfolio.obj)
+    ) {
       setNewPortfolio((prev) => {
         let nwe = { ...prev };
         nwe.value = true;
@@ -42,7 +45,7 @@ export default function Statut({
     }
     if (
       newLienProfessionnelle.obj !== user.lienProfessionnelle &&
-      isValidLink(newLienProfessionnelle.obj)
+      isValidLinkController(newLienProfessionnelle.obj)
     ) {
       setNewLienProfessionnelle((prev) => {
         let nwe = { ...prev };
@@ -215,7 +218,7 @@ export default function Statut({
             <Link
               target={"_blank"}
               href={
-                isValidLink(newLienProfessionnelle.obj)
+                isValidLinkController(newLienProfessionnelle.obj)
                   ? newLienProfessionnelle.obj
                   : "#"
               }
@@ -246,7 +249,9 @@ export default function Statut({
             />
             <Link
               target={"_blank"}
-              href={isValidLink(newPortfolio.obj) ? newPortfolio.obj : "#"}
+              href={
+                isValidLinkController(newPortfolio.obj) ? newPortfolio.obj : "#"
+              }
               className={styles.sh}
             >
               <BsShare className="try1" />

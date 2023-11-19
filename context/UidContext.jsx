@@ -1,5 +1,5 @@
 "use client";
-import { verifyJWT } from "@/lib/controllers/jwt.controller";
+import { verifyJWTController } from "@/lib/controllers/jwt.controller";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, createContext, useState } from "react";
@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { protecedPaths } from "@/lib/utils/paths";
 import { removeUserInfos, updateUserInfos } from "@/redux/slices/userSlice";
 import { updatePersistInfos } from "@/redux/slices/persistSlice";
-import { fetchUserInfos } from "@/lib/controllers/user.controller";
+import { fetchUserInfosController } from "@/lib/controllers/user.controller";
 import { logoutController } from "@/lib/controllers/auth.controller";
 
 export const UidContext = createContext();
@@ -27,7 +27,7 @@ export const UidContextProvider = ({ children }) => {
           push("/login");
         } else {
           setIsLoadingJWT(true);
-          const { infos } = await verifyJWT(authToken);
+          const { infos } = await verifyJWTController(authToken);
           if (isEmpty(infos)) {
             await logoutController(authToken);
             dispatch(updatePersistInfos({ authToken: null }));
@@ -41,7 +41,7 @@ export const UidContextProvider = ({ children }) => {
             if (lang !== infos.lang) {
               dispatch(updatePersistInfos({ lang: infos.lang }));
             }
-            const { user } = await fetchUserInfos(infos.id);
+            const { user } = await fetchUserInfosController(infos.id);
             if (isEmpty(user)) {
               await logoutController(authToken);
               dispatch(updatePersistInfos({ authToken: null }));

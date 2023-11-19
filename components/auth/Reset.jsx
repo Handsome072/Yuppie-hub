@@ -1,5 +1,5 @@
 "use client";
-import { verifyJWT } from "@/lib/controllers/jwt.controller";
+import { verifyJWTController } from "@/lib/controllers/jwt.controller";
 import { sendMailResetPasswordController } from "@/lib/controllers/reset.controller";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import Link from "next/link";
@@ -38,7 +38,7 @@ export default function Reset() {
     (async () => {
       if (!isEmpty(token)) {
         setSpinner(true);
-        const res = await verifyJWT(token);
+        const res = await verifyJWTController(token);
         setSpinner(false);
         if (!isEmpty(res?.infos)) {
           setNewUser(res.infos);

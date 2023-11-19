@@ -1,20 +1,21 @@
 import { validatePassword } from "@/lib/controllers/auth.controller";
 import connectToMongo from "@/lib/db";
-import { createToken, verifyExistToken, verifyToken } from "@/lib/jwt";
+import { createToken } from "@/lib/jwt";
 import UserModel from "@/lib/models/user.model";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import { isValidObjectId } from "mongoose";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
+import { maxAgeErrorToken } from "@/lib/constants";
 export const POST = async (req, { params }) => {
   try {
     let user;
     let infos;
     let token;
     let password;
-    const max = 60 * 60;
     const { id } = params;
     const body = await req.json();
+
     if (
       isEmpty(body?.token) ||
       isEmpty(body?.password) ||
@@ -25,12 +26,16 @@ export const POST = async (req, { params }) => {
         JSON.stringify({ error: "Data required" }, { status: 200 })
       );
     }
+
     const { minPasswordRegisterError } = validatePassword(body.password);
+
+    // error newPassword < 6
     if (minPasswordRegisterError) {
       return new NextResponse(
         JSON.stringify({ minPasswordRegisterError: true }, { status: 400 })
       );
     }
+
     await connectToMongo();
     const salt = await bcrypt.genSalt(14);
     password = await bcrypt.hash(body.password, salt);
@@ -42,21 +47,24 @@ export const POST = async (req, { params }) => {
       },
       { new: true }
     );
+
     if (isEmpty(user)) {
       infos = {
         resetError: true,
         email: user.email,
         id,
       };
-      token = createToken(infos, max);
+      token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(JSON.stringify({ token }, { status: 500 }));
     }
+
     infos = {
       passwordReset: true,
       email: user.email,
       id,
     };
-    token = createToken(infos, max);
+    token = (infos, maxAgeErrorToken);
+
     return new NextResponse(JSON.stringify({ token }, { status: 200 }));
   } catch (err) {
     return new NextResponse(

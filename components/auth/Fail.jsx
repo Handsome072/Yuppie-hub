@@ -3,7 +3,7 @@ import {
   loginController,
   registerController,
 } from "@/lib/controllers/auth.controller";
-import { verifyJWT } from "@/lib/controllers/jwt.controller";
+import { verifyJWTController } from "@/lib/controllers/jwt.controller";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import { updatePersistInfos } from "@/redux/slices/persistSlice";
 import { updateUserInfos } from "@/redux/slices/userSlice";
@@ -58,7 +58,7 @@ export default function Fail() {
   useEffect(() => {
     (async () => {
       setSpinner(true);
-      const res = await verifyJWT(token);
+      const res = await verifyJWTController(token);
       setSpinner(false);
       if (!isEmpty(res?.infos) && (res?.infos?.register || res?.infos?.login)) {
         setInitialData(res.infos);
@@ -1101,6 +1101,7 @@ export default function Fail() {
                   </button>
                 </div>
                 {initialData.remember && <div className={styles.hr} />}
+                <div className={styles.hr} />
                 <div className={styles.notRegistered}>
                   <label>Vous n{"'"}avez pas de compte ?</label>
                 </div>

@@ -5,39 +5,48 @@ import photo from "../../assets/default_avatar.jpg";
 import { useEffect, useState } from "react";
 import Calendar from "./Calendar";
 import ClientOnly from "../ClientOnly";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { isEmpty } from "@/lib/utils/isEmpty";
-import { removeHTTPPrefix } from "@/lib/controllers/http.controller";
+import { removeHTTPPrefixController } from "@/lib/controllers/http.controller";
 // edit
 import { HiPencilAlt } from "react-icons/hi";
 //share
 import { BsShare } from "react-icons/bs";
 import { RxAvatar } from "react-icons/rx";
 import { AiOutlineStar } from "react-icons/ai";
+import { updateDispController } from "@/lib/controllers/user.controller";
+import { updateUserInfos } from "@/redux/slices/userSlice";
 export default function Left({ setIsEditProfil, isEditProfil }) {
   const { user } = useSelector((state) => state.user);
+  let infosToUpdate = {};
+  const dispatch = useDispatch();
   const [canUpdate, setCanUpdate] = useState(false);
   const [active, setActive] = useState({ obj: "", value: false });
   const [newNote, setNewNote] = useState({
     obj: user.note,
     value: false,
   });
+  const [newDisp, setNewDisp] = useState({
+    obj: user.disponibilite,
+    value: false,
+  });
+  const [isLoading, setIsLoading] = useState(false);
   const lastPhoto = !isEmpty(user?.image)
     ? user.image[user.image.length - 1]
     : null;
   useEffect(() => {
-    setCanUpdate(false);
-  }, []);
-  useEffect(() => {
-    if (newNote.obj !== user.note) {
+    if (newNote.obj !== user.note && !newNote.value) {
       setNewNote((prev) => {
         let nwe = { ...prev };
         nwe.value = true;
         return nwe;
       });
     }
-  }, [newNote.obj]);
+    if (newNote.value) {
+      infosToUpdate.note = newNote.obj;
+    }
+  }, [newNote, newDisp]);
   const handleChangeNote = (e) => {
     setNewNote((prev) => {
       let nwn = { ...prev };
@@ -45,9 +54,18 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
       return nwn;
     });
   };
-  const handlesubmit = (e) => {
+  const handlesubmit = async (e) => {
     e.preventDefault();
     setCanUpdate(false);
+    if (!isEmpty(infosToUpdate)) {
+      setIsLoading(true);
+      const res = await updateDispController(infosToUpdate);
+      setIsLoading(false);
+      if (res?.userNotFound) {
+      } else if (res?.success) {
+        dispatch(updateUserInfos(infosToUpdate));
+      }
+    }
   };
   return (
     <ClientOnly pr>
@@ -152,7 +170,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                   id="portfolio"
                   className={styles.shrInput}
                   value={
-                    removeHTTPPrefix(user?.lienProfessionnelle) ||
+                    removeHTTPPrefixController(user?.lienProfessionnelle) ||
                     "Lien professionnel"
                   }
                 />
@@ -208,10 +226,12 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                     active.obj === "disp" && (
                       <form onSubmit={handlesubmit}>
                         <Calendar
+                          newDisp={newDisp}
+                          setNewDisp={setNewDisp}
                           canUpdate={canUpdate}
                           setCanUpdate={setCanUpdate}
-                          as
                           handlesubmit={handlesubmit}
+                          isLoading={isLoading}
                         />
                         <div className={styles.note}>
                           <div>
@@ -307,7 +327,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                         readOnly
                         id="portfolio"
                         className={styles.shrInput}
-                        value={removeHTTPPrefix(user.portfolio) || ""}
+                        value={removeHTTPPrefixController(user.portfolio) || ""}
                       />
                       <Link
                         target={"_blank"}
@@ -326,7 +346,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                       <input
                         readOnly
                         id="offre"
-                        value={removeHTTPPrefix(user.offresDeService)}
+                        value={removeHTTPPrefixController(user.offresDeService)}
                         className={styles.shrInput}
                       />
                       <Link
@@ -388,10 +408,12 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                   </div>
                   <form onSubmit={handlesubmit}>
                     <Calendar
+                      newDisp={newDisp}
+                      setNewDisp={setNewDisp}
                       canUpdate={canUpdate}
                       setCanUpdate={setCanUpdate}
-                      cli
                       handlesubmit={handlesubmit}
+                      isLoading={isLoading}
                     />
                     <div className={styles.note}>
                       <div>

@@ -1,5 +1,5 @@
 "use client";
-import { verifyJWT } from "@/lib/controllers/jwt.controller";
+import { verifyJWTController } from "@/lib/controllers/jwt.controller";
 import { resetPasswordController } from "@/lib/controllers/reset.controller";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import Link from "next/link";
@@ -33,7 +33,7 @@ export default function ResetPassword({ token }) {
     (async () => {
       if (!isEmpty(token)) {
         setSpinner(true);
-        const res = await verifyJWT(token);
+        const res = await verifyJWTController(token);
         setSpinner(false);
         if (res?.secure) {
           setError((prev) => {

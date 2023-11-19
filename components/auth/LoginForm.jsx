@@ -2,7 +2,7 @@
 import { UidContext } from "@/context/UidContext";
 import { loginController } from "@/lib/controllers/auth.controller";
 import { updatePersistInfos } from "@/redux/slices/persistSlice";
-import { updateUserInfos } from "@/redux/slices/userSlice";
+import { fetchUserInfos } from "@/redux/slices/userSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
@@ -47,7 +47,7 @@ export default function LoginForm(req) {
     if (res?.error) {
       push(`/fail?t=${res.error}`);
     } else {
-      dispatch(updateUserInfos({ user: res.user }));
+      dispatch(fetchUserInfos({ user: res.user }));
       dispatch(updatePersistInfos({ authToken: res.token, userType }));
       push("/home");
     }

@@ -1,9 +1,11 @@
 "use client";
-import { useState } from "react";
 import styles from "../../styles/home/Calendar.module.css";
 import ClientOnly from "../ClientOnly";
 import { HiPencil } from "react-icons/hi";
 import { MdOutlineCheck } from "react-icons/md";
+import { isEmpty } from "@/lib/utils/isEmpty";
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
 const day = [
   { short: "L", long: "Lundi" },
   { short: "M", long: "Mardi" },
@@ -18,35 +20,63 @@ export default function Calendar({
   handlesubmit,
   setCanUpdate,
   canUpdate,
-  cli,
+  newDisp,
+  setNewDisp,
+  isLoading,
 }) {
-  const initialDisp = day.map((d) => {
-    const dayOptions = hour.map((h) => ({
-      obj: h,
-      value: false,
-    }));
-    return {
-      day: d,
-      disp: dayOptions,
-    };
-  });
-  const [dsp, setDsp] = useState(initialDisp);
+  const { user } = useSelector((state) => state.user);
+  useMemo(() => {
+    if (newDisp.obj !== user.disponibilite && !newDisp.value) {
+      setNewDisp((prev) => ({ ...prev, value: true }));
+    }
+  }, [newDisp, user.disponibilite, setNewDisp]);
+  const handleOptionClick = (dIndex, hIndex) => {
+    setNewDisp((prev) => {
+      const newNumber = Number(`${dIndex}${hIndex}`);
+      const arrayOfUniqNumber = new Set(prev.obj); // Utiliser prev.obj au lieu de prev
+      if (arrayOfUniqNumber.has(newNumber)) {
+        arrayOfUniqNumber.delete(newNumber);
+      } else {
+        arrayOfUniqNumber.add(newNumber);
+      }
+      return {
+        ...prev,
+        obj: Array.from(arrayOfUniqNumber).sort((a, b) => a - b),
+      };
+    });
+  };
+  const verifyDisp = (dIndex, hIndex) => {
+    const disp = Number(`${dIndex}${hIndex}`);
+    return newDisp.obj.includes(disp);
+  };
   return (
     <ClientOnly>
       <div
         className={
-          cli ? `${styles.container} ${styles.cli}` : `${styles.container}`
+          isLoading ? `${styles.container} pen` : `${styles.container}`
         }
       >
         <div className={styles.left}>
           <div className={canUpdate ? `${styles.upd}` : `${styles.mdf}`}>
             {canUpdate ? (
-              <button type="submit" onClick={handlesubmit}>
-                <MdOutlineCheck />
+              <button
+                type="submit"
+                className={
+                  isLoading
+                    ? `${styles.submit} ${styles.submitLoading}`
+                    : `${styles.submit}`
+                }
+                onClick={handlesubmit}
+              >
+                <i>
+                  <MdOutlineCheck />
+                </i>
               </button>
             ) : (
-              <label className={styles.labc} onClick={() => setCanUpdate(true)}>
-                <HiPencil />
+              <label className={styles.edit} onClick={() => setCanUpdate(true)}>
+                <i>
+                  <HiPencil />
+                </i>
               </label>
             )}
           </div>
@@ -59,125 +89,31 @@ export default function Calendar({
           </div>
         </div>
         <div className={styles.right}>
-          {day.map((d, i) => {
-            return (
-              <div key={d.long}>
-                <div className={styles.dt}>
-                  <label>{d.short}</label>
-                </div>
-                <div className={styles.d}>
-                  <div
-                    onClick={() =>
-                      setDsp((prev) => {
-                        const newDisp = prev.map((dayItem) => {
-                          if (
-                            d.long === dayItem.day.long &&
-                            d.short === dayItem.day.short
-                          ) {
-                            const updatedDisp = dayItem.disp.map((option) => {
-                              if (option.obj === hour[0]) {
-                                return {
-                                  ...option,
-                                  value: !option.value,
-                                };
-                              }
-                              return option;
-                            });
-
-                            return { ...dayItem, disp: updatedDisp };
-                          }
-                          return dayItem;
-                        });
-                        return newDisp;
-                      })
-                    }
-                  >
-                    <span
-                      className={
-                        dsp[i].disp[0].value
-                          ? `${styles.jca}`
-                          : canUpdate
-                          ? `${styles.jcd}`
-                          : null
-                      }
-                    />
-                  </div>
-                  <div
-                    onClick={() =>
-                      setDsp((prev) => {
-                        const newDisp = prev.map((dayItem) => {
-                          if (
-                            d.long === dayItem.day.long &&
-                            d.short === dayItem.day.short
-                          ) {
-                            const updatedDisp = dayItem.disp.map((option) => {
-                              if (option.obj === hour[1]) {
-                                return {
-                                  ...option,
-                                  value: !option.value,
-                                };
-                              }
-                              return option;
-                            });
-
-                            return { ...dayItem, disp: updatedDisp };
-                          }
-                          return dayItem;
-                        });
-                        return newDisp;
-                      })
-                    }
-                  >
-                    <span
-                      className={
-                        dsp[i].disp[1].value
-                          ? `${styles.jca}`
-                          : canUpdate
-                          ? `${styles.jcd}`
-                          : null
-                      }
-                    />
-                  </div>
-                  <div
-                    onClick={() =>
-                      setDsp((prev) => {
-                        const newDisp = prev.map((dayItem) => {
-                          if (
-                            d.long === dayItem.day.long &&
-                            d.short === dayItem.day.short
-                          ) {
-                            const updatedDisp = dayItem.disp.map((option) => {
-                              if (option.obj === hour[2]) {
-                                return {
-                                  ...option,
-                                  value: !option.value,
-                                };
-                              }
-                              return option;
-                            });
-
-                            return { ...dayItem, disp: updatedDisp };
-                          }
-                          return dayItem;
-                        });
-                        return newDisp;
-                      })
-                    }
-                  >
-                    <span
-                      className={
-                        dsp[i].disp[2].value
-                          ? `${styles.jca}`
-                          : canUpdate
-                          ? `${styles.jcd}`
-                          : null
-                      }
-                    />
-                  </div>
-                </div>
+          {day.map((d, dIndex) => (
+            <div key={d.long}>
+              <div className={styles.dt}>
+                <label>{d.short}</label>
               </div>
-            );
-          })}
+              <div className={styles.d}>
+                {Array.from({ length: hour.length }).map((_, hIndex) => (
+                  <div
+                    key={hIndex}
+                    onClick={() => handleOptionClick(dIndex, hIndex)}
+                  >
+                    <span
+                      className={
+                        verifyDisp(dIndex, hIndex)
+                          ? `${styles.jca}`
+                          : canUpdate
+                          ? `${styles.jcd}`
+                          : isEmpty(newDisp) && null
+                      }
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </ClientOnly>
