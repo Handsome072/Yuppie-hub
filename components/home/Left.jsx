@@ -19,10 +19,10 @@ import { updateDispController } from "@/lib/controllers/user.controller";
 import { updateUserInfos } from "@/redux/slices/userSlice";
 export default function Left({ setIsEditProfil, isEditProfil }) {
   const { user } = useSelector((state) => state.user);
-  let infosToUpdate = {};
   const dispatch = useDispatch();
   const [canUpdate, setCanUpdate] = useState(false);
   const [active, setActive] = useState({ obj: "", value: false });
+  const [infosToUpdate, setInfosToUpdate] = useState({});
   const [newNote, setNewNote] = useState({
     obj: user.note,
     value: false,
@@ -44,26 +44,25 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
       });
     }
     if (newNote.value) {
-      infosToUpdate.note = newNote.obj;
+      setInfosToUpdate((prev) => ({ ...prev, note: newNote.obj }));
     }
-  }, [newNote, newDisp]);
+  }, [newNote]);
   const handleChangeNote = (e) => {
-    setNewNote((prev) => {
-      let nwn = { ...prev };
-      nwn.obj = e.target.value;
-      return nwn;
-    });
+    setNewNote((prev) => ({ ...prev, obj: e.target.value }));
   };
   const handlesubmit = async (e) => {
     e.preventDefault();
-    setCanUpdate(false);
     if (!isEmpty(infosToUpdate)) {
+      infosToUpdate.id = user._id;
       setIsLoading(true);
       const res = await updateDispController(infosToUpdate);
+      setCanUpdate(false);
       setIsLoading(false);
-      if (res?.userNotFound) {
-      } else if (res?.success) {
-        dispatch(updateUserInfos(infosToUpdate));
+      if (res?.success) {
+        dispatch(updateUserInfos(res));
+        setNewNote({ obj: user.note, value: false });
+        setNewDisp({ obj: user.disponibilite, value: false });
+        setInfosToUpdate({});
       }
     }
   };
@@ -232,6 +231,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                           setCanUpdate={setCanUpdate}
                           handlesubmit={handlesubmit}
                           isLoading={isLoading}
+                          setInfosToUpdate={setInfosToUpdate}
                         />
                         <div className={styles.note}>
                           <div>
@@ -242,7 +242,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                               {canUpdate ? (
                                 <textarea
                                   value={newNote.obj}
-                                  id="cp"
+                                  id="note"
                                   onChange={handleChangeNote}
                                   className={`${styles.textarea} ${styles.crt} scr`}
                                 />
@@ -250,7 +250,6 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                                 <textarea
                                   readOnly
                                   defaultValue={user.note}
-                                  id="cp"
                                   className={`${styles.textarea} scr`}
                                 />
                               )}
@@ -414,6 +413,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                       setCanUpdate={setCanUpdate}
                       handlesubmit={handlesubmit}
                       isLoading={isLoading}
+                      setInfosToUpdate={setInfosToUpdate}
                     />
                     <div className={styles.note}>
                       <div>
@@ -424,7 +424,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                           {canUpdate ? (
                             <textarea
                               value={newNote.obj}
-                              id="cp"
+                              id="note"
                               onChange={(e) =>
                                 setNewNote((prev) => {
                                   let nwn = { ...prev };
@@ -432,13 +432,12 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                                   return nwn;
                                 })
                               }
-                              className={`${styles.textarea} scr`}
+                              className={`${styles.textarea} ${styles.crt} scr `}
                             />
                           ) : (
                             <textarea
                               readOnly
                               defaultValue={user.note}
-                              id="cp"
                               className={`${styles.textarea} scr`}
                             />
                           )}

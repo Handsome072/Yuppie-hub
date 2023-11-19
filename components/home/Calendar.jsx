@@ -3,8 +3,7 @@ import styles from "../../styles/home/Calendar.module.css";
 import ClientOnly from "../ClientOnly";
 import { HiPencil } from "react-icons/hi";
 import { MdOutlineCheck } from "react-icons/md";
-import { isEmpty } from "@/lib/utils/isEmpty";
-import { useMemo } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 const day = [
   { short: "L", long: "Lundi" },
@@ -23,13 +22,23 @@ export default function Calendar({
   newDisp,
   setNewDisp,
   isLoading,
+  setInfosToUpdate,
 }) {
   const { user } = useSelector((state) => state.user);
-  useMemo(() => {
-    if (newDisp.obj !== user.disponibilite && !newDisp.value) {
+  useEffect(() => {
+    if (
+      JSON.stringify(newDisp.obj) !== JSON.stringify(user.disponibilite) &&
+      !newDisp.value
+    ) {
       setNewDisp((prev) => ({ ...prev, value: true }));
     }
-  }, [newDisp, user.disponibilite, setNewDisp]);
+    if (newDisp.value) {
+      setInfosToUpdate((prev) => ({
+        ...prev,
+        disponibilite: newDisp.obj,
+      }));
+    }
+  }, [newDisp]);
   const handleOptionClick = (dIndex, hIndex) => {
     setNewDisp((prev) => {
       const newNumber = Number(`${dIndex}${hIndex}`);
@@ -106,7 +115,7 @@ export default function Calendar({
                           ? `${styles.jca}`
                           : canUpdate
                           ? `${styles.jcd}`
-                          : isEmpty(newDisp) && null
+                          : null
                       }
                     />
                   </div>

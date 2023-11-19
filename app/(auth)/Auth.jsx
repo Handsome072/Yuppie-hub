@@ -11,8 +11,9 @@ export default function AuthPage({ dn, children }) {
                 <Image
                   alt=""
                   src={"/logo.png"}
-                  fill
                   className={styles.logoImg}
+                  priority={true}
+                  fill
                 />
               </div>
               <div className={styles.line}>

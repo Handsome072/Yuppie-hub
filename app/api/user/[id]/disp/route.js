@@ -14,7 +14,7 @@ export const PUT = async (req, { params }) => {
       isEmpty(id) ||
       !isValidObjectId(id) ||
       isEmpty(body) ||
-      (isEmpty(body?.note) && isEmpty(body?.disp))
+      (isEmpty(body?.note) && isEmpty(body?.disponibilite))
     ) {
       return new NextResponse(
         JSON.stringify({ error: "Invalid ID" }, { status: 400 })
@@ -34,7 +34,7 @@ export const PUT = async (req, { params }) => {
       $set: {},
     };
 
-    for (const key in infos) {
+    for (const key in body) {
       const value = body[key];
       if (key && value !== undefined) {
         userInfosToUpdate.$set[key] = value;

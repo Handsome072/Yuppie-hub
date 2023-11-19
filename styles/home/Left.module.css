@@ -284,9 +284,6 @@
   position: relative;
   overflow: hidden;
 }
-.ccli .note {
-  /* flex: 1; */
-}
 .note div {
   position: relative;
   overflow: hidden;

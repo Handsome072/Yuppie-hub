@@ -48,6 +48,7 @@ export default function Menu() {
                 onClick={() => push("/home")}
                 alt=""
                 className={styles.logoImg}
+                priority={true}
                 fill
               />
             </div>
