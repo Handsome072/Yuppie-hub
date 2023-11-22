@@ -32,38 +32,69 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
     value: false,
   });
   const [isLoading, setIsLoading] = useState(false);
-  const lastPhoto = !isEmpty(user?.image)
-    ? user.image[user.image.length - 1]
-    : null;
   useEffect(() => {
-    if (newNote.obj !== user.note && !newNote.value) {
-      setNewNote((prev) => {
-        let nwe = { ...prev };
-        nwe.value = true;
+    //note
+    if (newNote.obj?.trim() !== user.note && newNote.obj?.trim().length > 5) {
+      if (!newNote.value) {
+        setNewNote((prev) => ({ ...prev, value: true }));
+      }
+      setInfosToUpdate((prev) => ({ ...prev, note: newNote.obj }));
+    } else if (
+      newNote.obj?.trim() === user.note ||
+      (newNote.obj?.trim() !== user.note && newNote.obj?.trim().length < 5)
+    ) {
+      if (!newNote.value) {
+        setNewNote((prev) => ({ ...prev, value: false }));
+      }
+      setInfosToUpdate((prev) => {
+        const { note, ...nwe } = prev;
         return nwe;
       });
     }
-    if (newNote.value) {
-      setInfosToUpdate((prev) => ({ ...prev, note: newNote.obj }));
+
+    // disponibilite
+    if (JSON.stringify(newDisp.obj) !== JSON.stringify(user.disponibilite)) {
+      if (!newDisp.value) {
+        setNewDisp((prev) => ({ ...prev, value: true }));
+      }
+      setInfosToUpdate((prev) => ({ ...prev, disponibilite: newDisp.obj }));
+    } else if (
+      JSON.stringify(newDisp.obj) === JSON.stringify(user.disponibilite)
+    ) {
+      if (newDisp.value) {
+        setNewDisp((prev) => ({ ...prev, value: false }));
+      }
+      setInfosToUpdate((prev) => {
+        const { disponibilite, ...nwe } = prev;
+        return nwe;
+      });
     }
-  }, [newNote]);
+  }, [newNote.obj, newDisp.obj]);
   const handleChangeNote = (e) => {
     setNewNote((prev) => ({ ...prev, obj: e.target.value }));
   };
   const handlesubmit = async (e) => {
     e.preventDefault();
     if (!isEmpty(infosToUpdate)) {
-      infosToUpdate.id = user._id;
       setIsLoading(true);
-      const res = await updateDispController(infosToUpdate);
+      const res = await updateDispController({
+        ...infosToUpdate,
+        id: user._id,
+      });
       setCanUpdate(false);
       setIsLoading(false);
-      if (res?.success) {
-        dispatch(updateUserInfos(res));
+      if (!isEmpty(res?.user)) {
+        dispatch(updateUserInfos({ user: res.user }));
         setNewNote({ obj: user.note, value: false });
         setNewDisp({ obj: user.disponibilite, value: false });
         setInfosToUpdate({});
+        setCanUpdate(false);
       }
+    } else {
+      setCanUpdate(false);
+      setNewNote({ obj: user.note, value: false });
+      setNewDisp({ obj: user.disponibilite, value: false });
+      setInfosToUpdate({});
     }
   };
   return (
@@ -73,7 +104,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
           <div className={styles.md}>
             <div className={styles.photoMd}>
               <Image
-                src={!isEmpty(lastPhoto) ? lastPhoto : photo}
+                src={!isEmpty(user.image) ? user.image : photo}
                 alt=""
                 fill
                 className={styles.profilImgMd}
@@ -100,7 +131,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
             <div className={styles.left}>
               <div className={styles.photo}>
                 <Image
-                  src={!isEmpty(lastPhoto) ? lastPhoto : photo}
+                  src={!isEmpty(user.image) ? user.image : photo}
                   alt=""
                   fill
                   className={styles.profilImg}

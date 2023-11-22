@@ -15,35 +15,76 @@ export default function ProfilRight({
   newBio,
   setNewBio,
   isSubmit,
+  setIsSubmit,
+  isLoadingPhotos,
+  initialPhotos,
+  infosToUpdate,
+  setInfosToUpdate,
 }) {
   const { user } = useSelector((state) => state.user);
   const ref = useRef();
-  const lastPhoto = !isEmpty(newImage.obj)
-    ? newImage.obj[newImage.obj.length - 1]
-    : null;
-  const [srcImg, setSrcImg] = useState(lastPhoto);
+  const firstPhoto = !isEmpty(newImage.obj) ? newImage.obj[0] : null;
+  const [srcImg, setSrcImg] = useState(firstPhoto);
   const [ancImg, setAncImg] = useState({ obj: null, value: false });
-  const [sbc, setSbc] = useState("");
+  const [newPhoto, setNewPhoto] = useState("");
+  const [sbc, setSbc] = useState(false);
+  const [cantUpload, setCantUpload] = useState(false);
   const [activeCh, setActiveCh] = useState(false);
   useEffect(() => {
-    if (user.bio !== newBio.obj?.trim() && newBio.obj?.trim().length > 5) {
-      setNewBio((prev) => {
-        let nwb = { ...prev };
-        nwb.value = true;
-        return nwb;
+    // bio
+    if (
+      (user.bio !== newBio.obj?.trim() && newBio.obj?.trim().length > 5) ||
+      (user.bio !== newBio.obj?.trim() && isEmpty(newBio.obj?.trim()))
+    ) {
+      if (!newBio.value) {
+        setNewBio((prev) => ({ ...prev, value: true }));
+      }
+      setInfosToUpdate((prev) => ({ ...prev, bio: newBio.obj }));
+    } else if (
+      (newBio.obj?.trim().length < 5 && !isEmpty(newBio.obj?.trim())) ||
+      newBio.obj?.trim() === user.bio
+    ) {
+      if (newBio.value) {
+        setNewBio((prev) => ({ ...prev, value: false }));
+      }
+      setInfosToUpdate((prev) => {
+        const { bio, ...nwe } = prev;
+        return nwe;
       });
     }
-    if (user.image !== newImage.obj) {
-      setNewImage((prev) => ({
-        ...prev,
-        value: true,
-      }));
-      const updatedLastPhoto = !isEmpty(newImage.obj)
-        ? newImage.obj[newImage.obj.length - 1]
-        : null;
-      setSrcImg(updatedLastPhoto);
+
+    if (JSON.stringify(initialPhotos) !== JSON.stringify(newImage.obj)) {
+      if (!newImage.value) {
+        setNewImage((prev) => ({
+          ...prev,
+          value: true,
+        }));
+      }
+      setInfosToUpdate((prev) => ({ ...prev, image: newImage.obj }));
+      const newFirstPhoto = !isEmpty(newImage.obj) ? newImage.obj[0] : null;
+      setSrcImg(newFirstPhoto);
+    } else if (JSON.stringify(initialPhotos) === JSON.stringify(newImage.obj)) {
+      if (newImage.value) {
+        setNewImage((prev) => ({
+          ...prev,
+          value: false,
+        }));
+      }
+      setSbc(false);
+      setInfosToUpdate((prev) => {
+        const { image, ...nwe } = prev;
+        return nwe;
+      });
+      const newFirstPhoto = !isEmpty(newImage.obj) ? newImage.obj[0] : null;
+      setSrcImg(newFirstPhoto);
+      setCantUpload(false);
     }
   }, [newBio.obj, newImage.obj]);
+  useEffect(() => {
+    if (!isEmpty(infosToUpdate) && !isSubmit.can) {
+      setIsSubmit((prev) => ({ ...prev, can: true }));
+    }
+  }, [infosToUpdate]);
   useEffect(() => {
     let handleClickOutside = () => {};
     if (activeCh) {
@@ -65,25 +106,36 @@ export default function ProfilRight({
         console.log(error)
       );
 
-      setSbc("chc");
+      setSbc(true);
       setSrcImg(res);
-      setNewImage((prev) => ({
-        ...prev,
-        obj: [...user.image, res],
-      }));
+      setNewPhoto(res);
+      setAncImg({ obj: null, value: false });
+      if (!isEmpty(newPhoto)) {
+        setNewImage((prev) => {
+          let nwe = { ...prev };
+          nwe.obj[0] = res;
+          return nwe;
+        });
+      } else {
+        setNewImage((prev) => {
+          let nwe = { ...prev };
+          const newImgArray = [res, ...nwe.obj];
+          nwe.obj = newImgArray;
+          return nwe;
+        });
+      }
     }
   };
-  const handleChangeBio = (e) =>
-    setNewBio((prev) => {
-      let nwe = { ...prev };
-      nwe.obj = e.target.value;
-      return nwe;
-    });
   const removeCurrentFile = () => {
-    if (!isEmpty(lastPhoto)) {
+    if (!isEmpty(firstPhoto)) {
+      if (!isEmpty(newPhoto)) {
+        setNewPhoto("");
+        setSbc(false);
+      }
       setNewImage((prev) => {
         let nwe = { ...prev };
-        nwe.obj = nwe.obj.filter((f) => f !== lastPhoto);
+        const newArrayImg = nwe.obj.filter((f) => f !== firstPhoto);
+        nwe.obj = newArrayImg;
         return nwe;
       });
     }
@@ -96,14 +148,15 @@ export default function ProfilRight({
     setSrcImg(value);
     setAncImg({ obj: null, value: true });
     setActiveCh(false);
+    setCantUpload(true);
     setNewImage((prev) => {
       let nwe = { ...prev };
-      let newArray = [...user.image];
+      let newArray = [...initialPhotos];
       const indexToMove = newArray.indexOf(value);
       if (indexToMove !== -1) {
         newArray.splice(indexToMove, 1);
       }
-      newArray.push(value);
+      newArray.unshift(value);
       nwe.obj = newArray;
       return nwe;
     });
@@ -116,7 +169,7 @@ export default function ProfilRight({
         }
       >
         <div className={styles.btn}>
-          {isEmpty(ancImg.obj) && ancImg.value ? (
+          {cantUpload ? (
             <label className={styles.lbd}>Importer une nouvelle photo</label>
           ) : (
             <>
@@ -131,7 +184,7 @@ export default function ProfilRight({
           )}
         </div>
         <div className={styles.info}>
-          {!isEmpty(lastPhoto) ? (
+          {!isEmpty(firstPhoto) ? (
             <div className={styles.suppr}>
               <label onClick={removeCurrentFile}>
                 Supprimer la photo actuelle
@@ -158,13 +211,17 @@ export default function ProfilRight({
               />
             </div>
           </div>
-          {user.image?.length === 0 ? (
+          {isLoadingPhotos ? (
+            <div className={styles.not}>
+              <label></label>
+            </div>
+          ) : initialPhotos?.length === 0 ? (
             <div className={styles.not}>
               <label>
                 Vous n{"'"}avez aucune photo enregistré pour le moment
               </label>
             </div>
-          ) : user.image?.length === 1 ? (
+          ) : initialPhotos?.length === 1 ? (
             <div className={styles.not}>
               <label>
                 Vous n{"'"}avez qu{"'"}une seule photo enregistré pour le moment
@@ -172,7 +229,7 @@ export default function ProfilRight({
             </div>
           ) : (
             <div className={styles.choose}>
-              {sbc === "chc" ? (
+              {sbc ? (
                 <label className={styles.dis}>
                   ou sélectionner une ancienne photo de profil
                 </label>
@@ -184,12 +241,15 @@ export default function ProfilRight({
             </div>
           )}
         </div>
+        <div className={styles.hr} />
         <div className={styles.bio}>
           <label htmlFor="bio">Courte biographie</label>
           <div>
             <textarea
               className={`${styles.textarea} scr`}
-              onChange={handleChangeBio}
+              onChange={(e) =>
+                setNewBio((prev) => ({ ...prev, obj: e.target.value }))
+              }
               value={newBio.obj}
             />
           </div>
@@ -220,24 +280,21 @@ export default function ProfilRight({
                   <span>Cliquer sur la photo que vous voulez choisir.</span>
                 </div>
                 <div className={styles.contPhoto}>
-                  {user.image
-                    ?.slice()
-                    .reverse()
-                    .map((img, i) => {
-                      return (
-                        <div
-                          key={i}
-                          className={
-                            ancImg.obj === img
-                              ? `${styles.pht} ${styles.activeImg}`
-                              : `${styles.pht}`
-                          }
-                          onClick={() => setAncImg({ obj: img, value: true })}
-                        >
-                          <Image src={img} className={styles.ph} fill alt="" />
-                        </div>
-                      );
-                    })}
+                  {initialPhotos?.map((img, i) => {
+                    return (
+                      <div
+                        key={i}
+                        className={
+                          ancImg.obj === img
+                            ? `${styles.pht} ${styles.activeImg}`
+                            : `${styles.pht}`
+                        }
+                        onClick={() => setAncImg({ obj: img, value: true })}
+                      >
+                        <Image src={img} className={styles.ph} fill alt="" />
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
               <div className={styles.line} />

@@ -23,35 +23,17 @@ export const GET = async (req, { params }) => {
         JSON.stringify({ error: "Aucun utilisateur trouvé" }, { status: 404 })
       );
 
-    const { password, tokens, isAdmin, ...userInfos } = Object.assign(
+    const { password, tokens, isAdmin, image, ...userInfos } = Object.assign(
       {},
       user.toJSON()
     );
 
     return new NextResponse(
-      JSON.stringify({ user: userInfos }, { status: 200 })
+      JSON.stringify(
+        { user: { ...userInfos, image: user.image[0] || "" } },
+        { status: 200 }
+      )
     );
-  } catch (err) {
-    return new NextResponse(
-      JSON.stringify({ error: err.message }, { status: 500 })
-    );
-  }
-};
-export const DELETE = async (req, { params }) => {
-  try {
-    const { id } = params;
-    if (!isValidObjectId(id)) {
-      return new NextResponse(
-        JSON.stringify({ error: "Invalid ID" }, { status: 404 })
-      );
-    }
-    await connectToMongo();
-    const user = await UserModel.findByIdAndDelete(id);
-    if (!user)
-      return new NextResponse(
-        JSON.stringify({ error: "Aucun utilisateur trouvé" }, { status: 404 })
-      );
-    return new NextResponse(JSON.stringify(user, { status: 200 }));
   } catch (err) {
     return new NextResponse(
       JSON.stringify({ error: err.message }, { status: 500 })
@@ -61,6 +43,7 @@ export const DELETE = async (req, { params }) => {
 
 export const PUT = async (req, { params }) => {
   try {
+    let user;
     const { id } = params;
     if (!isValidObjectId(id)) {
       return new NextResponse(
@@ -68,7 +51,7 @@ export const PUT = async (req, { params }) => {
       );
     }
     await connectToMongo();
-    const user = await UserModel.findById(id);
+    user = await UserModel.findById(id);
     if (!user)
       return new NextResponse(
         JSON.stringify({ error: "Aucun utilisateur trouvé" }, { status: 404 })
@@ -94,26 +77,47 @@ export const PUT = async (req, { params }) => {
         }
       }
     }
-    const updatedUser = await UserModel.findByIdAndUpdate(
-      user._id,
-      userInfosToUpdate,
-      {
-        new: true,
-        upsert: true,
-        setDefaultsOnInsert: true,
-      }
-    ).catch((err) => {
+    user = await UserModel.findByIdAndUpdate(id, userInfosToUpdate, {
+      new: true,
+      upsert: true,
+      setDefaultsOnInsert: true,
+    }).catch((err) => {
       return new NextResponse(
         JSON.stringify({ error: err.message }, { status: 500 })
       );
     });
-    const { password, tokens, isAdmin, ...userInfos } = Object.assign(
+    const { password, tokens, isAdmin, image, ...userInfos } = Object.assign(
       {},
-      updatedUser.toJSON()
+      user.toJSON()
     );
     return new NextResponse(
-      JSON.stringify({ updatedUser: userInfos }, { status: 200 })
+      JSON.stringify(
+        { user: { ...userInfos, image: user.image[0] || "" } },
+        { status: 200 }
+      )
     );
+  } catch (err) {
+    return new NextResponse(
+      JSON.stringify({ error: err.message }, { status: 500 })
+    );
+  }
+};
+
+export const DELETE = async (req, { params }) => {
+  try {
+    const { id } = params;
+    if (!isValidObjectId(id)) {
+      return new NextResponse(
+        JSON.stringify({ error: "Invalid ID" }, { status: 404 })
+      );
+    }
+    await connectToMongo();
+    const user = await UserModel.findByIdAndDelete(id);
+    if (!user)
+      return new NextResponse(
+        JSON.stringify({ error: "Aucun utilisateur trouvé" }, { status: 404 })
+      );
+    return new NextResponse(JSON.stringify(user, { status: 200 }));
   } catch (err) {
     return new NextResponse(
       JSON.stringify({ error: err.message }, { status: 500 })

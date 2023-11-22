@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { isValidLinkController } from "@/lib/controllers/http.controller";
 import { BsShare } from "react-icons/bs";
 import { GoTriangleDown } from "react-icons/go";
+import { isEmpty } from "@/lib/utils/isEmpty";
 
 export default function Statut({
   newStatutPro,
@@ -17,61 +18,99 @@ export default function Statut({
   setNewPortfolio,
   newPortfolio,
   isSubmit,
+  setInfosToUpdate,
 }) {
   const { user } = useSelector((state) => state.user);
   const ref = useRef();
   const [showMenu, setShowMenu] = useState({
     obj: "",
     value: false,
-    focus: false,
   });
   useEffect(() => {
+    // statut pro
     if (user.statutProfessionnelle !== newStatutPro.obj) {
-      setNewStatutPro((prev) => {
-        let nwe = { ...prev };
-        nwe.value = true;
+      if (!newStatutPro.value) {
+        setNewStatutPro((prev) => ({ ...prev, value: true }));
+      }
+      setInfosToUpdate((prev) => ({
+        ...prev,
+        statutProfessionnelle: newStatutPro.obj,
+      }));
+    } else if (user.statutProfessionnelle === newStatutPro.obj) {
+      if (newStatutPro.value) {
+        setNewStatutPro((prev) => ({ ...prev, value: false }));
+      }
+      setInfosToUpdate((prev) => {
+        const { statutProfessionnelle, ...nwe } = prev;
         return nwe;
       });
     }
+
+    // portfolio
     if (
       newPortfolio.obj !== user.portfolio &&
       isValidLinkController(newPortfolio.obj)
     ) {
-      setNewPortfolio((prev) => {
-        let nwe = { ...prev };
-        nwe.value = true;
+      if (!newPortfolio.value) {
+        setNewPortfolio((prev) => ({ ...prev, value: true }));
+      }
+      setInfosToUpdate((prev) => ({ ...prev, portfolio: newPortfolio.obj }));
+    } else if (
+      newPortfolio.obj === user.portfolio ||
+      !isValidLinkController(newPortfolio.obj)
+    ) {
+      if (newPortfolio.value) {
+        setNewPortfolio((prev) => ({ ...prev, value: false }));
+      }
+      setInfosToUpdate((prev) => {
+        const { portfolio, ...nwe } = prev;
         return nwe;
       });
     }
+
+    // lien pro
     if (
       newLienProfessionnelle.obj !== user.lienProfessionnelle &&
       isValidLinkController(newLienProfessionnelle.obj)
     ) {
-      setNewLienProfessionnelle((prev) => {
-        let nwe = { ...prev };
-        nwe.value = true;
+      if (!newLienProfessionnelle.value) {
+        setNewLienProfessionnelle((prev) => ({ ...prev, value: true }));
+      }
+      setInfosToUpdate((prev) => ({
+        ...prev,
+        lienProfessionnelle: newLienProfessionnelle.obj,
+      }));
+    } else if (
+      newLienProfessionnelle.obj === user.lienProfessionnelle ||
+      !isValidLinkController(newLienProfessionnelle.obj)
+    ) {
+      if (newLienProfessionnelle.value) {
+        setNewLienProfessionnelle((prev) => ({ ...prev, value: false }));
+      }
+      setInfosToUpdate((prev) => {
+        const { lienProfessionnelle, ...nwe } = prev;
         return nwe;
       });
     }
   }, [newStatutPro.obj, newPortfolio.obj, newLienProfessionnelle.obj]);
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) {
-        setShowMenu((prev) => {
-          let nwe = { ...prev };
-          nwe.obj = "";
-          nwe.value = false;
-          nwe.focus = false;
-          return nwe;
-        });
-      }
-    };
 
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [ref]);
+  useEffect(() => {
+    if (!isEmpty(showMenu.obj)) {
+      const handleClickOutside = (e) => {
+        if (ref.current && !ref.current.contains(e.target)) {
+          setShowMenu(() => ({
+            obj: "",
+            value: false,
+          }));
+        }
+      };
+
+      document.addEventListener("click", handleClickOutside);
+      return () => {
+        document.removeEventListener("click", handleClickOutside);
+      };
+    }
+  }, [showMenu.obj]);
   const handleChangeLinkPro = (e) => {
     setNewLienProfessionnelle((prev) => {
       let nwe = { ...prev };
@@ -107,38 +146,27 @@ export default function Statut({
                 id="statutPro"
                 value={newStatutPro.obj}
                 readOnly
-                onFocus={() => {
-                  showMenu.obj === "statutPro" &&
-                  showMenu.value &&
-                  showMenu.focus
-                    ? setShowMenu({ ...showMenu, value: !showMenu.value })
-                    : setShowMenu({
-                        obj: "statutPro",
-                        value: true,
-                        focus: true,
-                      });
-                }}
-                onClick={() => {
-                  showMenu.obj === "statutPro" &&
-                  showMenu.value &&
-                  !showMenu.focus
-                    ? setShowMenu({ ...showMenu, value: !showMenu.value })
-                    : setShowMenu({ obj: "statutPro", value: true });
-                }}
+                onClick={() =>
+                  setShowMenu((prev) => ({
+                    obj: "statutPro",
+                    value: prev.obj === "statutPro" ? !prev.value : true,
+                  }))
+                }
                 placeholder="Statut"
                 className={styles.ina}
               />
               <i
-                onClick={() => {
-                  showMenu.obj === "statutPro" && showMenu.value
-                    ? setShowMenu({ obj: "statutPro", value: !showMenu.value })
-                    : setShowMenu({ obj: "statutPro", value: true });
-                }}
+                onClick={() =>
+                  setShowMenu((prev) => ({
+                    obj: "statutPro",
+                    value: prev.obj === "statutPro" ? !prev.value : true,
+                  }))
+                }
               >
                 <GoTriangleDown size={"1.25rem"} className="try1" />
               </i>
               {showMenu.obj === "statutPro" && showMenu.value && (
-                <div className={`${styles.menuDeroulant} ${styles.hidden}`}>
+                <div className={`${styles.menuDeroulant} ${styles.hidden} scr`}>
                   <div className={styles.stat}>
                     {user?.userType === "client"
                       ? statutCli.map((p) => {
@@ -156,11 +184,10 @@ export default function Statut({
                                   nwe.obj = p;
                                   return nwe;
                                 });
-                                setShowMenu({
+                                setShowMenu(() => ({
                                   obj: "",
                                   value: false,
-                                  focus: false,
-                                });
+                                }));
                               }}
                             >
                               <span>{p}</span>
@@ -182,11 +209,10 @@ export default function Statut({
                                   nwe.obj = p;
                                   return nwe;
                                 });
-                                setShowMenu({
+                                setShowMenu(() => ({
                                   obj: "",
                                   value: false,
-                                  focus: false,
-                                });
+                                }));
                               }}
                             >
                               <span>{p}</span>
@@ -231,7 +257,7 @@ export default function Statut({
         {/* portfolio */}
         <div>
           <div className={styles.l}>
-            <label htmlFor="portfolio" className="usn">
+            <label htmlFor="prf" className="usn">
               Lien portfolio
             </label>
             <p>
@@ -239,10 +265,10 @@ export default function Statut({
               travaillé.
             </p>
           </div>
-          <div className={`${styles.r} ${styles.foc}`}>
+          <div className={styles.r}>
             <input
               type="text"
-              id="portfolio"
+              id="prf"
               onChange={handleChangePortfolio}
               value={newPortfolio?.obj || ""}
               placeholder="https://..."

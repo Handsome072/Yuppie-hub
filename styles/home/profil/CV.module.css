@@ -68,6 +68,7 @@
   font-size: 0.9rem;
   color: var(--blue);
   min-width: 8rem;
+  transition: 0.1s;
 }
 .container .inputR {
   display: flex;
@@ -76,8 +77,16 @@
   position: relative;
   flex-direction: column;
 }
+.container input:hover {
+  outline: 1px solid var(--gris-v-2);
+}
 .container .ina::placeholder {
   color: var(--gris);
+}
+.container input:focus {
+  border-color: var(--blue-loading);
+  box-shadow: 0 0 1px 1px var(--blue-loading);
+  outline: 1px solid var(--gris-v-2);
 }
 .inputR i {
   position: absolute;
@@ -98,10 +107,7 @@
   top: 112.5%;
   min-height: max-content;
   border: 1px solid var(--gris-v-1);
-  overflow-y: scroll;
   overflow-x: hidden;
-  scrollbar-width: thin;
-  scrollbar-color: var(--gris) var(--gris-v-1);
   z-index: 6;
   padding-right: 0.25rem;
   animation: anim 0.25s;

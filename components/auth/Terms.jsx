@@ -18,11 +18,11 @@ export default function Terms({
           checked={acceptConditions.value}
           id="condition"
           onChange={() =>
-            setAcceptconditions({
-              ...acceptConditions,
+            setAcceptconditions((prev) => ({
+              ...prev,
               value: !acceptConditions.value,
               submit: false,
-            })
+            }))
           }
         />
         <span>
@@ -38,11 +38,7 @@ export default function Terms({
               if (on) {
                 setScroll(true);
               }
-              setActivePopup((prev) => {
-                const nwe = { ...prev };
-                nwe.obj = "cnd";
-                return nwe;
-              });
+              setActivePopup((prev) => ({ ...prev, obj: "cnd" }));
             }}
           >
             Conditions d{"'"}utilisation
@@ -59,11 +55,7 @@ export default function Terms({
               if (on) {
                 setScroll(true);
               }
-              setActivePopup((prev) => {
-                const nwe = { ...prev };
-                nwe.obj = "cnf";
-                return nwe;
-              });
+              setActivePopup((prev) => ({ ...prev, obj: "cnf" }));
             }}
           >
             politique de confidentialité

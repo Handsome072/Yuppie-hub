@@ -179,12 +179,12 @@ export default function RegisterForm() {
                       type="password"
                       onChange={(e) => {
                         cPass.current.setCustomValidity("");
-                        setCPasswordUser({
-                          ...cPasswordUser,
+                        setCPasswordUser((prev) => ({
+                          ...prev,
                           value: e.target.value,
                           submit: false,
                           error: false,
-                        });
+                        }));
                       }}
                       value={cPasswordUser.value}
                       required

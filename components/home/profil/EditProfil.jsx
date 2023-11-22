@@ -1,7 +1,11 @@
 "use client";
 import ClientOnly from "@/components/ClientOnly";
-import { updateUserInfosController } from "@/lib/controllers/user.controller";
+import {
+  getPhotosController,
+  updateUserInfosController,
+} from "@/lib/controllers/user.controller";
 import { isEmpty } from "@/lib/utils/isEmpty";
+import { nbCmp } from "@/lib/utils/menuDeroulant";
 import { updateUserInfos } from "@/redux/slices/userSlice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,9 +13,9 @@ import styles from "../../../styles/home/profil/EditProfil.module.css";
 import ProfilMiddle from "./ProfilMiddle";
 import ProfilRight from "./ProfilRight";
 export default function EditProfil({ setIsEditProfil }) {
-  let infosToUpdate = {};
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [infosToUpdate, setInfosToUpdate] = useState({});
   const [newUsername, setNewUsername] = useState({
     obj: user.username,
     value: false,
@@ -34,6 +38,7 @@ export default function EditProfil({ setIsEditProfil }) {
   });
   const [newLang, setNewLang] = useState({
     obj: user.lang,
+    sgl: user.lang === "en" ? "Anglais" : "Français",
     value: false,
   });
   const [newStatutPro, setNewStatutPro] = useState({
@@ -49,10 +54,21 @@ export default function EditProfil({ setIsEditProfil }) {
     value: false,
   });
   const [newCmp, setNewCmp] = useState(() => {
-    return user.competenceVirtuelle?.map((u) => ({
+    const cmpFromDB = user.competenceVirtuelle?.map((u) => ({
       obj: u,
       value: false,
     }));
+    const initialCmp = [
+      ...cmpFromDB,
+      ...Array.from(
+        { length: nbCmp - user.competenceVirtuelle?.length },
+        () => ({
+          obj: "",
+          value: false,
+        })
+      ),
+    ];
+    return initialCmp;
   });
   const [newExpPro, setNewExpPro] = useState({
     obj: user.experiencePro,
@@ -80,94 +96,29 @@ export default function EditProfil({ setIsEditProfil }) {
   });
   const [newBio, setNewBio] = useState({ obj: user.bio, value: false });
   const [newImage, setNewImage] = useState({
-    obj: user.image,
+    obj: !isEmpty(user.image) ? [user.image] : [],
     value: false,
   });
   const [isSubmit, setIsSubmit] = useState({ can: false, is: false });
+  const [isLoadingPhotos, setIsLoadingPhotos] = useState(false);
+  const [initialPhotos, setInitialPhotos] = useState(
+    !isEmpty(user.image) ? [user.image] : []
+  );
+
   useEffect(() => {
-    if (newUsername.value) {
-      infosToUpdate.username = newUsername.obj;
-    }
-    if (newName.value) {
-      infosToUpdate.name = newName.obj;
-    }
-    if (newPays.value) {
-      infosToUpdate.pays = newPays.obj;
-    }
-    if (newProvince.value) {
-      infosToUpdate.province = newProvince.obj;
-    }
-    if (newVille.value) {
-      infosToUpdate.ville = newVille.obj;
-    }
-    if (newLang.value) {
-      infosToUpdate.lang = newLang.obj;
-    }
-    if (newLienProfessionnelle.value) {
-      infosToUpdate.lienProfessionnelle = newLienProfessionnelle.obj;
-    }
-    if (newStatutPro.value) {
-      infosToUpdate.statutProfessionnelle = newStatutPro.obj;
-    }
-    if (newPortfolio.value) {
-      infosToUpdate.portfolio = newPortfolio.obj;
-    }
-    if (newCmp.some((option) => option.value)) {
-      infosToUpdate.competenceVirtuelle = newCmp.map((option) => option.obj);
-    }
-    if (newExpPro.value) {
-      infosToUpdate.experiencePro = newExpPro.obj;
-    }
-    if (newApp.value) {
-      infosToUpdate.applicationWeb = newApp.obj;
-    }
-    if (newOffres.value) {
-      infosToUpdate.offresDeService = newOffres.obj;
-    }
-    if (newTh.value) {
-      infosToUpdate.tauxHoraire = newTh.obj;
-    }
-    if (newBenevolat.value) {
-      infosToUpdate.benevolat = newBenevolat.obj;
-    }
-    if (newMTF.value) {
-      infosToUpdate.montantForfaitaire = newMTF.obj;
-    }
-    if (newBio.value) {
-      infosToUpdate.bio = newBio.obj;
-    }
-    if (newImage.value) {
-      infosToUpdate.image = newImage.obj;
-    }
-  }, [
-    newUsername,
-    newName,
-    newPays,
-    newVille,
-    newProvince,
-    newLang,
-    newStatutPro,
-    newLienProfessionnelle,
-    newPortfolio,
-    newCmp,
-    newExpPro,
-    newApp,
-    newOffres,
-    newTh,
-    newBenevolat,
-    newMTF,
-    newBio,
-    newImage,
-  ]);
-  useEffect(() => {
-    if (!isEmpty(infosToUpdate)) {
-      if (!isSubmit.can) {
-        setIsSubmit((prev) => {
-          let nwe = { ...prev };
-          nwe.can = true;
-          return nwe;
-        });
+    (async () => {
+      setIsLoadingPhotos(true);
+      const res = await getPhotosController(user._id);
+      setIsLoadingPhotos(false);
+      if (res?.image) {
+        setInitialPhotos(res.image);
+        setNewImage((prev) => ({ ...prev, obj: res.image }));
       }
+    })();
+  }, []);
+  useEffect(() => {
+    if (!isEmpty(infosToUpdate) && !isSubmit.can) {
+      setIsSubmit((prev) => ({ ...prev, can: true }));
     }
   }, [infosToUpdate]);
   const handleReset = async () => {
@@ -197,23 +148,23 @@ export default function EditProfil({ setIsEditProfil }) {
     setNewMTF({ obj: user.montantForfaitaire, value: false });
     setNewBio({ obj: user.bio, value: false });
     setIsEditProfil(false);
-    setNewImage({ obj: user.image, value: false });
+    setNewImage({
+      obj: !isEmpty(user.image) ? [user.image] : [],
+      value: false,
+    });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmit((prev) => {
-      let nwe = { ...prev };
-      nwe.is = true;
-      return nwe;
-    });
-
+    setIsSubmit((prev) => ({ ...prev, is: true }));
     if (!isEmpty(infosToUpdate)) {
-      infosToUpdate = { id: user._id, ...infosToUpdate };
-      const res = await updateUserInfosController(infosToUpdate).catch(
-        (error) => console.log(error)
-      );
-      if (!isEmpty(res.updatedUser)) {
-        dispatch(updateUserInfos(infosToUpdate));
+      const res = await updateUserInfosController({
+        ...infosToUpdate,
+        id: user._id,
+      }).catch((error) => console.log(error));
+      if (!isEmpty(res?.user)) {
+        dispatch(updateUserInfos({ user: res.user }));
+        setIsEditProfil(false);
+      } else {
         setIsEditProfil(false);
       }
     } else {
@@ -267,6 +218,8 @@ export default function EditProfil({ setIsEditProfil }) {
             handleReset={handleReset}
             isSubmit={isSubmit}
             setIsSubmit={setIsSubmit}
+            infosToUpdate={infosToUpdate}
+            setInfosToUpdate={setInfosToUpdate}
           />
         </div>
         <div className={styles.editProfilRight}>
@@ -277,6 +230,10 @@ export default function EditProfil({ setIsEditProfil }) {
             setNewBio={setNewBio}
             isSubmit={isSubmit}
             setIsSubmit={setIsSubmit}
+            isLoadingPhotos={isLoadingPhotos}
+            initialPhotos={initialPhotos}
+            infosToUpdate={infosToUpdate}
+            setInfosToUpdate={setInfosToUpdate}
           />
         </div>
       </form>

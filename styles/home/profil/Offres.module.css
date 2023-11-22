@@ -52,16 +52,20 @@
   color: var(--blue);
   padding-right: 1.75rem;
   min-width: 8rem;
+  transition: 0.1s;
 }
 .container input::placeholder {
   color: var(--gris-v-2);
-  transition: 0.075s;
 }
-.container input:focus::placeholder {
-  color: transparent;
+.container input:hover {
+  outline: 1px solid var(--gris-v-2);
 }
-.container .r.foc input:hover,
-.container .r.foc input:focus {
+.container .ina::placeholder {
+  color: var(--gris);
+}
+.container input:focus {
+  border-color: var(--blue-loading);
+  box-shadow: 0 0 1px 1px var(--blue-loading);
   outline: 1px solid var(--gris-v-2);
 }
 .container .inputR {
@@ -70,6 +74,9 @@
   align-items: flex-end;
   position: relative;
   flex-direction: column;
+}
+.container .r .menuDeroulant .bg {
+  background: var(--gris-v-4);
 }
 .sh {
   position: absolute;
@@ -80,7 +87,6 @@
 .inputR i {
   position: absolute;
   padding-right: 0.5rem;
-  transition: 0.1s;
   color: var(--gris);
   cursor: pointer;
 }

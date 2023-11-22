@@ -17,6 +17,7 @@ import { AiOutlineCopy } from "react-icons/ai";
 import { VscCheckAll } from "react-icons/vsc";
 import { useEffect, useState } from "react";
 import { useRef } from "react";
+import { isEmpty } from "@/lib/utils/isEmpty";
 
 export default function Conditions({
   acceptConditions,
@@ -25,6 +26,7 @@ export default function Conditions({
   setActivePopup,
 }) {
   const ref = useRef();
+  const cnd = useRef();
   const [copied, setCopied] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [scroll, setScroll] = useState(false);
@@ -37,20 +39,31 @@ export default function Conditions({
       setScroll(false);
     }
   }, [isMounted, scroll]);
+  useEffect(() => {
+    let handleClickOutside = () => {};
+    if (!isEmpty(activePopup.obj) && isMounted) {
+      handleClickOutside = (e) => {
+        if (cnd.current && !cnd.current.contains(e.target)) {
+          console.log(e.target, !cnd.current.contains(e.target));
+          setActivePopup((prev) => ({ ...prev, obj: null }));
+        }
+      };
+    }
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [activePopup.obj, isMounted]);
   return (
     <ClientOnly>
       <div className={styles.container}>
-        <div>
+        <div ref={cnd}>
           <div className={styles.top}>
             <div className={styles.logo}>
               <Image src={"/logo.png"} fill alt="" className={styles.logoImg} />
               <i
                 onClick={() =>
-                  setActivePopup((prev) => {
-                    const nwe = { ...prev };
-                    nwe.obj = null;
-                    return nwe;
-                  })
+                  setActivePopup((prev) => ({ ...prev, obj: null }))
                 }
                 className={styles.close}
               >

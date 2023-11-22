@@ -15,18 +15,9 @@ export default function CV({
   newExpPro,
   setNewExpPro,
   isSubmit,
+  setInfosToUpdate,
 }) {
   const { user } = useSelector((state) => state.user);
-  const [cmp, setCmp] = useState(() => {
-    const initialCmp = [
-      ...newCmp,
-      ...Array.from({ length: nbCmp - newCmp.length }, () => ({
-        obj: "",
-        value: false,
-      })),
-    ];
-    return initialCmp;
-  });
   const [invalidOptions, setInvalidOptions] = useState(() => {
     const initialCmp = [
       ...user.competenceVirtuelle,
@@ -37,7 +28,6 @@ export default function CV({
     ];
     return initialCmp;
   });
-
   const [lastIndex, setLastIndex] = useState(0);
   const [showMenu, setShowMenu] = useState({
     obj: "",
@@ -46,58 +36,82 @@ export default function CV({
   });
   useEffect(() => {
     for (let i = 0; i < nbCmp; i++) {
-      if (cmp[i].obj === "") {
+      if (newCmp[i].obj === "") {
         setLastIndex(i);
         break;
       }
     }
-    for (let i = 0; i < nbCmp; i++) {
-      setNewCmp((prev) => {
-        return cmp
-          .filter((item) => !isEmpty(item.obj))
-          .map((item, i) => {
-            let newObj = { obj: item.obj, value: true };
-            while (prev.length <= i) {
-              prev.push({ obj: "", value: false });
-            }
-            return newObj;
-          });
+
+    // prendre tous les éléments non vides
+    const newCmpArray = newCmp
+      .filter((objet) => objet.obj !== "")
+      .map((objet) => objet.obj);
+
+    if (
+      JSON.stringify(newCmpArray) !== JSON.stringify(user.competenceVirtuelle)
+    ) {
+      setInfosToUpdate((prev) => ({
+        ...prev,
+        competenceVirtuelle: newCmpArray,
+      }));
+    } else if (
+      JSON.stringify(newCmpArray) === JSON.stringify(user.competenceVirtuelle)
+    ) {
+      setInfosToUpdate((prev) => {
+        const { competenceVirtuelle, ...nwe } = prev;
+        return nwe;
       });
     }
 
+    // application web
     if (newApp.obj !== user.applicationWeb) {
-      setNewApp((prev) => {
-        let nwe = { ...prev };
-        nwe.value = true;
-        return nwe;
-      });
-    }
-    if (newExpPro.obj !== user.experiencePro) {
-      setNewExpPro((prev) => {
-        let nwe = { ...prev };
-        nwe.value = true;
-        return nwe;
-      });
-    }
-  }, [cmp, newApp, newExpPro]);
-  useEffect(() => {
-    const compt = document.getElementById(showMenu.obj);
-    const handleClickOutside = (e) => {
-      if (!e.target.id !== compt) {
-        setShowMenu((prev) => {
-          let nwe = { ...prev };
-          nwe.obj = "";
-          nwe.value = false;
-          nwe.focus = false;
-          return nwe;
-        });
+      setNewApp((prev) => ({ ...prev, value: true }));
+      setInfosToUpdate((prev) => ({ ...prev, applicationWeb: newApp.obj }));
+    } else if (newApp.obj === user.applicationWeb) {
+      if (newApp.value) {
+        setNewApp((prev) => ({ ...prev, value: false }));
       }
-    };
+      setInfosToUpdate((prev) => {
+        const { applicationWeb, ...nwe } = prev;
+        return nwe;
+      });
+    }
 
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
+    // experience pro
+    if (newExpPro.obj !== user.experiencePro) {
+      setNewExpPro((prev) => ({ ...prev, value: true }));
+      setInfosToUpdate((prev) => ({ ...prev, experiencePro: newExpPro.obj }));
+    } else if (newExpPro.obj === user.experiencePro) {
+      if (newExpPro.value) {
+        setNewExpPro((prev) => ({ ...prev, value: true }));
+      }
+      setInfosToUpdate((prev) => {
+        const { experiencePro, ...nwe } = prev;
+        return nwe;
+      });
+    }
+  }, [newApp.obj, newExpPro.obj, newCmp]);
+
+  useEffect(() => {
+    if (!isEmpty(showMenu.obj)) {
+      const act = document.getElementById(showMenu.obj);
+      const handleClickOutside = (e) => {
+        if (!e.target.id !== act) {
+          setShowMenu((prev) => {
+            let nwe = { ...prev };
+            nwe.obj = "";
+            nwe.value = false;
+            nwe.focus = false;
+            return nwe;
+          });
+        }
+      };
+
+      document.addEventListener("click", handleClickOutside);
+      return () => {
+        document.removeEventListener("click", handleClickOutside);
+      };
+    }
   }, [showMenu.obj]);
   return (
     <ClientOnly>
@@ -118,7 +132,7 @@ export default function CV({
           </div>
 
           <div className={styles.cmp}>
-            {cmp.map((c, i) => {
+            {newCmp.map((c, i) => {
               return (
                 <div
                   className={
@@ -146,11 +160,11 @@ export default function CV({
                         showMenu.obj === `cmp${i}` &&
                         showMenu.value &&
                         showMenu.focus &&
-                        cmp[i] === c
-                          ? setShowMenu({
-                              ...showMenu,
-                              value: !showMenu.value,
-                            })
+                        newCmp[i] === c
+                          ? setShowMenu((prev) => ({
+                              ...prev,
+                              value: !prev.value,
+                            }))
                           : setShowMenu({
                               obj: "cmp",
                               value: true,
@@ -161,11 +175,11 @@ export default function CV({
                         showMenu.obj === `cmp${i}` &&
                         showMenu.value &&
                         !showMenu.focus &&
-                        cmp[i] === c
-                          ? setShowMenu({
-                              ...showMenu,
-                              value: !showMenu.value,
-                            })
+                        newCmp[i] === c
+                          ? setShowMenu((prev) => ({
+                              ...prev,
+                              value: !prev.value,
+                            }))
                           : setShowMenu({ obj: `cmp${i}`, value: true });
                       }}
                       className={styles.ina}
@@ -174,19 +188,22 @@ export default function CV({
                       onClick={() => {
                         showMenu.obj === `cmp${i}` &&
                         showMenu.value &&
-                        cmp[i] === c
-                          ? setShowMenu({
+                        newCmp[i] === c
+                          ? setShowMenu(() => ({
                               obj: `cmp${i}`,
                               value: !showMenu.value,
-                            })
-                          : setShowMenu({ obj: `cmp${i}`, value: true });
+                            }))
+                          : setShowMenu(() => ({
+                              obj: `cmp${i}`,
+                              value: true,
+                            }));
                       }}
                     >
                       <GoTriangleDown size={"1.25rem"} className="try1" />
                     </i>
                     {showMenu.obj === `cmp${i}` &&
                       showMenu.value &&
-                      cmp[i] === c && (
+                      newCmp[i] === c && (
                         <div
                           className={`${styles.menuDeroulant} ${styles.hidden} scr`}
                         >
@@ -196,13 +213,13 @@ export default function CV({
                                 <div
                                   key={p}
                                   className={
-                                    (c.obj === p && cmp[i] === c) ||
+                                    (c.obj === p && newCmp[i] === c) ||
                                     invalidOptions.includes(p)
                                       ? `${styles.bl} ${styles.po}`
                                       : null
                                   }
                                   onClick={() => {
-                                    setCmp((prev) => {
+                                    setNewCmp((prev) => {
                                       const newCmp = [...prev];
                                       newCmp[i] = { obj: p, value: true };
                                       return newCmp;
@@ -235,7 +252,7 @@ export default function CV({
         {/* app web */}
         <div>
           <div className={styles.l}>
-            <label htmlFor="appWeb" className="usn">
+            <label htmlFor="appli" className="usn">
               Application web
             </label>
             <p>Spécifiez l{"'"}application que vous maitrisez le mieux.</p>
@@ -251,12 +268,15 @@ export default function CV({
             >
               <input
                 type="text"
-                id="appWeb"
+                id="appli"
                 value={newApp.obj}
                 readOnly
                 onFocus={() => {
                   showMenu.obj === "appWeb" && showMenu.value && showMenu.focus
-                    ? setShowMenu({ ...showMenu, value: !showMenu.value })
+                    ? setShowMenu((prev) => ({
+                        ...prev,
+                        value: !prev.value,
+                      }))
                     : setShowMenu({
                         ...showMenu,
                         focus: true,
@@ -264,7 +284,10 @@ export default function CV({
                 }}
                 onClick={() => {
                   showMenu.obj === "appWeb" && showMenu.value && !showMenu.focus
-                    ? setShowMenu({ ...showMenu, value: !showMenu.value })
+                    ? setShowMenu((prev) => ({
+                        ...prev,
+                        value: !prev.value,
+                      }))
                     : setShowMenu({ obj: "appWeb", value: true });
                 }}
                 placeholder="Application Web"
@@ -318,7 +341,7 @@ export default function CV({
         {/* exp pro */}
         <div>
           <div className={styles.l}>
-            <label htmlFor="expPro" className="usn">
+            <label htmlFor="experience" className="usn">
               Expérience professionnelle
             </label>
             <p>Depuis combien de temps possédez-vous ces compétences.</p>
@@ -334,12 +357,15 @@ export default function CV({
             >
               <input
                 type="text"
-                id="expPro"
+                id="experience"
                 value={newExpPro.obj}
                 readOnly
                 onFocus={() => {
                   showMenu.obj === "expPro" && showMenu.value && showMenu.focus
-                    ? setShowMenu({ ...showMenu, value: !showMenu.value })
+                    ? setShowMenu((prev) => ({
+                        ...prev,
+                        value: !prev.value,
+                      }))
                     : setShowMenu({
                         ...showMenu,
                         focus: true,
@@ -347,7 +373,10 @@ export default function CV({
                 }}
                 onClick={() => {
                   showMenu.obj === "expPro" && showMenu.value && !showMenu.focus
-                    ? setShowMenu({ ...showMenu, value: !showMenu.value })
+                    ? setShowMenu((prev) => ({
+                        ...prev,
+                        value: !prev.value,
+                      }))
                     : setShowMenu({ obj: "expPro", value: true });
                 }}
                 placeholder="Expérience professionnelle"

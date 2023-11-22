@@ -26,19 +26,13 @@ export default function Infos({
   newProvince,
   setNewProvince,
   isSubmit,
+  setInfosToUpdate,
 }) {
   const { user } = useSelector((state) => state.user);
   const ref = useRef();
-  const [togglePays, setTogglePays] = useState({
-    obj: user.pays,
-  });
-  const [toggleProvince, setToggleProvince] = useState({
-    obj: user?.province,
-  });
   const [showMenu, setShowMenu] = useState({
     obj: "",
     value: false,
-    focus: false,
   });
   const [residence, setResidence] = useState({
     pays: user.pays,
@@ -48,48 +42,97 @@ export default function Infos({
         : pays.find((p) => p.pays === user?.pays)?.ville || [],
     province: user?.province,
   });
-  const [ville, setVille] = useState({
-    obj: user.ville,
-  });
-  const [langue, setLangue] = useState({
-    obj: newLang.obj === "en" ? "Anglais" : "Français",
-    sgl: newLang.obj,
-    value: true,
-  });
+
   useEffect(() => {
-    if (togglePays.obj !== user.pays) {
-      setNewPays({
-        obj: togglePays.obj,
-        value: user?.pays !== newPays.obj,
+    // pays
+    if (newPays.obj !== user.pays) {
+      if (!newPays.value) {
+        setNewPays((prev) => ({
+          ...prev,
+          value: true,
+        }));
+      }
+      setInfosToUpdate((prev) => ({ ...prev, pays: newPays.obj }));
+    } else if (newPays.obj === user.pays) {
+      if (newPays.value) {
+        setNewPays((prev) => ({
+          ...prev,
+          value: false,
+        }));
+      }
+      setInfosToUpdate((prev) => {
+        const { pays, ...nwe } = prev;
+        return nwe;
       });
     }
-    if (ville.obj !== user.ville) {
-      setNewVille({
-        obj: ville.obj,
-        value: user?.ville !== newVille.obj,
+
+    // ville
+    if (newVille.obj !== user.ville) {
+      if (!newVille.value) {
+        setNewVille((prev) => ({
+          ...prev,
+          value: true,
+        }));
+      }
+      setInfosToUpdate((prev) => ({ ...prev, ville: newVille.obj }));
+    } else if (newVille.obj === user.ville) {
+      if (newVille.value) {
+        setNewVille((prev) => ({
+          ...prev,
+          value: false,
+        }));
+      }
+      setInfosToUpdate((prev) => {
+        const { ville, ...nwe } = prev;
+        return nwe;
       });
     }
-    if (langue.obj !== user.lang) {
-      setNewLang({
-        obj: langue.sgl,
-        value: user.lang !== newLang.obj,
+
+    // langue
+    if (newLang.obj !== user.lang) {
+      if (!newLang.value) {
+        setNewLang((prev) => ({
+          ...prev,
+          value: true,
+        }));
+      }
+      setInfosToUpdate((prev) => ({ ...prev, lang: newLang.obj }));
+    } else if (newLang.obj === user.lang) {
+      if (newLang.value) {
+        setNewLang((prev) => ({
+          ...prev,
+          value: false,
+        }));
+      }
+      setInfosToUpdate((prev) => {
+        const { lang, ...nwe } = prev;
+        return nwe;
       });
     }
-    if (toggleProvince.obj !== user.province) {
-      setNewProvince({
-        obj: toggleProvince.obj,
-        value: newProvince.obj !== user?.province,
+
+    // province
+    if (newProvince.obj !== user.province) {
+      if (!newProvince.value) {
+        setNewProvince((prev) => ({ ...prev, value: true }));
+      }
+      setInfosToUpdate((prev) => ({ ...prev, province: newProvince.obj }));
+    } else if (newProvince.obj === user.province) {
+      if (newProvince.value) {
+        setNewProvince((prev) => ({ ...prev, value: false }));
+      }
+      setInfosToUpdate((prev) => {
+        const { province, ...nwe } = prev;
+        return nwe;
       });
     }
   }, [
-    togglePays.obj,
-    ville.obj,
-    langue.obj,
-    toggleProvince.obj,
+    newPays.obj,
+    newVille.obj,
+    newLang.obj,
+    newProvince.obj,
     newPays.obj,
     newVille.obj,
     newProvince.obj,
-    newLang.obj,
   ]);
   useEffect(() => {
     if (
@@ -114,27 +157,26 @@ export default function Infos({
     }
   }, [newUsername.obj, , newName.obj]);
   useEffect(() => {
-    const compt = document.getElementById(showMenu.obj);
-    const handleClickOutside = (e) => {
-      if (
-        !e.target.id !== compt &&
-        ref.current &&
-        !ref.current.contains(e.target)
-      ) {
-        setShowMenu((prev) => {
-          let nwe = { ...prev };
-          nwe.obj = "";
-          nwe.value = false;
-          nwe.focus = false;
-          return nwe;
-        });
-      }
-    };
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [showMenu.obj, ref]);
+    if (!isEmpty(showMenu.obj)) {
+      const compt = document.getElementById(showMenu.obj);
+      const handleClickOutside = (e) => {
+        if (
+          !e.target.id !== compt &&
+          ref.current &&
+          !ref.current.contains(e.target)
+        ) {
+          setShowMenu(() => ({
+            obj: "",
+            value: false,
+          }));
+        }
+      };
+      document.addEventListener("click", handleClickOutside);
+      return () => {
+        document.removeEventListener("click", handleClickOutside);
+      };
+    }
+  }, [showMenu.obj]);
   const handleChangeUsername = (e) => {
     setNewUsername((prev) => {
       let nwe = { ...prev };
@@ -181,7 +223,7 @@ export default function Infos({
         </div>
         <div>
           <div className={styles.l}>
-            <label htmlFor="pays" className="usn">
+            <label htmlFor="lieu" className="usn">
               Lieu de résidence
             </label>
             <p>Sélectionnez votre lieu de résidence.</p>
@@ -200,28 +242,25 @@ export default function Infos({
               >
                 <input
                   type="text"
-                  id="pays"
-                  onFocus={() => {
-                    showMenu.obj === "pays" && showMenu.value
-                      ? setShowMenu({ ...showMenu, value: !showMenu.value })
-                      : setShowMenu({ ...showMenu, focus: true });
-                  }}
-                  onClick={() => {
-                    showMenu.obj === "pays" && showMenu.value && !showMenu.focus
-                      ? setShowMenu({ ...showMenu, value: !showMenu.value })
-                      : setShowMenu({ obj: "pays", value: true });
-                  }}
+                  id="lieu"
+                  onClick={() =>
+                    setShowMenu((prev) => ({
+                      obj: "pays",
+                      value: prev.obj === "pays" ? !prev.value : true,
+                    }))
+                  }
                   value={newPays.obj}
                   readOnly
                   placeholder="Pays"
                   className={styles.ina}
                 />
                 <i
-                  onClick={() => {
-                    showMenu.obj === "pays" && showMenu.value
-                      ? setShowMenu({ obj: "pays", value: !showMenu.value })
-                      : setShowMenu({ obj: "pays", value: true });
-                  }}
+                  onClick={() =>
+                    setShowMenu((prev) => ({
+                      obj: "pays",
+                      value: prev.obj === "pays" ? !prev.value : true,
+                    }))
+                  }
                 >
                   <GoTriangleDown size={"1.25rem"} className="try1" />
                 </i>
@@ -236,36 +275,39 @@ export default function Infos({
                               <div
                                 key={p.pays}
                                 className={
-                                  togglePays.obj === p.pays
+                                  newPays.obj === p.pays
                                     ? `${styles.bg} ${styles.po} ${styles.np}`
                                     : `${styles.np}`
                                 }
                               >
                                 <h1
                                   onClick={() => {
-                                    togglePays.obj === p.pays
-                                      ? setTogglePays({
+                                    newPays.obj === p.pays
+                                      ? setNewPays((prev) => ({
+                                          ...prev,
                                           obj: "",
-                                        })
-                                      : setTogglePays({
+                                        }))
+                                      : setNewPays((prev) => ({
+                                          ...prev,
                                           obj: p.pays,
-                                        });
+                                        }));
                                     setResidence({
                                       pays: p.pays,
                                       ville: p.ville,
                                       province: p.province ? p.province : "",
                                     });
-                                    setShowMenu({
+                                    setShowMenu(() => ({
                                       obj: "",
                                       value: false,
-                                      focus: false,
-                                    });
-                                    setVille({
+                                    }));
+                                    setNewVille((prev) => ({
+                                      ...prev,
                                       obj: "",
-                                    });
-                                    setToggleProvince({
+                                    }));
+                                    setNewProvince((prev) => ({
+                                      ...prev,
                                       obj: "",
-                                    });
+                                    }));
                                   }}
                                 >
                                   <span>{p.pays}</span>
@@ -278,36 +320,39 @@ export default function Infos({
                               <div
                                 key={p.pays}
                                 className={
-                                  togglePays.obj === p.pays
+                                  newPays.obj === p.pays
                                     ? `${styles.bg} ${styles.po} ${styles.np}`
                                     : `${styles.np}`
                                 }
                               >
                                 <h1
                                   onClick={() => {
-                                    togglePays.obj === p.pays
-                                      ? setTogglePays({
+                                    newPays.obj === p.pays
+                                      ? setNewPays((prev) => ({
+                                          ...prev,
                                           obj: "",
-                                        })
-                                      : setTogglePays({
+                                        }))
+                                      : setNewPays((prev) => ({
+                                          ...prev,
                                           obj: p.pays,
-                                        });
+                                        }));
                                     setResidence({
                                       pays: p.pays,
                                       ville: p.ville,
                                       province: p.province ? p.province : "",
                                     });
-                                    setShowMenu({
+                                    setShowMenu(() => ({
                                       obj: "",
                                       value: false,
-                                      focus: false,
-                                    });
-                                    setVille({
+                                    }));
+                                    setNewVille((prev) => ({
+                                      ...prev,
                                       obj: "",
-                                    });
-                                    setToggleProvince({
+                                    }));
+                                    setNewProvince((prev) => ({
+                                      ...prev,
                                       obj: "",
-                                    });
+                                    }));
                                   }}
                                 >
                                   <span>{p.pays}</span>
@@ -336,42 +381,37 @@ export default function Infos({
                 <input
                   type="text"
                   value={
-                    !isEmpty(toggleProvince.obj) && !isEmpty(newVille.obj)
-                      ? toggleProvince.obj + " - " + newVille.obj
-                      : !isEmpty(toggleProvince.obj) && isEmpty(newVille.obj)
-                      ? toggleProvince.obj + " - "
+                    !isEmpty(newProvince.obj) && !isEmpty(newVille.obj)
+                      ? newProvince.obj + " - " + newVille.obj
+                      : !isEmpty(newProvince.obj) && isEmpty(newVille.obj)
+                      ? newProvince.obj + " - "
                       : newVille.obj
                   }
                   readOnly
-                  onFocus={() => {
-                    showMenu.obj === "ville" && showMenu.value
-                      ? setShowMenu({ ...showMenu, value: !showMenu.value })
-                      : setShowMenu({ ...showMenu, focus: true });
-                  }}
-                  onClick={() => {
-                    showMenu.obj === "ville" &&
-                    showMenu.value &&
-                    !showMenu.focus
-                      ? setShowMenu({ ...showMenu, value: !showMenu.value })
-                      : setShowMenu({ obj: "ville", value: true });
-                  }}
+                  onClick={() =>
+                    setShowMenu((prev) => ({
+                      obj: "ville",
+                      value: prev.obj === "ville" ? !showMenu.value : true,
+                    }))
+                  }
                   placeholder="Ville"
                   className={styles.ina}
                 />
 
                 <i
-                  onClick={() => {
-                    showMenu.obj === "ville" && showMenu.value
-                      ? setShowMenu({ ...showMenu, value: !showMenu.value })
-                      : setShowMenu({ obj: "ville", value: true });
-                  }}
+                  onClick={() =>
+                    setShowMenu((prev) => ({
+                      obj: "ville",
+                      value: prev.obj === "ville" ? !showMenu.value : true,
+                    }))
+                  }
                 >
                   <GoTriangleDown size={"1.25rem"} className="try1" />
                 </i>
                 {showMenu.obj === "ville" &&
                 showMenu.value &&
                 isEmpty(residence.pays) ? (
-                  <div className={styles.menuDeroulant}>
+                  <div className={`${styles.menuDeroulant} scr`}>
                     <div className={styles.pays}>
                       {user?.userType === "assistant"
                         ? pays.map((p) => {
@@ -380,24 +420,23 @@ export default function Infos({
                                 <div
                                   key={p.pays}
                                   className={
-                                    togglePays.obj === p.pays &&
-                                    togglePays.value
+                                    newPays.obj === p.pays && newPays.value
                                       ? `${styles.bg} ${styles.ch} ${styles.np}`
                                       : `${styles.np}`
                                   }
                                 >
                                   <h1
                                     onClick={() => {
-                                      if (togglePays.obj === p.pays) {
-                                        setTogglePays({
+                                      if (newPays.obj === p.pays) {
+                                        setNewPays((prev) => ({
+                                          ...prev,
                                           obj: "",
-                                          value: false,
-                                        });
+                                        }));
                                       } else {
-                                        setTogglePays({
+                                        setNewPays((prev) => ({
+                                          ...prev,
                                           obj: p.pays,
-                                          value: true,
-                                        });
+                                        }));
                                       }
                                     }}
                                   >
@@ -408,28 +447,32 @@ export default function Infos({
                                   </h1>
                                   <div
                                     className={
-                                      togglePays.obj === p.pays &&
-                                      togglePays.value
+                                      newPays.obj === p.pays && newPays.value
                                         ? null
                                         : `${styles.notTogglePays}`
                                     }
                                   >
                                     <h2
                                       className={
-                                        toggleProvince.obj === p.province
+                                        newProvince.obj === p.province
                                           ? `${styles.cl}`
                                           : `${styles.h2}`
                                       }
                                       onClick={() => {
-                                        if (toggleProvince.obj === p.province) {
-                                          setToggleProvince({
+                                        if (newProvince.obj === p.province) {
+                                          setNewProvince((prev) => ({
+                                            ...prev,
                                             obj: "",
-                                          });
-                                          setVille({ obj: "" });
+                                          }));
+                                          setNewVille((prev) => ({
+                                            ...prev,
+                                            obj: "",
+                                          }));
                                         } else {
-                                          setToggleProvince({
+                                          setNewProvince((prev) => ({
+                                            ...prev,
                                             obj: p.province,
-                                          });
+                                          }));
                                         }
                                       }}
                                     >
@@ -440,7 +483,7 @@ export default function Infos({
                                     </h2>
                                     <div
                                       className={
-                                        toggleProvince.obj === p.province
+                                        newProvince.obj === p.province
                                           ? null
                                           : `${styles.notTogglePays}`
                                       }
@@ -450,25 +493,24 @@ export default function Infos({
                                           <label
                                             key={v}
                                             className={
-                                              v === ville.obj
+                                              v === newVille.obj
                                                 ? `${styles.blue}`
                                                 : null
                                             }
                                             onClick={() => {
-                                              setVille({
+                                              setNewVille((prev) => ({
+                                                ...prev,
                                                 obj: v,
-                                                province: p.province,
-                                              });
-                                              setResidence({
+                                              }));
+                                              setResidence(() => ({
                                                 pays: p.pays,
                                                 ville: p.ville,
                                                 province: "",
-                                              });
-                                              setShowMenu({
+                                              }));
+                                              setShowMenu(() => ({
                                                 obj: "",
                                                 value: false,
-                                                focus: false,
-                                              });
+                                              }));
                                             }}
                                           >
                                             {v}
@@ -484,23 +526,22 @@ export default function Infos({
                                 <div
                                   key={p.pays}
                                   className={
-                                    togglePays.obj === p.pays &&
-                                    togglePays.value
+                                    newPays.obj === p.pays && newPays.value
                                       ? `${styles.bg} ${styles.ch} ${styles.np}`
                                       : `${styles.np}`
                                   }
                                 >
                                   <h1
                                     onClick={() =>
-                                      togglePays.obj === p.pays
-                                        ? setTogglePays({
+                                      newPays.obj === p.pays
+                                        ? setNewPays((prev) => ({
+                                            ...prev,
                                             obj: "",
-                                            value: false,
-                                          })
-                                        : setTogglePays({
+                                          }))
+                                        : setNewPays((prev) => ({
+                                            ...prev,
                                             obj: p.pays,
-                                            value: true,
-                                          })
+                                          }))
                                     }
                                   >
                                     <span>{p.pays}</span>
@@ -510,8 +551,7 @@ export default function Infos({
                                   </h1>
                                   <div
                                     className={
-                                      togglePays.obj === p.pays &&
-                                      togglePays.value
+                                      newPays.obj === p.pays && newPays.value
                                         ? null
                                         : `${styles.notTogglePays}`
                                     }
@@ -521,19 +561,19 @@ export default function Infos({
                                         <label
                                           key={v}
                                           className={
-                                            v === ville.obj
+                                            v === newVille.obj
                                               ? `${styles.blue}`
                                               : null
                                           }
                                           onClick={() => {
-                                            setVille({
+                                            setNewVille((prev) => ({
+                                              ...prev,
                                               obj: v,
-                                            });
-                                            setShowMenu({
+                                            }));
+                                            setShowMenu(() => ({
                                               obj: "",
                                               value: false,
-                                              focus: false,
-                                            });
+                                            }));
                                             setResidence({
                                               pays: p.pays,
                                               ville: p.ville,
@@ -557,22 +597,22 @@ export default function Infos({
                               <div
                                 key={p.pays}
                                 className={
-                                  togglePays.obj === p.pays
+                                  newPays.obj === p.pays
                                     ? `${styles.bg} ${styles.ch} ${styles.np}`
                                     : `${styles.np}`
                                 }
                               >
                                 <h1
                                   onClick={() =>
-                                    togglePays.obj === p.pays
-                                      ? setTogglePays({
+                                    newPays.obj === p.pays
+                                      ? setNewPays((prev) => ({
+                                          ...prev,
                                           obj: "",
-                                          value: false,
-                                        })
-                                      : setTogglePays({
+                                        }))
+                                      : setNewPays((prev) => ({
+                                          ...prev,
                                           obj: p.pays,
-                                          value: true,
-                                        })
+                                        }))
                                   }
                                 >
                                   <span>{p.pays}</span>
@@ -582,8 +622,7 @@ export default function Infos({
                                 </h1>
                                 <div
                                   className={
-                                    togglePays.obj === p.pays &&
-                                    togglePays.value
+                                    newPays.obj === p.pays && newPays.value
                                       ? null
                                       : `${styles.notTogglePays}`
                                   }
@@ -593,20 +632,19 @@ export default function Infos({
                                       <label
                                         key={v}
                                         className={
-                                          v === ville.obj
+                                          v === newVille.obj
                                             ? `${styles.blue}`
                                             : null
                                         }
                                         onClick={() => {
-                                          setVille({
-                                            province: "",
+                                          setNewVille((prev) => ({
+                                            ...prev,
                                             obj: v,
-                                          });
-                                          setShowMenu({
+                                          }));
+                                          setShowMenu(() => ({
                                             obj: "",
                                             value: false,
-                                            focus: false,
-                                          });
+                                          }));
                                           setResidence({
                                             pays: p.pays,
                                             ville: p.ville,
@@ -630,26 +668,31 @@ export default function Infos({
                   showMenu.obj === "ville" &&
                   showMenu.value &&
                   !isEmpty(residence.pays) && (
-                    <div className={`${styles.menuDeroulant}`}>
+                    <div className={`${styles.menuDeroulant} scr`}>
                       <div className={`${styles.pays} ${styles.notHover}`}>
                         {!isEmpty(residence.province) ? (
                           <div>
                             <h2
                               className={
-                                toggleProvince.obj === residence.province
+                                newProvince.obj === residence.province
                                   ? `${styles.blue}`
                                   : null
                               }
                               onClick={() => {
-                                if (toggleProvince.obj === residence.province) {
-                                  setToggleProvince({
+                                if (newProvince.obj === residence.province) {
+                                  setNewProvince((prev) => ({
+                                    ...prev,
                                     obj: "",
-                                  });
-                                  setVille({ obj: "" });
+                                  }));
+                                  setNewVille((prev) => ({
+                                    ...prev,
+                                    obj: "",
+                                  }));
                                 } else {
-                                  setToggleProvince({
+                                  setNewProvince((prev) => ({
+                                    ...prev,
                                     obj: residence.province,
-                                  });
+                                  }));
                                 }
                               }}
                             >
@@ -660,7 +703,7 @@ export default function Infos({
                             </h2>
                             <div
                               className={
-                                toggleProvince.obj === residence.province
+                                newProvince.obj === residence.province
                                   ? null
                                   : `${styles.notTogglePays}`
                               }
@@ -670,18 +713,19 @@ export default function Infos({
                                   <label
                                     key={v}
                                     className={
-                                      v === ville.obj ? `${styles.blue}` : null
+                                      v === newVille.obj
+                                        ? `${styles.blue}`
+                                        : null
                                     }
                                     onClick={() => {
                                       setShowMenu({
                                         obj: "",
                                         value: false,
-                                        focus: false,
                                       });
-                                      setVille({
+                                      setNewVille((prev) => ({
+                                        ...prev,
                                         obj: v,
-                                        province: residence.province,
-                                      });
+                                      }));
                                     }}
                                   >
                                     {v}
@@ -696,19 +740,18 @@ export default function Infos({
                               return (
                                 <label
                                   className={
-                                    v === ville.obj ? `${styles.blue}` : null
+                                    v === newVille.obj ? `${styles.blue}` : null
                                   }
                                   key={v}
                                   onClick={() => {
-                                    setShowMenu({
+                                    setShowMenu(() => ({
                                       obj: "",
                                       value: false,
-                                      focus: false,
-                                    });
-                                    setVille({
-                                      ...ville,
+                                    }));
+                                    setNewVille((prev) => ({
+                                      ...prev,
                                       obj: v,
-                                    });
+                                    }));
                                   }}
                                 >
                                   {v}
@@ -756,27 +799,24 @@ export default function Infos({
               <input
                 type="text"
                 id="lang"
-                value={langue.obj}
+                value={newLang.sgl}
                 readOnly
-                onFocus={() => {
-                  showMenu.obj === "langue" && showMenu.value && showMenu.focus
-                    ? setShowMenu({ ...showMenu, value: !showMenu.value })
-                    : setShowMenu({ ...showMenu, focus: true });
-                }}
-                onClick={() => {
-                  showMenu.obj === "langue" && showMenu.value && !showMenu.focus
-                    ? setShowMenu({ ...showMenu, value: !showMenu.value })
-                    : setShowMenu({ obj: "langue", value: true });
-                }}
+                onClick={() =>
+                  setShowMenu((prev) => ({
+                    obj: "langue",
+                    value: prev.obj === "langue" ? !showMenu.value : true,
+                  }))
+                }
                 className="usn"
               />
 
               <i
-                onClick={() => {
-                  showMenu.obj === "langue" && showMenu.value
-                    ? setShowMenu({ obj: "langue", value: !showMenu.value })
-                    : setShowMenu({ obj: "langue", value: true });
-                }}
+                onClick={() =>
+                  setShowMenu((prev) => ({
+                    obj: "langue",
+                    value: prev.obj === "langue" ? !showMenu.value : true,
+                  }))
+                }
               >
                 <GoTriangleDown size={"1.25rem"} className="try1" />
               </i>
@@ -788,21 +828,24 @@ export default function Infos({
                         <div
                           key={p.obj}
                           className={
-                            langue.obj === p.obj
+                            newLang.sgl === p.obj
                               ? `${styles.bl} ${styles.po} ${styles.lg} ${styles.lng}`
                               : `${styles.lb} ${styles.lng}`
                           }
                           onClick={() => {
-                            setLangue({ obj: p.obj, value: true, sgl: p.tp });
-                            setShowMenu({
+                            setNewLang((prev) => ({
+                              ...prev,
+                              obj: p.tp,
+                              sgl: p.obj,
+                            }));
+                            setShowMenu(() => ({
                               obj: "",
                               value: false,
-                              focus: false,
-                            });
+                            }));
                           }}
                         >
                           <span>{p.obj}</span>
-                          {langue.obj === p.obj && (
+                          {newLang.sgl === p.obj && (
                             <span>
                               <VscCheckAll size={"1.15rem"} className="trx1" />
                             </span>

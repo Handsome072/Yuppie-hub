@@ -5,7 +5,7 @@
   align-items: center;
   position: relative;
   color: var(--white);
-  padding: 2% 0;
+  padding: 1.5% 0;
 }
 
 .left {
@@ -63,7 +63,7 @@
   display: flex;
   justify-content: center;
   position: relative;
-  gap: 2.2%;
+  gap: 2%;
   flex: 6;
   min-width: max-content;
 }

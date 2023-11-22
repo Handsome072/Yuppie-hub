@@ -61,15 +61,19 @@
   color: var(--blue);
   padding-right: 1.75rem;
   min-width: 8rem;
+  transition: 0.1s;
 }
-.r .ina::placeholder {
+.container .r .ina::placeholder {
   color: var(--gris);
 }
-.container .r.foc input:hover,
-.container .r.foc input:focus {
+.container input:hover {
   outline: 1px solid var(--gris-v-2);
 }
-
+.container input:focus {
+  border-color: var(--blue-loading);
+  box-shadow: 0 0 1px 1px var(--blue-loading);
+  outline: 1px solid var(--gris-v-2);
+}
 .inputR i {
   position: absolute;
   right: 0.5rem;
@@ -130,10 +134,7 @@
   top: 105%;
   min-height: max-content;
   border: 1px solid var(--gris-v-2);
-  overflow-y: scroll;
   overflow-x: hidden;
-  scrollbar-width: thin;
-  scrollbar-color: var(--gris) var(--gris-v-2);
   z-index: 6;
   animation: anim 0.25s;
   transform-origin: top;
@@ -143,6 +144,9 @@
 .container .r .menuDeroulant.hidden {
   overflow: hidden;
   padding: 0;
+}
+.container .r .menuDeroulant .bg {
+  background: var(--gris-v-4);
 }
 
 @keyframes anim {
@@ -167,29 +171,6 @@
 .container .r .menuDeroulant * {
   border: none;
 }
-.menuDeroulant::-webkit-scrollbar {
-  width: 4px;
-}
-
-.menuDeroulant::-webkit-scrollbar-button:start,
-.menuDeroulant::-webkit-scrollbar-button:end {
-  display: none;
-}
-.menuDeroulant::-webkit-scrollbar-thumb {
-  background-color: var(--gris-v-2);
-  border-radius: 2rem;
-}
-.menuDeroulant::-webkit-scrollbar-thumb:hover {
-  background-color: var(--gris);
-}
-.menuDeroulant::-webkit-scrollbar-track {
-  background-color: transparent;
-  transition: 0.15s;
-}
-.container .r .menuDeroulant * {
-  min-height: max-content;
-}
-
 .container .r .pays div {
   width: 100%;
   display: flex;

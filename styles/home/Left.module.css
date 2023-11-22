@@ -54,9 +54,9 @@
   gap: 5%;
   justify-content: space-evenly;
   align-items: center;
-  height: 25%;
+  height: 24%;
   min-height: max-content;
-  padding: 3% 4%;
+  padding: 2% 4%;
   color: var(--white);
   border-bottom: 1px solid var(--gris-v-4);
 }
@@ -137,7 +137,7 @@
   cursor: default;
 }
 .middle {
-  padding: 3% 4%;
+  padding: 1.5% 4% 3% 4%;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -206,7 +206,7 @@
 }
 .middleCli .add {
   height: 50%;
-  padding: 2% 0;
+  padding: 1.5% 0;
   display: flex;
   flex-direction: column;
 }
@@ -259,7 +259,7 @@
 }
 .middleCli .moreInfos {
   height: max-content;
-  margin-bottom: 0.5rem;
+  margin-bottom: 2.5%;
 }
 .op {
   display: flex;
@@ -317,7 +317,7 @@
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 2% 0 2% 0.1rem;
+  padding: 1.5% 0 1.5% 0.1rem;
   color: var(--white);
 }
 .middleCli .op .lab {
@@ -385,10 +385,9 @@
 }
 .profilLink.disable label {
   background: var(--gris);
-  box-shadow: var(--box-shadow-value-btn) var(--black-25);
 }
 .profilLink label span {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   user-select: none;
 }
 @media (max-width: 1000px) {

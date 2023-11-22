@@ -1,10 +1,9 @@
 const src = process.env.URL;
-export const generateEmail = ({ name, username, userType, token }) => {
-  if (userType === "assistant")
-    return {
-      html: `
+export const generateEmail = ({ name, username, userType, token, lang }) => {
+  return {
+    html: `
             <!DOCTYPE html>
-              <html lang="${lang}">
+              <html lang="${lang ? lang : "fr"}">
                 <head>
                   <meta charset="UTF-8" />
                   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -201,5 +200,5 @@ export const generateEmail = ({ name, username, userType, token }) => {
               </html>
 
   `,
-    };
+  };
 };

@@ -47,6 +47,8 @@ export default function ProfilMiddle({
   setNewProvince,
   isSubmit,
   setIsSubmit,
+  infosToUpdate,
+  setInfosToUpdate,
 }) {
   const { user } = useSelector((state) => state.user);
   const [active, setActive] = useState("infos");
@@ -117,6 +119,9 @@ export default function ProfilMiddle({
                   newProvince={newProvince}
                   setNewProvince={setNewProvince}
                   isSubmit={isSubmit}
+                  setIsSubmit={setIsSubmit}
+                  infosToUpdate={infosToUpdate}
+                  setInfosToUpdate={setInfosToUpdate}
                 />
               </div>
             </>
@@ -132,6 +137,9 @@ export default function ProfilMiddle({
                   setNewPortfolio={setNewPortfolio}
                   newPortfolio={newPortfolio}
                   isSubmit={isSubmit}
+                  setIsSubmit={setIsSubmit}
+                  infosToUpdate={infosToUpdate}
+                  setInfosToUpdate={setInfosToUpdate}
                 />
               </div>
             </>
@@ -147,6 +155,9 @@ export default function ProfilMiddle({
                   newExpPro={newExpPro}
                   setNewExpPro={setNewExpPro}
                   isSubmit={isSubmit}
+                  setIsSubmit={setIsSubmit}
+                  infosToUpdate={infosToUpdate}
+                  setInfosToUpdate={setInfosToUpdate}
                 />
               </div>
             </>
@@ -164,6 +175,9 @@ export default function ProfilMiddle({
                   newMTF={newMTF}
                   setNewMTF={setNewMTF}
                   isSubmit={isSubmit}
+                  setIsSubmit={setIsSubmit}
+                  infosToUpdate={infosToUpdate}
+                  setInfosToUpdate={setInfosToUpdate}
                 />
               </div>
             </>
@@ -219,20 +233,14 @@ export default function ProfilMiddle({
             </div>
             <button
               className={
-                !isSubmit.can && isSubmit.is
-                  ? `${styles.dis} pen`
+                isSubmit.can && isSubmit.is
+                  ? `${styles.dis} `
                   : !isSubmit.can
                   ? "pen"
                   : null
               }
               disabled={isSubmit.is || !isSubmit.can}
-              onClick={() =>
-                setIsSubmit((prev) => {
-                  let nwe = { ...prev };
-                  nwe.is = true;
-                  return nwe;
-                })
-              }
+              onClick={handleSubmit}
               type="submit"
             >
               <label>Soumettre</label>

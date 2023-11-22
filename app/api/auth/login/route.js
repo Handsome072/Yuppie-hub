@@ -97,14 +97,16 @@ export const POST = async (req) => {
       );
     }
 
-    const { password, tokens, isAdmin, ...userInfos } = Object.assign(
+    const { password, tokens, isAdmin, image, ...userInfos } = Object.assign(
       {},
       user.toJSON()
     );
-
     const res = new NextResponse(
       JSON.stringify(
-        { user: { ...userInfos }, token: authToken },
+        {
+          user: { ...userInfos, image: user.image[0] || "" },
+          token: authToken,
+        },
         { status: 200 }
       )
     );
