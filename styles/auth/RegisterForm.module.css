@@ -103,14 +103,10 @@
   transition: 0.1s;
 }
 
-.inputs > div input:hover {
+.inputs > div input:hover,.inputs > div input:focus {
   outline: 1px solid var(--gris-v-2);
 }
-.inputs > div input:focus {
-  border-color: var(--blue-loading);
-  box-shadow: 0 0 1px 1px var(--blue-loading);
-  outline: 1px solid var(--gris-v-2);
-}
+
 .btn {
   width: 100%;
   position: relative;

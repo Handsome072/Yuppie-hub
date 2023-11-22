@@ -34,7 +34,8 @@ export const POST = async (req) => {
 
     // error invalid email
     if (!emailController(body.email)) {
-      infos = { ...body, login: true, invalidLoginEmailError: true };
+      const { password, ...infosToReturn } = body;
+      infos = { ...infosToReturn, login: true, invalidLoginEmailError: true };
       token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 401 }) // Changed status to 401 for invalid email
@@ -46,7 +47,8 @@ export const POST = async (req) => {
 
     // error user not found
     if (isEmpty(user)) {
-      infos = { ...body, login: true, ukEmailLoginError: true };
+      const { password, ...infosToReturn } = body;
+      infos = { ...infosToReturn, login: true, ukEmailLoginError: true };
       token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 404 }) // Changed status to 404 for user not found
@@ -57,7 +59,12 @@ export const POST = async (req) => {
 
     // error incorrect password
     if (!validUser) {
-      infos = { ...body, login: true, invalidLoginPasswordError: true };
+      const { password, ...infosToReturn } = body;
+      infos = {
+        ...infosToReturn,
+        login: true,
+        invalidLoginPasswordError: true,
+      };
       token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 403 }) // Changed status to 403 for invalid password
@@ -66,7 +73,12 @@ export const POST = async (req) => {
 
     // error invalid userType
     if (user.userType !== body.userType) {
-      infos = { ...body, login: true, invalidLoginUserTypeError: true };
+      const { password, ...infosToReturn } = body;
+      infos = {
+        ...infosToReturn,
+        login: true,
+        invalidLoginUserTypeError: true,
+      };
       token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 403 }) // Changed status to 403 for invalid password
@@ -90,7 +102,9 @@ export const POST = async (req) => {
     });
 
     if (!tokenAdded) {
-      infos = { ...body, login: true, failToAddToken: true };
+      const { password, ...infosToReturn } = body;
+
+      infos = { ...infosToReturn, login: true, failToAddToken: true };
       token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 500 })

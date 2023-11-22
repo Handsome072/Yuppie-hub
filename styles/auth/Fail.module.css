@@ -96,6 +96,16 @@
 .inputs input:hover {
   outline: 1px solid var(--gris-v-2);
 }
+.inputs div button {
+  position: absolute;
+  right: 0.7rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
 
 .submit {
   padding: 0.65rem;

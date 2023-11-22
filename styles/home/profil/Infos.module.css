@@ -66,12 +66,8 @@
 .container .r .ina::placeholder {
   color: var(--gris);
 }
-.container input:hover {
-  outline: 1px solid var(--gris-v-2);
-}
+.container input:hover,
 .container input:focus {
-  border-color: var(--blue-loading);
-  box-shadow: 0 0 1px 1px var(--blue-loading);
   outline: 1px solid var(--gris-v-2);
 }
 .inputR i {

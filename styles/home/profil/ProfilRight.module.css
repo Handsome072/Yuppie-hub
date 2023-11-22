@@ -196,14 +196,10 @@
   font-size: 0.8rem;
   padding: 3% 4%;
 }
-.textarea:hover {
+.textarea:hover,.textarea:focus  {
   outline: 1px solid var(--gris-v-2);
 }
-.textarea:focus {
-  border: 1px solid var(--blue-loading);
-  box-shadow: 0 0 1px 1px var(--blue-loading);
-  outline: 1px solid var(--gris-v-2);
-}
+
 
 /* IMG choice */
 

@@ -13,6 +13,7 @@ import { useEffect, useRef } from "react";
 import { useState } from "react";
 import { AiOutlineCopy } from "react-icons/ai";
 import { FaCircleArrowLeft } from "react-icons/fa6";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { VscCheckAll } from "react-icons/vsc";
 import { useDispatch } from "react-redux";
 import styles from "../../styles/auth/Fail.module.css";
@@ -29,6 +30,7 @@ export default function Fail() {
   const [initialData, setInitialData] = useState(null);
   const [loadLink, setLoadLink] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState({
     // register errors
     minNameRegisterError: false,
@@ -61,10 +63,11 @@ export default function Fail() {
       const res = await verifyJWTController(token);
       setSpinner(false);
       if (!isEmpty(res?.infos) && (res?.infos?.register || res?.infos?.login)) {
-        setInitialData(res.infos);
+        setInitialData({ password: "", ...res.infos });
         setNewUser(() => {
           let nwe = res.infos;
           nwe.valid = false;
+          nwe.password = "";
           return nwe;
         });
         if (res.infos?.minNameRegisterError) {
@@ -939,7 +942,8 @@ export default function Fail() {
                   <label htmlFor="mail">
                     L{"'"}adresse email :{" "}
                     <span className={styles.mail}>{initialData.email}</span> que
-                    vous avez entré est invalide.
+                    vous avez entrée n{"'"}est pas encore enregistrée ou est
+                    incorrecte. Veuillez réessayer.
                   </label>
                 </div>
                 <div className={styles.inputs}>
@@ -1035,7 +1039,8 @@ export default function Fail() {
                   <label htmlFor="mail">
                     L{"'"}adresse email :{" "}
                     <span className={styles.mail}>{initialData.email}</span> que
-                    vous avez entré n{"'"}est pas encore enregistré.
+                    vous avez entrée n{"'"}est pas encore enregistrée ou est
+                    incorrecte. Veuillez réessayer.
                   </label>
                 </div>
                 <div className={styles.inputs}>
@@ -1053,20 +1058,43 @@ export default function Fail() {
                     required
                     placeholder={`Adresse email`}
                   />
-                  <input
-                    type="password"
-                    id="password"
-                    onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.password = e.target.value;
-                        return nwe;
-                      })
-                    }
-                    value={newUser.password}
-                    required
-                    placeholder={`Mot de passe`}
-                  />
+                  <div>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      onChange={(e) =>
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.password = e.target.value;
+                          return nwe;
+                        })
+                      }
+                      value={newUser.password}
+                      required
+                      placeholder={`Mot de passe`}
+                    />
+                    <button>
+                      {showPassword ? (
+                        <IoMdEye
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPassword(false);
+                          }}
+                          className="try1"
+                        />
+                      ) : (
+                        <IoMdEyeOff
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPassword(true);
+                          }}
+                          className="try1"
+                        />
+                      )}
+                    </button>
+                  </div>
                 </div>
                 {!initialData.remember && (
                   <label htmlFor="remember" className={styles.remember}>
