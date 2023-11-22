@@ -88,8 +88,12 @@
   text-align: center;
 }
 
-.inputs > div input:focus,
 .inputs > div input:hover {
+  outline: 1px solid var(--gris-v-2);
+}
+.inputs > div input:focus {
+  border-color: var(--blue-loading);
+  box-shadow: 0 0 1px 1px var(--blue-loading);
   outline: 1px solid var(--gris-v-2);
 }
 .inputs div button {

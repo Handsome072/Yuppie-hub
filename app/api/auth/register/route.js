@@ -34,8 +34,7 @@ export const POST = async (req) => {
       isEmpty(body?.username) ||
       isEmpty(body?.email) ||
       isEmpty(body?.password) ||
-      isEmpty(body?.userType) ||
-      isEmpty(body?.remember)
+      isEmpty(body?.userType)
     ) {
       return new NextResponse(
         JSON.stringify({ error: "Data required" }, { status: 400 })
@@ -117,7 +116,6 @@ export const POST = async (req) => {
       name: body.name,
       username,
       userType: body.userType,
-      persist: body.remember,
     });
 
     // error user not created

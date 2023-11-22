@@ -220,15 +220,6 @@ export default function RegisterForm() {
                     S{"'"}inscrire
                   </button>
                 </div>
-                <label htmlFor="remember" className={styles.remember}>
-                  <input
-                    type="checkbox"
-                    checked={remember}
-                    id="remember"
-                    onChange={() => setRemember(!remember)}
-                  />
-                  <span>Se souvenir de moi</span>
-                </label>
               </div>
             </div>
           </form>

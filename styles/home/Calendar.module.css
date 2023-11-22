@@ -13,10 +13,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
-  height: 95%;
   position: relative;
   min-width: max-content;
   flex: 2;
+  height: 100%;
 }
 .mde span {
   color: var(--blue);
@@ -55,7 +55,7 @@
 .left div span,
 .right div label {
   color: var(--white);
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   text-align: right;
   font-weight: var(--bold);
 }
@@ -63,18 +63,16 @@
   display: flex;
   justify-content: center;
   position: relative;
-  gap: 2%;
+  gap: 2.5%;
   flex: 6;
   min-width: max-content;
 }
 .right .dt {
-  height: 15%;
 }
 .right > div {
   display: flex;
   align-items: center;
   flex-direction: column;
-  height: 100%;
   position: relative;
 }
 .right .d {
@@ -88,10 +86,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 1.3rem;
-  width: 1.3rem;
-  border-radius: 0.18rem;
-  margin-top: 25.5%;
+  height: 1.2rem;
+  width: 1.4rem;
+  border-radius: 0.2rem;
+  margin-top: 22%;
   overflow: hidden;
   box-shadow: 1px 1px 1px var(--black-25);
   cursor: pointer;
