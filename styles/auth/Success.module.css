@@ -11,11 +11,10 @@
 }
 
 .container form {
-  width: 72%;
+  width: 74%;
   height: 95%;
   background: var(--white);
   padding: 3%;
-  gap: 1.5rem;
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
@@ -51,7 +50,7 @@
   font-weight: var(--medium);
 }
 .contenu p {
-  color: var(--gris-text);
+  color: var(--gris);
   font-size: 0.9rem;
 }
 .hr {

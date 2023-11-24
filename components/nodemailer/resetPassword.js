@@ -39,7 +39,7 @@ export const resetPassword = ({ email, userType, token, lang }) => {
                               <tr>
                                 <td style="width: 100%; text-align: center">
                                   <img
-                                    style="height: 3rem; transform: scale(2)"
+                                    style="height: 3rem; scale(2)"
                                     src="${src}/logo.png"
                                     alt="Yuppie HUB"
                                   />

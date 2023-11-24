@@ -6,12 +6,16 @@ import {
 import UserModel from "@/lib/models/user.model";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import { NextResponse } from "next/server";
-import { createToken } from "@/lib/jwt";
+import { addNewToken, createToken } from "@/lib/jwt";
 import { nodeMailer } from "@/components/nodemailer";
-import { generateEmail } from "@/components/nodemailer/inscription";
+import { registerConfirmation } from "@/components/nodemailer/registerConfirmation";
 import { emailController } from "@/lib/controllers/email.controller";
 import connectToMongo from "@/lib/db";
-import { maxAgeAuthToken, maxAgeErrorToken } from "@/lib/constants";
+import {
+  activateUserCompteTokenName,
+  maxAgeActivateUserCompte,
+  maxAgeErrorToken,
+} from "@/lib/constants";
 export const POST = async (req) => {
   try {
     let token = null;
@@ -43,7 +47,9 @@ export const POST = async (req) => {
 
     // error name < 3
     if (minNameRegisterError) {
-      infos = { ...body, register: true, minNameRegisterError: true };
+      const { password, ...infosToReturn } = body;
+
+      infos = { ...infosToReturn, register: true, minNameRegisterError: true };
       token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 400 })
@@ -52,7 +58,9 @@ export const POST = async (req) => {
 
     // error name > 50
     if (maxNameRegisterError) {
-      infos = { ...body, register: true, maxNameRegisterError: true };
+      const { password, ...infosToReturn } = body;
+
+      infos = { ...infosToReturn, register: true, maxNameRegisterError: true };
       token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 400 })
@@ -61,7 +69,13 @@ export const POST = async (req) => {
 
     // error username < 3
     if (minUsernameRegisterError) {
-      infos = { ...body, register: true, minUsernameRegisterError: true };
+      const { password, ...infosToReturn } = body;
+
+      infos = {
+        ...infosToReturn,
+        register: true,
+        minUsernameRegisterError: true,
+      };
       token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 400 })
@@ -70,7 +84,13 @@ export const POST = async (req) => {
 
     // error username > 50
     if (maxUsernameRegisterError) {
-      infos = { ...body, register: true, maxUsernameRegisterError: true };
+      const { password, ...infosToReturn } = body;
+
+      infos = {
+        ...infosToReturn,
+        register: true,
+        maxUsernameRegisterError: true,
+      };
       token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 400 })
@@ -79,7 +99,13 @@ export const POST = async (req) => {
 
     // error email invalid
     if (!emailController(body.email)) {
-      infos = { ...body, register: true, invalidRegisterEmailError: true };
+      const { password, ...infosToReturn } = body;
+
+      infos = {
+        ...infosToReturn,
+        register: true,
+        invalidRegisterEmailError: true,
+      };
       token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 400 })
@@ -88,7 +114,13 @@ export const POST = async (req) => {
 
     // error password < 6
     if (minPasswordRegisterError) {
-      infos = { ...body, register: true, minPasswordRegisterError: true };
+      const { password, ...infosToReturn } = body;
+
+      infos = {
+        ...infosToReturn,
+        register: true,
+        minPasswordRegisterError: true,
+      };
       token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 400 })
@@ -100,7 +132,13 @@ export const POST = async (req) => {
 
     // error email already exist
     if (!isEmpty(verifyExistUser)) {
-      infos = { ...body, register: true, alreadyExistRegisterEmailError: true };
+      const { password, ...infosToReturn } = body;
+
+      infos = {
+        ...infosToReturn,
+        register: true,
+        alreadyExistRegisterEmailError: true,
+      };
       token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 400 })
@@ -120,7 +158,9 @@ export const POST = async (req) => {
 
     // error user not created
     if (isEmpty(user)) {
-      infos = { ...body, register: true, failToCreateNewUser: true };
+      const { password, ...infosToReturn } = body;
+
+      infos = { ...infosToReturn, register: true, failToCreateNewUser: true };
       token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(
         JSON.stringify(
@@ -133,17 +173,17 @@ export const POST = async (req) => {
     }
 
     infos = {
-      newUser: true,
+      activateUserCompte: true,
       email: user.email,
       id: user._id,
     };
-    token = createToken(infos, maxAgeAuthToken);
+    token = createToken(infos, maxAgeActivateUserCompte);
 
     // sending registration email confirmation
-    const res = await nodeMailer({
+    await nodeMailer({
       to: user.email,
       subject: "Inscription réussie",
-      ...generateEmail({
+      ...registerConfirmation({
         name: user.name,
         username: user.username,
         userType: user.userType,
@@ -152,12 +192,29 @@ export const POST = async (req) => {
       }),
     });
 
-    if (!isEmpty(res?.error)) {
+    // add new auth token
+    const { tokenAdded } = await addNewToken({
+      id: user._id,
+      token: token,
+      tokenName: activateUserCompteTokenName,
+    });
+
+    if (!tokenAdded) {
+      const { password, ...infosToReturn } = body;
+
+      infos = { ...infosToReturn, login: true, failToAddToken: true };
+      token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(
-        JSON.stringify({ token, sendEmailError: true }, { status: 400 })
+        JSON.stringify({ error: token }, { status: 500 })
       );
     }
 
+    infos = {
+      newUser: true,
+      email: user.email,
+      id: user._id,
+    };
+    token = createToken(infos, maxAgeErrorToken);
     return new NextResponse(JSON.stringify({ token }, { status: 200 }));
   } catch (err) {
     return new NextResponse(

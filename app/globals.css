@@ -23,8 +23,8 @@ body {
 
   --green: #badf5b;
   --blue: #036eff;
-  --blue-loading: #036eff80;
-  --green-loading: #badf5b80;
+  --blue-loading: rgba(3, 110, 255, 0.5);
+  --green-loading: rgba(186, 223, 91, 0.5);
   --blue-8: rgba(3, 108, 255, 0.8);
   --red: #ff5757;
   --white: #fff;
@@ -34,7 +34,7 @@ body {
   --gris-v-2: #d1d1d1;
   --gris-v-3: #e8e8e8;
   --gris-v-4: #ebebeb;
-  --black-input: #000000f2;
+  --black-input: rgba(0, 0, 0, 0.9);
   --black-input-7: rgba(0, 0, 0, 0.7);
   --black-input-5: rgba(0, 0, 0, 0.5);
   --box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,

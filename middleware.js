@@ -14,7 +14,11 @@ export function middleware(req) {
     }
   } else if (req.nextUrl.pathname === "/home") {
     const token = req.cookies.get(cookieName);
-    if (isEmpty(token?.value) || isEmpty(jwt.decode(token?.value))) {
+    const hasToken = req.nextUrl.searchParams.has("t");
+    if (
+      (isEmpty(token?.value) || isEmpty(jwt.decode(token?.value))) &&
+      !hasToken
+    ) {
       req.cookies.delete(cookieName);
       return NextResponse.redirect(new URL("/login", req.url));
     }

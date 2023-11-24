@@ -17,38 +17,34 @@ export default function RegisterForm() {
   const cPass = useRef();
   const [spinner, setSpinner] = useState(false);
   const [userType, setUserType] = useState({
-    obj: "userType",
-    value: "",
-    error: false,
-    success: false,
+    obj: "",
     submit: false,
   });
   const [isLoading, setIsLoading] = useState(false);
   const [acceptConditions, setAcceptconditions] = useState({
-    obj: "conditions",
+    obj: "",
     value: false,
     submit: false,
   });
-  const [remember, setRemember] = useState(false);
   const [isHovered, setIsHovered] = useState({ obj: "", value: false });
   const [nameUser, setNameUser] = useState({
-    obj: "name",
+    obj: "",
     value: "",
   });
   const [usernameUser, setUsernameUser] = useState({
-    obj: "username",
+    obj: "",
     value: "",
   });
   const [emailUser, setEmailUser] = useState({
-    obj: "email",
+    obj: "",
     value: "",
   });
   const [passwordUser, setPasswordUser] = useState({
-    obj: "password",
+    obj: "",
     value: "",
   });
   const [cPasswordUser, setCPasswordUser] = useState({
-    obj: "cPassword",
+    obj: "",
     value: "",
     error: false,
     submit: false,
@@ -60,9 +56,9 @@ export default function RegisterForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setAcceptconditions({ ...acceptConditions, submit: true });
-    setUserType({ ...userType, submit: true });
+    setUserType((prev) => ({ ...prev, submit: true }));
     if (
-      userType.value !== "" &&
+      !isEmpty(userType.obj) &&
       acceptConditions.value &&
       passwordUser.value === cPasswordUser.value
     ) {
@@ -72,15 +68,12 @@ export default function RegisterForm() {
         username: usernameUser.value,
         email: emailUser.value,
         password: passwordUser.value,
-        remember,
-        userType: userType.value,
+        userType: userType.obj,
       }).catch((error) => console.log(error.message));
       setSpinner(true);
       setIsLoading(false);
       if (res?.error) {
         push(`/fail?t=${res.error}`);
-      } else if (res?.token && res?.sendEmailError) {
-        push(`/success?s=${res.token}`);
       } else {
         push(`/success?t=${res.token}`);
       }
@@ -195,7 +188,13 @@ export default function RegisterForm() {
                 <div className={styles.registerChoice}>
                   S{"'"}inscrire en tant que
                 </div>
-                <div className={styles.btn}>
+                <div
+                  className={
+                    userType.submit && isEmpty(userType.obj)
+                      ? `${styles.btn} ${styles.red}`
+                      : `${styles.btn}`
+                  }
+                >
                   <Btn
                     setUserType={setUserType}
                     setIsHovered={setIsHovered}

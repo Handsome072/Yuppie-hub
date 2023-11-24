@@ -14,6 +14,7 @@
   position: relative;
 }
 .btn div div {
+  font-size: 0.9rem;
   font-weight: var(--regular);
   color: var(--white);
   background: rgba(186, 223, 91, 0.9);

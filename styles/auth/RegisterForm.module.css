@@ -54,8 +54,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-right: 6%;
-  height: 94%;
+  padding: 0 6% 4% 0;
+  height: 95%;
 }
 .rtgh {
   width: 100%;
@@ -103,7 +103,8 @@
   transition: 0.1s;
 }
 
-.inputs > div input:hover,.inputs > div input:focus {
+.inputs > div input:hover,
+.inputs > div input:focus {
   outline: 1px solid var(--gris-v-2);
 }
 
@@ -111,6 +112,9 @@
   width: 100%;
   position: relative;
   border-radius: 0.25rem;
+}
+.red {
+  box-shadow: 0 0 1px 2px var(--red);
 }
 
 .registerChoice {

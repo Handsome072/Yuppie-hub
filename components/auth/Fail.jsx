@@ -143,12 +143,14 @@ export default function Fail() {
           });
           setInitialData(() => {
             let nwe = res.infos;
+            nwe.password = "";
             nwe.cPassword = "";
             return nwe;
           });
           setNewUser(() => {
             let nwe = res.infos;
             nwe.valid = false;
+            nwe.password = "";
             nwe.cPassword = "";
             return nwe;
           });
@@ -221,50 +223,26 @@ export default function Fail() {
   }, [token]);
   useEffect(() => {
     if (newUser?.name?.trim() !== initialData?.name && !newUser.valid) {
-      setNewUser((prev) => {
-        let nwe = { ...prev };
-        nwe.valid = true;
-        return nwe;
-      });
+      setNewUser((prev) => ({ ...prev, valid: true }));
     }
     if (newUser?.username?.trim() !== initialData?.username && !newUser.valid) {
-      setNewUser((prev) => {
-        let nwe = { ...prev };
-        nwe.valid = true;
-        return nwe;
-      });
+      setNewUser((prev) => ({ ...prev, valid: true }));
     }
     if (newUser?.email?.trim() !== initialData?.email && !newUser.valid) {
-      setNewUser((prev) => {
-        let nwe = { ...prev };
-        nwe.valid = true;
-        return nwe;
-      });
+      setNewUser((prev) => ({ ...prev, valid: true }));
     }
     if (newUser?.password !== initialData?.password && !newUser.valid) {
-      setNewUser((prev) => {
-        let nwe = { ...prev };
-        nwe.valid = true;
-        return nwe;
-      });
+      setNewUser((prev) => ({ ...prev, valid: true }));
     }
     if (newUser?.userType !== initialData?.userType && !newUser.valid) {
-      setNewUser((prev) => {
-        let nwe = { ...prev };
-        nwe.valid = true;
-        return nwe;
-      });
+      setNewUser((prev) => ({ ...prev, valid: true }));
     }
     if (
       newUser?.minPasswordRegisterError &&
       newUser?.cPassword !== initialData?.password &&
       !newUser.valid
     ) {
-      setNewUser((prev) => {
-        let nwe = { ...prev };
-        nwe.valid = true;
-        return nwe;
-      });
+      setNewUser((prev) => ({ ...prev, valid: true }));
     }
   }, [newUser]);
   const handleSubmit = async (e) => {
@@ -275,11 +253,8 @@ export default function Fail() {
       newUser?.minPasswordRegisterError &&
       newUser.password !== newUser.cPassword
     ) {
-      setNewUser((prev) => {
-        let nwe = { ...prev };
-        nwe.valid = false;
-        return nwe;
-      });
+      setNewUser((prev) => ({ ...prev, valid: false }));
+
       cPass.current.setCustomValidity(
         "Les mots de passes ne correspondent pas."
       );
@@ -313,15 +288,12 @@ export default function Fail() {
         username: newUser.username,
         email: newUser.email,
         password: newUser.password,
-        remember: newUser.remember,
         userType: newUser.userType,
       }).catch((error) => console.log(error));
       setSpinner(true);
       setIsLoading(false);
       if (res?.error) {
         push(`/fail?t=${res.error}`);
-      } else if (res?.token && res?.sendEmailError) {
-        push(`/success?s=${res.token}`);
       } else {
         push(`/success?t=${res.token}`);
       }
@@ -378,25 +350,6 @@ export default function Fail() {
                     placeholder={`Nom`}
                   />
                 </div>
-                {!initialData.remember && (
-                  <label htmlFor="remember" className={styles.remember}>
-                    <input
-                      type="checkbox"
-                      checked={newUser.remember}
-                      id="remember"
-                      onChange={() =>
-                        setNewUser((prev) => {
-                          let nwe = { ...prev };
-                          nwe.remember === true
-                            ? (nwe.remember = false)
-                            : (nwe.remember = true);
-                          return nwe;
-                        })
-                      }
-                    />
-                    <span>Se souvenir de moi</span>
-                  </label>
-                )}
                 <div className={!newUser.valid ? "pen" : null}>
                   <button
                     className={
@@ -458,25 +411,6 @@ export default function Fail() {
                     placeholder={`Nom`}
                   />
                 </div>
-                {!initialData.remember && (
-                  <label htmlFor="remember" className={styles.remember}>
-                    <input
-                      type="checkbox"
-                      checked={newUser.remember}
-                      id="remember"
-                      onChange={() =>
-                        setNewUser((prev) => {
-                          let nwe = { ...prev };
-                          nwe.remember === true
-                            ? (nwe.remember = false)
-                            : (nwe.remember = true);
-                          return nwe;
-                        })
-                      }
-                    />
-                    <span>Se souvenir de moi</span>
-                  </label>
-                )}
                 <div className={!newUser.valid ? "pen" : null}>
                   <button
                     className={
@@ -538,25 +472,6 @@ export default function Fail() {
                     placeholder={`Prénom`}
                   />
                 </div>
-                {!initialData.remember && (
-                  <label htmlFor="remember" className={styles.remember}>
-                    <input
-                      type="checkbox"
-                      checked={newUser.remember}
-                      id="remember"
-                      onChange={() =>
-                        setNewUser((prev) => {
-                          let nwe = { ...prev };
-                          nwe.remember === true
-                            ? (nwe.remember = false)
-                            : (nwe.remember = true);
-                          return nwe;
-                        })
-                      }
-                    />
-                    <span>Se souvenir de moi</span>
-                  </label>
-                )}
                 <div className={!newUser.valid ? "pen" : null}>
                   <button
                     className={
@@ -618,25 +533,6 @@ export default function Fail() {
                     placeholder={`Prénom`}
                   />
                 </div>
-                {!initialData.remember && (
-                  <label htmlFor="remember" className={styles.remember}>
-                    <input
-                      type="checkbox"
-                      checked={newUser.remember}
-                      id="remember"
-                      onChange={() =>
-                        setNewUser((prev) => {
-                          let nwe = { ...prev };
-                          nwe.remember === true
-                            ? (nwe.remember = false)
-                            : (nwe.remember = true);
-                          return nwe;
-                        })
-                      }
-                    />
-                    <span>Se souvenir de moi</span>
-                  </label>
-                )}
                 <div className={!newUser.valid ? "pen" : null}>
                   <button
                     className={
@@ -700,25 +596,6 @@ export default function Fail() {
                     placeholder={`Adresse email`}
                   />
                 </div>
-                {!initialData.remember && (
-                  <label htmlFor="remember" className={styles.remember}>
-                    <input
-                      type="checkbox"
-                      checked={newUser.remember}
-                      id="remember"
-                      onChange={() =>
-                        setNewUser((prev) => {
-                          let nwe = { ...prev };
-                          nwe.remember === true
-                            ? (nwe.remember = false)
-                            : (nwe.remember = true);
-                          return nwe;
-                        })
-                      }
-                    />
-                    <span>Se souvenir de moi</span>
-                  </label>
-                )}
                 <div className={!newUser.valid ? "pen" : null}>
                   <button
                     className={
@@ -782,25 +659,7 @@ export default function Fail() {
                     placeholder={`Adresse email`}
                   />
                 </div>
-                {!initialData.remember && (
-                  <label htmlFor="remember" className={styles.remember}>
-                    <input
-                      type="checkbox"
-                      checked={newUser.remember}
-                      id="remember"
-                      onChange={() =>
-                        setNewUser((prev) => {
-                          let nwe = { ...prev };
-                          nwe.remember === true
-                            ? (nwe.remember = false)
-                            : (nwe.remember = true);
-                          return nwe;
-                        })
-                      }
-                    />
-                    <span>Se souvenir de moi</span>
-                  </label>
-                )}
+
                 <div className={!newUser.valid ? "pen" : null}>
                   <button
                     className={
@@ -877,25 +736,6 @@ export default function Fail() {
                     placeholder={`Confirmer mot de passe`}
                   />
                 </div>
-                {!initialData.remember && (
-                  <label htmlFor="remember" className={styles.remember}>
-                    <input
-                      type="checkbox"
-                      checked={newUser.remember}
-                      id="remember"
-                      onChange={() =>
-                        setNewUser((prev) => {
-                          let nwe = { ...prev };
-                          nwe.remember === true
-                            ? (nwe.remember = false)
-                            : (nwe.remember = true);
-                          return nwe;
-                        })
-                      }
-                    />
-                    <span>Se souvenir de moi</span>
-                  </label>
-                )}
                 <div className={!newUser.valid ? "pen" : null}>
                   <button
                     className={

@@ -86,19 +86,18 @@ export default function ProfilRight({
     }
   }, [infosToUpdate]);
   useEffect(() => {
-    let handleClickOutside = () => {};
     if (activeCh) {
-      handleClickOutside = (e) => {
+     const handleClickOutside = (e) => {
         if (ref.current && !ref.current.contains(e.target)) {
           setAncImg({ obj: null, value: false });
           setActiveCh(false);
         }
       };
+      document.addEventListener("click", handleClickOutside);
+      return () => {
+        document.removeEventListener("click", handleClickOutside);
+      };
     }
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
   }, [ref, activeCh]);
   const handleChangeFile = async (e) => {
     if (e.target.files && e.target.files.length > 0) {

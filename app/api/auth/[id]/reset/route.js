@@ -37,8 +37,10 @@ export const POST = async (req, { params }) => {
     }
 
     await connectToMongo();
+
     const salt = await bcrypt.genSalt(14);
     password = await bcrypt.hash(body.password, salt);
+
     user = await UserModel.findByIdAndUpdate(
       id,
       {
@@ -46,17 +48,7 @@ export const POST = async (req, { params }) => {
         $pull: { tokens: body.token },
       },
       { new: true }
-    );
-
-    if (isEmpty(user)) {
-      infos = {
-        resetError: true,
-        email: user.email,
-        id,
-      };
-      token = createToken(infos, maxAgeErrorToken);
-      return new NextResponse(JSON.stringify({ token }, { status: 500 }));
-    }
+    ).catch((error) => console.log(error.message));
 
     infos = {
       passwordReset: true,

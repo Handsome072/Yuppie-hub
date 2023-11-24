@@ -149,7 +149,7 @@ export default function Reset() {
         <form onSubmit={handleSubmit}>
           <div className={styles.switchBtn}>
             <Link
-              href={"/reset"}
+              href={error.emailSent ? "/login" : "/reset"}
               onClick={() => {
                 setError((prev) => {
                   let nwe = { ...prev };

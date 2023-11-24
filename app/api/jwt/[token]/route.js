@@ -1,4 +1,7 @@
-import { resetPasswordTokenName } from "@/lib/constants";
+import {
+  activateUserCompteTokenName,
+  resetPasswordTokenName,
+} from "@/lib/constants";
 import { verifyExistToken, verifyToken } from "@/lib/jwt";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import { NextResponse } from "next/server";
@@ -35,6 +38,26 @@ export const GET = async (req, { params }) => {
         id: verify.infos?.id,
         token,
         tokenName: resetPasswordTokenName,
+      });
+
+      // error token not valid anymore
+      if (isEmpty(existToken)) {
+        return new NextResponse(
+          JSON.stringify({ notAnymoreValidToken: true }, { status: 200 })
+        );
+      }
+
+      return new NextResponse(
+        JSON.stringify(
+          { secure: true, token: existToken, id: verify.infos.id },
+          { status: 200 }
+        )
+      );
+    } else if (verify.infos?.activateUserCompteTokenName) {
+      const { existToken } = await verifyExistToken({
+        id: verify.infos?.id,
+        token,
+        tokenName: activateUserCompteTokenName,
       });
 
       // error token not valid anymore

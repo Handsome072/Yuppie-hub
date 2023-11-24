@@ -35,16 +35,11 @@ export default function Btn({
         <div className={styles.btn}>
           <div
             id="assistant"
-            className={
-              userType?.value === "assistant" ? `${styles.active}` : null
-            }
+            className={userType.obj === "assistant" ? `${styles.active}` : null}
             onClick={(e) => {
               e.preventDefault();
               setUserType({
-                ...userType,
-                value: "assistant",
-                success: true,
-                error: false,
+                obj: "assistant",
                 submit: false,
               });
             }}
@@ -83,14 +78,11 @@ export default function Btn({
           </div>
           <div
             id="client"
-            className={userType?.value === "client" ? `${styles.active}` : null}
+            className={userType.obj === "client" ? `${styles.active}` : null}
             onClick={(e) => {
               e.preventDefault();
               setUserType({
-                ...userType,
-                value: "client",
-                success: true,
-                error: false,
+                obj: "client",
                 submit: false,
               });
             }}
