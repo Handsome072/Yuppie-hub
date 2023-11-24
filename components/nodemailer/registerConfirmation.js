@@ -38,7 +38,7 @@ export const registerConfirmation = ({
                   >
                     <tr>
                       <td>
-                        <table style="width: 100%; padding: 1rem">
+                        <table style="width: 100%; padding: 0 1rem 1rem 1rem;">
                           <tr>
                             <td style="width: 100%; text-align: center">
                               <img
