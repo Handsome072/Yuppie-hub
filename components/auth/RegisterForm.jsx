@@ -12,8 +12,11 @@ import Btn from "./Btn";
 import Conditions from "./Conditions";
 import { FaCircleArrowLeft } from "react-icons/fa6";
 import { isEmpty } from "@/lib/utils/isEmpty";
+import { useDispatch } from "react-redux";
+import { updatePersistInfos } from "@/redux/slices/persistSlice";
 export default function RegisterForm() {
   const { push } = useRouter();
+  const dispatch = useDispatch();
   const cPass = useRef();
   const [spinner, setSpinner] = useState(false);
   const [userType, setUserType] = useState({
@@ -75,6 +78,7 @@ export default function RegisterForm() {
       if (res?.error) {
         push(`/fail?t=${res.error}`);
       } else {
+        dispatch(updatePersistInfos({ userType: userType.obj }));
         push(`/success?t=${res.token}`);
       }
     } else if (passwordUser.value !== cPasswordUser.value) {

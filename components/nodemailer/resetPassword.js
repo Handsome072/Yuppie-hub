@@ -27,7 +27,7 @@ export const resetPassword = ({ email, userType, token, lang }) => {
                     border: inherit;
                     outline: inherit;
                     font-family: 'Archivo', sans-serif;
-                    padding: 1rem 2rem 2rem 2rem;
+                    padding: 1% 2% 2% 2%;
                   "
                 >
                   <tr>
@@ -167,12 +167,6 @@ export const resetPassword = ({ email, userType, token, lang }) => {
                               </td>
                             </tr>
                           </table>
-                        </tr>
-
-                        <tr>
-                          <td>
-                            <i></i>
-                          </td>
                         </tr>
                       </table>
                     </td>

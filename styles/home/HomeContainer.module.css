@@ -33,41 +33,16 @@
   max-height: 100vh;
   z-index: 10;
   backdrop-filter: blur(1px);
-  animation: 0.15s;
 }
-@keyframes op {
-  0% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
 .chi > div {
   background: var(--white);
   border-radius: 1rem;
   position: relative;
   width: 54%;
   min-width: 16rem;
-  animation: anim 0.75s;
   display: flex;
   flex-direction: column;
   box-shadow: var(--box-shadow-form);
-}
-
-@keyframes anim {
-  0% {
-    opacity: 0;
-    transform: translateY(-7.5%);
-  }
-  15% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 .hr {
   width: 100%;
@@ -123,6 +98,7 @@
   scrollbar-color: var(--gris) var(--gris-v-1);
   flex: 1;
 }
+
 .title {
   font-size: 3rem;
   width: 100%;

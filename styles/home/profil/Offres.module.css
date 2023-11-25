@@ -57,7 +57,8 @@
 .container input::placeholder {
   color: var(--gris-v-2);
 }
-.container input:hover,.container input:focus  {
+.container input:hover,
+.container input:focus {
   outline: 1px solid var(--gris-v-2);
 }
 .container .ina::placeholder {
@@ -70,9 +71,7 @@
   position: relative;
   flex-direction: column;
 }
-.container .r .menuDeroulant .bg {
-  background: var(--gris-v-4);
-}
+
 .sh {
   position: absolute;
   color: var(--blue);
@@ -156,15 +155,12 @@
 .container .grid .stat div:hover {
   background: var(--gris-v-4);
 }
-.container .grid .pays.notHover div:hover {
-  background: transparent;
-}
 .container .grid .menuDeroulant i {
   cursor: pointer;
 }
-.container .grid .menuDeroulant div.po {
-  pointer-events: none;
+.container .grid .menuDeroulant .active {
   color: var(--blue);
+  background: var(--gris-v-4);
 }
 .container .chrt {
   display: flex;

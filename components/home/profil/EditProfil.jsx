@@ -121,6 +121,7 @@ export default function EditProfil({ setIsEditProfil }) {
       setIsSubmit((prev) => ({ ...prev, can: true }));
     }
   }, [infosToUpdate]);
+  console.log(infosToUpdate);
   const handleReset = async () => {
     setNewUsername({ obj: user.username, value: false });
     setNewName({ obj: user.name, value: false });
@@ -147,11 +148,11 @@ export default function EditProfil({ setIsEditProfil }) {
     setNewBenevolat({ obj: user.benevolat, value: false });
     setNewMTF({ obj: user.montantForfaitaire, value: false });
     setNewBio({ obj: user.bio, value: false });
-    setIsEditProfil(false);
     setNewImage({
       obj: !isEmpty(user.image) ? [user.image] : [],
       value: false,
     });
+    setIsEditProfil(false);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -161,11 +162,9 @@ export default function EditProfil({ setIsEditProfil }) {
         ...infosToUpdate,
         id: user._id,
       }).catch((error) => console.log(error));
+      setIsEditProfil(false);
       if (!isEmpty(res?.user)) {
         dispatch(updateUserInfos({ user: res.user }));
-        setIsEditProfil(false);
-      } else {
-        setIsEditProfil(false);
       }
     } else {
       handleReset();

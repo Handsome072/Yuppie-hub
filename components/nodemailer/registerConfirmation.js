@@ -33,7 +33,7 @@ export const registerConfirmation = ({
                       border: inherit;
                       outline: inherit;
                       font-family: 'Archivo', sans-serif;
-                      padding: 0 2rem 2rem 2rem;
+                      padding: 1% 2% 2% 2%;
                     "
                   >
                     <tr>
@@ -120,7 +120,7 @@ export const registerConfirmation = ({
                                         style="width: 100%; color: #888; text-align: center"
                                       >
                                         Cliquer sur ce bouton pour activer votre compte et
-                                        continuer à utiliser nos services.
+                                        continuer à bénéficier de nos services.
                                       </td>
                                     </tr>
                                   </table>
@@ -192,11 +192,6 @@ export const registerConfirmation = ({
                                 </td>
                               </tr>
                             </table>
-                          </tr>
-                          <tr>
-                            <td>
-                              <i></i>
-                            </td>
                           </tr>
                         </table>
                       </td>

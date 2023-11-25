@@ -48,10 +48,10 @@
 .contenu label {
   color: var(--blue);
   font-weight: var(--medium);
+  font-size: 1.1rem;
 }
 .contenu p {
   color: var(--gris);
-  font-size: 0.9rem;
 }
 .hr {
   width: 100%;

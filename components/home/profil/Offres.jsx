@@ -69,12 +69,12 @@ export default function Offres({
     }
 
     // benevolat
-    if (newBenevolat.obj !== user?.benevolat) {
+    if (newBenevolat?.obj !== user?.benevolat) {
       if (!newBenevolat.value) {
         setNewBenevolat((prev) => ({ ...prev, value: true }));
       }
       setInfosToUpdate((prev) => ({ ...prev, benevolat: newBenevolat.obj }));
-    } else if (newBenevolat.obj === user?.benevolat) {
+    } else if (newBenevolat?.obj === user?.benevolat) {
       if (newBenevolat.value) {
         setNewBenevolat((prev) => ({ ...prev, value: false }));
       }
@@ -85,12 +85,12 @@ export default function Offres({
     }
 
     // montant forfaitaire
-    if (newMTF.obj !== user?.montantForfaitaire) {
+    if (newMTF?.obj !== user?.montantForfaitaire) {
       if (!newMTF.value) {
         setNewMTF((prev) => ({ ...prev, value: true }));
       }
       setInfosToUpdate((prev) => ({ ...prev, montantForfaitaire: newMTF.obj }));
-    } else if (newMTF.obj === user?.montantForfaitaire) {
+    } else if (newMTF?.obj === user?.montantForfaitaire) {
       if (newMTF.value) {
         setNewMTF((prev) => ({ ...prev, value: false }));
       }
@@ -119,22 +119,16 @@ export default function Offres({
     }
   }, [showMenu.obj]);
   const handleChangeMTF = (newValue) => {
-    setNewMTF((prev) => {
-      if (prev === newValue) {
-        return;
-      } else {
-        return newValue;
-      }
-    });
+    setNewMTF((prev) => ({
+      ...prev,
+      obj: prev?.obj === newValue ? null : newValue,
+    }));
   };
   const handleChangeBenevolat = (newValue) => {
-    setNewBenevolat((prev) => {
-      if (prev === newValue) {
-        return;
-      } else {
-        return newValue;
-      }
-    });
+    setNewBenevolat((prev) => ({
+      ...prev,
+      obj: prev?.obj === newValue ? null : newValue,
+    }));
   };
   return (
     <ClientOnly>
@@ -223,14 +217,13 @@ export default function Offres({
                         <div
                           key={p}
                           className={
-                            newTh.obj === p ? `${styles.po} ${styles.bg}` : null
+                            newTh.obj === p ? `${styles.active}` : null
                           }
                           onClick={() => {
-                            setNewTh((prev) => {
-                              let nwe = { ...prev };
-                              nwe.obj = p;
-                              return nwe;
-                            });
+                            setNewTh((prev) => ({
+                              ...prev,
+                              obj: prev.obj === p ? null : p,
+                            }));
                             setShowMenu(() => ({
                               obj: "",
                               value: false,
@@ -260,7 +253,7 @@ export default function Offres({
                 <input
                   type="radio"
                   onChange={() => handleChangeMTF(true)}
-                  checked={newMTF.obj === true}
+                  checked={newMTF?.obj === true}
                   name="mn"
                   id="my"
                 />
@@ -270,7 +263,7 @@ export default function Offres({
                 <input
                   type="radio"
                   onChange={() => handleChangeMTF(false)}
-                  checked={newMTF.obj === false}
+                  checked={newMTF?.obj === false}
                   name="mn"
                   id="mn"
                 />
@@ -287,7 +280,7 @@ export default function Offres({
                 <input
                   type="radio"
                   onChange={() => handleChangeBenevolat(true)}
-                  checked={newBenevolat.obj === true}
+                  checked={newBenevolat?.obj === true}
                   name="bn"
                   id="by"
                 />
@@ -297,7 +290,7 @@ export default function Offres({
                 <input
                   type="radio"
                   onChange={() => handleChangeBenevolat(false)}
-                  checked={newBenevolat.obj === false}
+                  checked={newBenevolat?.obj === false}
                   name="bn"
                   id="bn"
                 />

@@ -14,6 +14,7 @@ import connectToMongo from "@/lib/db";
 import {
   activateUserCompteTokenName,
   maxAgeActivateUserCompte,
+  maxAgeAuthToken,
   maxAgeErrorToken,
 } from "@/lib/constants";
 export const POST = async (req) => {
@@ -154,27 +155,10 @@ export const POST = async (req) => {
       name: body.name,
       username,
       userType: body.userType,
-    });
-
-    // error user not created
-    if (isEmpty(user)) {
-      const { password, ...infosToReturn } = body;
-
-      infos = { ...infosToReturn, register: true, failToCreateNewUser: true };
-      token = createToken(infos, maxAgeErrorToken);
-      return new NextResponse(
-        JSON.stringify(
-          {
-            error: token,
-          },
-          { status: 500 }
-        )
-      );
-    }
+    }).catch((error) => console.log(error));
 
     infos = {
       activateUserCompte: true,
-      email: user.email,
       id: user._id,
     };
     token = createToken(infos, maxAgeActivateUserCompte);

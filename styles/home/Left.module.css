@@ -137,7 +137,7 @@
   cursor: default;
 }
 .middle {
-  padding: 1.5% 4% 3% 4%;
+  padding: 1.6% 4% 3% 4%;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -199,7 +199,7 @@
   align-items: center;
   width: 100%;
   flex-direction: column;
-  padding-top: 3%;
+  padding-top: 2%;
   flex: 1;
   overflow: hidden;
   border-radius: 0.5rem;
@@ -247,7 +247,8 @@
   padding: 6% 0;
 }
 .pdm {
-  padding: 3% 0;
+  padding: 0;
+  padding-bottom: 2%;
 }
 
 .moreInfos .def {

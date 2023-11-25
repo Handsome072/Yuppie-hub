@@ -97,27 +97,6 @@ textarea {
 button {
   user-select: none;
 }
-.df {
-  display: flex;
-}
-.jcc {
-  justify-content: center;
-}
-.aic {
-  align-items: center;
-}
-.wf {
-  width: 100%;
-}
-.hf {
-  height: 100%;
-}
-.fc {
-  flex-direction: column;
-}
-.fr {
-  flex-direction: row;
-}
 .try1 {
   transform: translateY(1px);
 }
@@ -159,6 +138,50 @@ button {
 .scr::-webkit-scrollbar-track {
   background-color: transparent;
   transition: 0.15s;
+}
+/* enter */
+
+/* container */
+.fc-enter {
+  opacity: 0.1;
+}
+.fc-enter-active {
+  opacity: 1;
+  transition: 0.3s;
+}
+
+/* contenu */
+.fc-enter .cont {
+  opacity: 0.5;
+  transform: translateY(-7.5%);
+}
+
+.fc-enter-active .cont {
+  opacity: 1;
+  transition: 0.5s ease-out;
+  transform: translateY(0);
+}
+
+/* exit */
+
+/* container */
+.fc-exit {
+  opacity: 1;
+}
+.fc-exit-active {
+  opacity: 0.1;
+  transition: 0.5s;
+}
+
+/* contenu */
+.fc-exit .cont {
+  transform: translateY(0%);
+  opacity: 1;
+}
+.fc-exit-active .cont {
+  opacity: 0.1;
+  transform: translateY(7.5%);
+  transition: 0.3s ease-in;
 }
 
 @media (max-height: 600px) {
