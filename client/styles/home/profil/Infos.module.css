@@ -1,0 +1,310 @@
+.container {
+  width: 100%;
+  height: 100%;
+  padding: 2%;
+  position: relative;
+  color: var(--gris);
+  display: flex;
+  flex-direction: column;
+  gap: 6%;
+  padding-top: 5%;
+}
+.container div {
+  width: 100%;
+  display: flex;
+  position: relative;
+}
+.container .l {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.container .l label {
+  font-weight: var(--bold);
+  font-size: 1.5rem;
+  width: max-content;
+}
+
+.container .l p {
+  font-weight: var(--regular);
+  font-size: 0.9rem;
+  padding: 0.5rem;
+  padding-left: 0;
+}
+
+.container div:first-child .r {
+  width: 100%;
+}
+.container .r {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10%;
+  width: 30%;
+  position: relative;
+}
+.container .inputR {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: relative;
+  flex-direction: column;
+}
+.container .r input {
+  width: 100%;
+  border: 1px solid var(--gris-v-2);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  margin: 1.5% 0;
+  color: var(--blue);
+  padding-right: 1.75rem;
+  min-width: 8rem;
+  transition: 0.1s;
+}
+.container .r .ina::placeholder {
+  color: var(--gris);
+}
+.container input:hover,
+.container input:focus {
+  outline: 1px solid var(--gris-v-2);
+}
+.inputR i {
+  position: absolute;
+  right: 0.5rem;
+  transition: 0.1s;
+  color: var(--gris);
+  cursor: pointer;
+}
+
+.container .r .pays .lb {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5%;
+}
+.container .r .pays .lb .logo {
+  text-transform: uppercase;
+  font-size: 1rem;
+  font-weight: var(--bold);
+  color: var(--gris);
+  position: absolute;
+  left: 0.5rem;
+}
+.lg .logo {
+  text-transform: uppercase;
+  font-size: 1rem;
+  font-weight: var(--bold);
+  background: var(--linear-gradient);
+  -webkit-background-clip: text;
+  color: transparent;
+  position: absolute;
+  left: 0.5rem;
+}
+.lg .logo::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--blue),
+    var(--green),
+    transparent
+  );
+  right: 0;
+}
+.container .r .menuDeroulant {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  border-radius: 0.25rem;
+  width: 100%;
+  height: max-content;
+  max-height: 448%;
+  right: 0;
+  top: 105%;
+  min-height: max-content;
+  border: 1px solid var(--gris-v-2);
+  overflow-x: hidden;
+  z-index: 6;
+  animation: anim 0.25s;
+  transform-origin: top;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  min-width: max-content;
+}
+.container .r .menuDeroulant.hidden {
+  overflow: hidden;
+  padding: 0;
+}
+.container .r .menuDeroulant .bg {
+  background: var(--gris-v-4);
+}
+
+@keyframes anim {
+  0% {
+    transform: scaleY(0);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+.container .r .pays {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.container .r .cat {
+  gap: 0.5rem;
+}
+.container .r .menuDeroulant * {
+  border: none;
+}
+.container .r .pays div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: max-content;
+  transition: 0.15s;
+  padding: 0 0.3rem 0 0.5rem;
+}
+.container .r .pays .np {
+  padding: 0.25rem 0.5rem;
+}
+.container .r .pays div:hover {
+  background: var(--gris-v-4);
+}
+.container .r .pays.notHover div:hover {
+  background: transparent;
+}
+.container .r .menuDeroulant div h1 {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  line-height: 1.65;
+  cursor: default;
+}
+
+.container .r .menuDeroulant div h1 span {
+  color: var(--gris);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  width: 100%;
+  white-space: nowrap;
+}
+.container .r .menuDeroulant div h2 {
+  cursor: default;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  line-height: 1.5;
+  min-height: max-content;
+}
+
+.container .r .menuDeroulant div h2 span {
+  color: var(--gris);
+  width: 100%;
+  font-size: 0.8rem;
+  text-transform: capitalize;
+  width: 100%;
+}
+.container .r .menuDeroulant i {
+  cursor: pointer;
+  font-size: 1rem;
+  position: initial;
+  transform: initial;
+  padding: initial;
+}
+.container .r .menuDeroulant label {
+  font-weight: var(--regular);
+  color: var(--black-input);
+  width: max-content;
+  font-size: 0.8rem;
+  margin: 0.25rem 0;
+  max-height: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: default;
+}
+.container .r .menuDeroulant label:hover {
+  text-decoration: underline;
+}
+.container .r .menuDeroulant .pays.notHover label {
+  width: 100%;
+}
+.container .r .menuDeroulant .pays .blue {
+  color: var(--blue);
+  pointer-events: none;
+}
+.container .r .menuDeroulant .pays .blue:hover {
+  text-decoration: none;
+}
+.container .r .menuDeroulant .notTogglePays {
+  height: 0;
+  overflow: hidden;
+  background: var(--gris-v-4);
+}
+.container .r .menuDeroulant .po {
+  pointer-events: none;
+}
+.container .r .menuDeroulant .lng {
+  padding: 0.25rem 0.5rem;
+}
+
+.container .r .menuDeroulant div.bg h1 > span,
+.container .r .menuDeroulant .bl {
+  color: var(--blue);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.container .r .menuDeroulant .bl span {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container .r .menuDeroulant div.bg.ch {
+  background: var(--gris-v-4);
+}
+.container .r .menuDeroulant div.bg .h2 span {
+  color: var(--gris);
+}
+.container .r .menuDeroulant div.bg .cl span {
+  color: var(--blue);
+}
+
+.container .r .menuDeroulant .pays .blue {
+  pointer-events: initial;
+}
+.container .r .menuDeroulant .pays .blue span {
+  color: var(--blue);
+}
+.container .r .pays .contFlag {
+  height: 15px;
+  width: 15px;
+  justify-content: center;
+  align-items: center;
+}
+.container .r .inputR .flagInput {
+  position: absolute;
+  border-radius: 50%;
+  left: 0;
+  margin-left: 0.5rem;
+}
+.container .r .inputL input,
+.container .r .inputL.ic input {
+  padding-left: 2rem;
+}
