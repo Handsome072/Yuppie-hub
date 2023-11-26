@@ -121,13 +121,13 @@ export default function Offres({
   const handleChangeMTF = (newValue) => {
     setNewMTF((prev) => ({
       ...prev,
-      obj: prev?.obj === newValue ? null : newValue,
+      obj: prev?.obj !== newValue ? newValue : null,
     }));
   };
   const handleChangeBenevolat = (newValue) => {
     setNewBenevolat((prev) => ({
       ...prev,
-      obj: prev?.obj === newValue ? null : newValue,
+      obj: prev?.obj !== newValue ? newValue : null,
     }));
   };
   return (
@@ -251,7 +251,7 @@ export default function Offres({
               <div>
                 <label htmlFor="my">Oui</label>
                 <input
-                  type="radio"
+                  type="checkbox"
                   onChange={() => handleChangeMTF(true)}
                   checked={newMTF?.obj === true}
                   name="mn"
@@ -261,7 +261,7 @@ export default function Offres({
               <div>
                 <label htmlFor="mn">Non</label>
                 <input
-                  type="radio"
+                  type="checkbox"
                   onChange={() => handleChangeMTF(false)}
                   checked={newMTF?.obj === false}
                   name="mn"

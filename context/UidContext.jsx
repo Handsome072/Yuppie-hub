@@ -24,7 +24,7 @@ export const UidContextProvider = ({ children }) => {
   const dispatch = useDispatch();
   const [isLoadingJWT, setIsLoadingJWT] = useState(false);
   const [isLoadingLogout, setIsLoadingLogout] = useState(false);
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(null);
   const [acceptConfetti, setAcceptConfetti] = useState(false);
   useEffect(() => {
     (async () => {
@@ -35,7 +35,6 @@ export const UidContextProvider = ({ children }) => {
           (async () => {
             const res = await verifyJWTController(activeToken);
             if (res?.active) {
-              setIsActive(true);
               setAcceptConfetti(true);
               dispatch(updateUserInfos({ user: res.user }));
               dispatch(
@@ -45,6 +44,7 @@ export const UidContextProvider = ({ children }) => {
                   lang: res.lang,
                 })
               );
+              setIsActive(true);
             } else {
               push("/home");
             }

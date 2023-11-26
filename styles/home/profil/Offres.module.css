@@ -219,7 +219,7 @@
   border-color: transparent;
   transform: scale(1);
 }
-.container .chrt input:checked:before {
+.container .chrt input:checked::before {
   background-color: var(--blue);
   content: "\2713";
   transform: translateY(0) scale(1);
