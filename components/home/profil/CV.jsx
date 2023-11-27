@@ -116,7 +116,7 @@ export default function CV({
   return (
     <ClientOnly>
       <div
-        className={isSubmi ? `${styles.container} pen` : `${styles.container}`}
+        className={isSubmit ? `${styles.container} pen` : `${styles.container}`}
       >
         <div>
           <div className={styles.l}>
