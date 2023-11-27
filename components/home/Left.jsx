@@ -446,7 +446,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                       isLoading={isLoading}
                       setInfosToUpdate={setInfosToUpdate}
                     />
-                    <div className={styles.note}>
+                    {/* <div className={styles.note}>
                       <div>
                         <label htmlFor="note" className={styles.ntlab}>
                           Note :
@@ -474,11 +474,11 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                           )}
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </form>
                 </div>
               </div>
-              <div className={`${styles.moreInfos} ${styles.mrf}`}>
+              <div className={`${styles.moreInfos} `}>
                 <div className={styles.op}>
                   <div>
                     <div className={styles.lab}>

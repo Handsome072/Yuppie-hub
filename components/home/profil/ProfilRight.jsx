@@ -15,10 +15,8 @@ export default function ProfilRight({
   newBio,
   setNewBio,
   isSubmit,
-  setIsSubmit,
   isLoadingPhotos,
   initialPhotos,
-  infosToUpdate,
   setInfosToUpdate,
 }) {
   const { user } = useSelector((state) => state.user);
