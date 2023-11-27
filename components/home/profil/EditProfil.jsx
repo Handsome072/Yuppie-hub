@@ -99,7 +99,7 @@ export default function EditProfil({ setIsEditProfil }) {
     obj: !isEmpty(user.image) ? [user.image] : [],
     value: false,
   });
-  const [isSubmit, setIsSubmit] = useState({ can: false, is: false });
+  const [isSubmit, setIsSubmit] = useState(false);
   const [isLoadingPhotos, setIsLoadingPhotos] = useState(false);
   const [initialPhotos, setInitialPhotos] = useState(
     !isEmpty(user.image) ? [user.image] : []
@@ -116,12 +116,6 @@ export default function EditProfil({ setIsEditProfil }) {
       }
     })();
   }, []);
-  useEffect(() => {
-    if (!isEmpty(infosToUpdate) && !isSubmit.can) {
-      setIsSubmit((prev) => ({ ...prev, can: true }));
-    }
-  }, [infosToUpdate]);
-  console.log(infosToUpdate);
   const handleReset = async () => {
     setNewUsername({ obj: user.username, value: false });
     setNewName({ obj: user.name, value: false });
@@ -156,7 +150,7 @@ export default function EditProfil({ setIsEditProfil }) {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmit((prev) => ({ ...prev, is: true }));
+    setIsSubmit(true);
     if (!isEmpty(infosToUpdate)) {
       const res = await updateUserInfosController({
         ...infosToUpdate,
@@ -216,7 +210,6 @@ export default function EditProfil({ setIsEditProfil }) {
             setNewProvince={setNewProvince}
             handleReset={handleReset}
             isSubmit={isSubmit}
-            setIsSubmit={setIsSubmit}
             infosToUpdate={infosToUpdate}
             setInfosToUpdate={setInfosToUpdate}
           />
@@ -228,7 +221,6 @@ export default function EditProfil({ setIsEditProfil }) {
             newBio={newBio}
             setNewBio={setNewBio}
             isSubmit={isSubmit}
-            setIsSubmit={setIsSubmit}
             isLoadingPhotos={isLoadingPhotos}
             initialPhotos={initialPhotos}
             infosToUpdate={infosToUpdate}

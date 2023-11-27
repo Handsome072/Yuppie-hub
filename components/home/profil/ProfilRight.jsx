@@ -80,14 +80,10 @@ export default function ProfilRight({
       setCantUpload(false);
     }
   }, [newBio.obj, newImage.obj]);
-  useEffect(() => {
-    if (!isEmpty(infosToUpdate) && !isSubmit.can) {
-      setIsSubmit((prev) => ({ ...prev, can: true }));
-    }
-  }, [infosToUpdate]);
+
   useEffect(() => {
     if (activeCh) {
-     const handleClickOutside = (e) => {
+      const handleClickOutside = (e) => {
         if (ref.current && !ref.current.contains(e.target)) {
           setAncImg({ obj: null, value: false });
           setActiveCh(false);
@@ -163,9 +159,7 @@ export default function ProfilRight({
   return (
     <ClientOnly>
       <div
-        className={
-          isSubmit.is ? `${styles.container} pen` : `${styles.container}`
-        }
+        className={isSubmit ? `${styles.container} pen` : `${styles.container}`}
       >
         <div className={styles.btn}>
           {cantUpload ? (

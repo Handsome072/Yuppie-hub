@@ -46,7 +46,6 @@ export default function ProfilMiddle({
   newProvince,
   setNewProvince,
   isSubmit,
-  setIsSubmit,
   infosToUpdate,
   setInfosToUpdate,
 }) {
@@ -119,7 +118,6 @@ export default function ProfilMiddle({
                   newProvince={newProvince}
                   setNewProvince={setNewProvince}
                   isSubmit={isSubmit}
-                  setIsSubmit={setIsSubmit}
                   infosToUpdate={infosToUpdate}
                   setInfosToUpdate={setInfosToUpdate}
                 />
@@ -137,7 +135,6 @@ export default function ProfilMiddle({
                   setNewPortfolio={setNewPortfolio}
                   newPortfolio={newPortfolio}
                   isSubmit={isSubmit}
-                  setIsSubmit={setIsSubmit}
                   infosToUpdate={infosToUpdate}
                   setInfosToUpdate={setInfosToUpdate}
                 />
@@ -155,7 +152,6 @@ export default function ProfilMiddle({
                   newExpPro={newExpPro}
                   setNewExpPro={setNewExpPro}
                   isSubmit={isSubmit}
-                  setIsSubmit={setIsSubmit}
                   infosToUpdate={infosToUpdate}
                   setInfosToUpdate={setInfosToUpdate}
                 />
@@ -175,7 +171,6 @@ export default function ProfilMiddle({
                   newMTF={newMTF}
                   setNewMTF={setNewMTF}
                   isSubmit={isSubmit}
-                  setIsSubmit={setIsSubmit}
                   infosToUpdate={infosToUpdate}
                   setInfosToUpdate={setInfosToUpdate}
                 />
@@ -232,14 +227,8 @@ export default function ProfilMiddle({
               </label>
             </div>
             <button
-              className={
-                isSubmit.can && isSubmit.is
-                  ? `${styles.dis} `
-                  : !isSubmit.can
-                  ? "pen"
-                  : null
-              }
-              disabled={isSubmit.is || !isSubmit.can}
+              className={isSubmit ? `${styles.dis} ` : null}
+              disabled={isSubmit}
               onClick={handleSubmit}
               type="submit"
             >

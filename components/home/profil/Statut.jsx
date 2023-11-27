@@ -128,9 +128,7 @@ export default function Statut({
   return (
     <ClientOnly>
       <div
-        className={
-          isSubmit.is ? `${styles.container} pen` : `${styles.container}`
-        }
+        className={isSubmit ? `${styles.container} pen` : `${styles.container}`}
       >
         <div>
           <div className={styles.l}>

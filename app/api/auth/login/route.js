@@ -33,22 +33,12 @@ export const POST = async (req) => {
     }
 
     // error invalid email
-    if (!emailController(body.email)) {
-      const { password, ...infosToReturn } = body;
-      infos = { ...infosToReturn, login: true, invalidLoginEmailError: true };
-      token = createToken(infos, maxAgeErrorToken);
-      return new NextResponse(
-        JSON.stringify({ error: token }, { status: 401 }) // Changed status to 401 for invalid email
-      );
-    }
-
     await connectToMongo();
     user = await UserModel.findOne({ email: body.email });
 
-    // error user not found
-    if (isEmpty(user)) {
+    if (isEmpty(user) || !emailController(body.email)) {
       const { password, ...infosToReturn } = body;
-      infos = { ...infosToReturn, login: true, ukEmailLoginError: true };
+      infos = { ...infosToReturn, login: true, invalidLoginEmailError: true };
       token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(
         JSON.stringify({ error: token }, { status: 404 }) // Changed status to 404 for user not found

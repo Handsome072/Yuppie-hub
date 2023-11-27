@@ -31,6 +31,7 @@ export default function Fail() {
   const [loadLink, setLoadLink] = useState(false);
   const [copied, setCopied] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showCPassword, setShowCPassword] = useState(false);
   const [error, setError] = useState({
     // register errors
     minNameRegisterError: false,
@@ -45,7 +46,6 @@ export default function Fail() {
     minPasswordRegisterError: false,
 
     // login errors
-    ukEmailLoginError: false,
     invalidLoginEmailError: false,
     invalidLoginPasswordError: false,
     invalidLoginUserTypeError: false,
@@ -63,13 +63,8 @@ export default function Fail() {
       const res = await verifyJWTController(token);
       setSpinner(false);
       if (!isEmpty(res?.infos) && (res?.infos?.register || res?.infos?.login)) {
-        setInitialData({ password: "", ...res.infos });
-        setNewUser(() => {
-          let nwe = res.infos;
-          nwe.valid = false;
-          nwe.password = "";
-          return nwe;
-        });
+        setInitialData({ password: "", cPassword: "", ...res.infos });
+        setNewUser({ valid: false, password: "", cPassword: "", ...res.infos });
         if (res.infos?.minNameRegisterError) {
           setError((prev) => {
             let nwe = { ...prev };
@@ -139,29 +134,6 @@ export default function Fail() {
             nwe.valid = false;
             nwe.register = true;
             nwe.minPasswordRegisterError = true;
-            return nwe;
-          });
-          setInitialData(() => {
-            let nwe = res.infos;
-            nwe.password = "";
-            nwe.cPassword = "";
-            return nwe;
-          });
-          setNewUser(() => {
-            let nwe = res.infos;
-            nwe.valid = false;
-            nwe.password = "";
-            nwe.cPassword = "";
-            return nwe;
-          });
-        } else if (res.infos?.ukEmailLoginError) {
-          setError((prev) => {
-            let nwe = { ...prev };
-            for (const key in nwe) {
-              nwe[key] = false;
-            }
-            nwe.login = true;
-            nwe.ukEmailLoginError = true;
             return nwe;
           });
         } else if (res.infos?.invalidLoginEmailError) {
@@ -249,12 +221,8 @@ export default function Fail() {
     e.preventDefault();
     if (!newUser?.valid) {
       return null;
-    } else if (
-      newUser?.minPasswordRegisterError &&
-      newUser.password !== newUser.cPassword
-    ) {
+    } else if (error.register && newUser.password !== newUser.cPassword) {
       setNewUser((prev) => ({ ...prev, valid: false }));
-
       cPass.current.setCustomValidity(
         "Les mots de passes ne correspondent pas."
       );
@@ -349,7 +317,83 @@ export default function Fail() {
                     required
                     placeholder={`Nom`}
                   />
+                  <div>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      onChange={(e) =>
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.password = e.target.value;
+                          return nwe;
+                        })
+                      }
+                      value={newUser.password}
+                      required
+                      placeholder={`Mot de passe`}
+                    />
+                    <button>
+                      {showPassword ? (
+                        <IoMdEye
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPassword(false);
+                          }}
+                          className="try1"
+                        />
+                      ) : (
+                        <IoMdEyeOff
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPassword(true);
+                          }}
+                          className="try1"
+                        />
+                      )}
+                    </button>
+                  </div>
+                  <div>
+                    <input
+                      type={showCPassword ? "text" : "password"}
+                      ref={cPass}
+                      onChange={(e) => {
+                        cPass.current.setCustomValidity("");
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.cPassword = e.target.value;
+                          return nwe;
+                        });
+                      }}
+                      value={newUser.cPassword}
+                      required
+                      placeholder={`Confirmer mot de passe`}
+                    />
+                    <button>
+                      {showCPassword ? (
+                        <IoMdEye
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowCPassword(false);
+                          }}
+                          className="try1"
+                        />
+                      ) : (
+                        <IoMdEyeOff
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowCPassword(true);
+                          }}
+                          className="try1"
+                        />
+                      )}
+                    </button>
+                  </div>
                 </div>
+
                 <div className={!newUser.valid ? "pen" : null}>
                   <button
                     className={
@@ -410,6 +454,81 @@ export default function Fail() {
                     required
                     placeholder={`Nom`}
                   />
+                  <div>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      onChange={(e) =>
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.password = e.target.value;
+                          return nwe;
+                        })
+                      }
+                      value={newUser.password}
+                      required
+                      placeholder={`Mot de passe`}
+                    />
+                    <button>
+                      {showPassword ? (
+                        <IoMdEye
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPassword(false);
+                          }}
+                          className="try1"
+                        />
+                      ) : (
+                        <IoMdEyeOff
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPassword(true);
+                          }}
+                          className="try1"
+                        />
+                      )}
+                    </button>
+                  </div>
+                  <div>
+                    <input
+                      type={showCPassword ? "text" : "password"}
+                      ref={cPass}
+                      onChange={(e) => {
+                        cPass.current.setCustomValidity("");
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.cPassword = e.target.value;
+                          return nwe;
+                        });
+                      }}
+                      value={newUser.cPassword}
+                      required
+                      placeholder={`Confirmer mot de passe`}
+                    />
+                    <button>
+                      {showCPassword ? (
+                        <IoMdEye
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowCPassword(false);
+                          }}
+                          className="try1"
+                        />
+                      ) : (
+                        <IoMdEyeOff
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowCPassword(true);
+                          }}
+                          className="try1"
+                        />
+                      )}
+                    </button>
+                  </div>
                 </div>
                 <div className={!newUser.valid ? "pen" : null}>
                   <button
@@ -471,6 +590,81 @@ export default function Fail() {
                     required
                     placeholder={`Prénom`}
                   />
+                  <div>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      onChange={(e) =>
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.password = e.target.value;
+                          return nwe;
+                        })
+                      }
+                      value={newUser.password}
+                      required
+                      placeholder={`Mot de passe`}
+                    />
+                    <button>
+                      {showPassword ? (
+                        <IoMdEye
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPassword(false);
+                          }}
+                          className="try1"
+                        />
+                      ) : (
+                        <IoMdEyeOff
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPassword(true);
+                          }}
+                          className="try1"
+                        />
+                      )}
+                    </button>
+                  </div>
+                  <div>
+                    <input
+                      type={showCPassword ? "text" : "password"}
+                      ref={cPass}
+                      onChange={(e) => {
+                        cPass.current.setCustomValidity("");
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.cPassword = e.target.value;
+                          return nwe;
+                        });
+                      }}
+                      value={newUser.cPassword}
+                      required
+                      placeholder={`Confirmer mot de passe`}
+                    />
+                    <button>
+                      {showCPassword ? (
+                        <IoMdEye
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowCPassword(false);
+                          }}
+                          className="try1"
+                        />
+                      ) : (
+                        <IoMdEyeOff
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowCPassword(true);
+                          }}
+                          className="try1"
+                        />
+                      )}
+                    </button>
+                  </div>
                 </div>
                 <div className={!newUser.valid ? "pen" : null}>
                   <button
@@ -532,6 +726,81 @@ export default function Fail() {
                     required
                     placeholder={`Prénom`}
                   />
+                  <div>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      onChange={(e) =>
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.password = e.target.value;
+                          return nwe;
+                        })
+                      }
+                      value={newUser.password}
+                      required
+                      placeholder={`Mot de passe`}
+                    />
+                    <button>
+                      {showPassword ? (
+                        <IoMdEye
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPassword(false);
+                          }}
+                          className="try1"
+                        />
+                      ) : (
+                        <IoMdEyeOff
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPassword(true);
+                          }}
+                          className="try1"
+                        />
+                      )}
+                    </button>
+                  </div>
+                  <div>
+                    <input
+                      type={showCPassword ? "text" : "password"}
+                      ref={cPass}
+                      onChange={(e) => {
+                        cPass.current.setCustomValidity("");
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.cPassword = e.target.value;
+                          return nwe;
+                        });
+                      }}
+                      value={newUser.cPassword}
+                      required
+                      placeholder={`Confirmer mot de passe`}
+                    />
+                    <button>
+                      {showCPassword ? (
+                        <IoMdEye
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowCPassword(false);
+                          }}
+                          className="try1"
+                        />
+                      ) : (
+                        <IoMdEyeOff
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowCPassword(true);
+                          }}
+                          className="try1"
+                        />
+                      )}
+                    </button>
+                  </div>
                 </div>
                 <div className={!newUser.valid ? "pen" : null}>
                   <button
@@ -595,6 +864,81 @@ export default function Fail() {
                     required
                     placeholder={`Adresse email`}
                   />
+                  <div>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      onChange={(e) =>
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.password = e.target.value;
+                          return nwe;
+                        })
+                      }
+                      value={newUser.password}
+                      required
+                      placeholder={`Mot de passe`}
+                    />
+                    <button>
+                      {showPassword ? (
+                        <IoMdEye
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPassword(false);
+                          }}
+                          className="try1"
+                        />
+                      ) : (
+                        <IoMdEyeOff
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPassword(true);
+                          }}
+                          className="try1"
+                        />
+                      )}
+                    </button>
+                  </div>
+                  <div>
+                    <input
+                      type={showCPassword ? "text" : "password"}
+                      ref={cPass}
+                      onChange={(e) => {
+                        cPass.current.setCustomValidity("");
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.cPassword = e.target.value;
+                          return nwe;
+                        });
+                      }}
+                      value={newUser.cPassword}
+                      required
+                      placeholder={`Confirmer mot de passe`}
+                    />
+                    <button>
+                      {showCPassword ? (
+                        <IoMdEye
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowCPassword(false);
+                          }}
+                          className="try1"
+                        />
+                      ) : (
+                        <IoMdEyeOff
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowCPassword(true);
+                          }}
+                          className="try1"
+                        />
+                      )}
+                    </button>
+                  </div>
                 </div>
                 <div className={!newUser.valid ? "pen" : null}>
                   <button
@@ -658,6 +1002,81 @@ export default function Fail() {
                     required
                     placeholder={`Adresse email`}
                   />
+                  <div>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      onChange={(e) =>
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.password = e.target.value;
+                          return nwe;
+                        })
+                      }
+                      value={newUser.password}
+                      required
+                      placeholder={`Mot de passe`}
+                    />
+                    <button>
+                      {showPassword ? (
+                        <IoMdEye
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPassword(false);
+                          }}
+                          className="try1"
+                        />
+                      ) : (
+                        <IoMdEyeOff
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPassword(true);
+                          }}
+                          className="try1"
+                        />
+                      )}
+                    </button>
+                  </div>
+                  <div>
+                    <input
+                      type={showCPassword ? "text" : "password"}
+                      ref={cPass}
+                      onChange={(e) => {
+                        cPass.current.setCustomValidity("");
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.cPassword = e.target.value;
+                          return nwe;
+                        });
+                      }}
+                      value={newUser.cPassword}
+                      required
+                      placeholder={`Confirmer mot de passe`}
+                    />
+                    <button>
+                      {showCPassword ? (
+                        <IoMdEye
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowCPassword(false);
+                          }}
+                          className="try1"
+                        />
+                      ) : (
+                        <IoMdEyeOff
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowCPassword(true);
+                          }}
+                          className="try1"
+                        />
+                      )}
+                    </button>
+                  </div>
                 </div>
 
                 <div className={!newUser.valid ? "pen" : null}>
@@ -706,35 +1125,81 @@ export default function Fail() {
                   </label>
                 </div>
                 <div className={styles.inputs}>
-                  <input
-                    type="password"
-                    id="password"
-                    onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.password = e.target.value;
-                        return nwe;
-                      })
-                    }
-                    value={newUser.password}
-                    required
-                    placeholder={`Mot de passe`}
-                  />
-                  <input
-                    type="password"
-                    ref={cPass}
-                    onChange={(e) => {
-                      cPass.current.setCustomValidity("");
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.cPassword = e.target.value;
-                        return nwe;
-                      });
-                    }}
-                    value={newUser.cPassword}
-                    required
-                    placeholder={`Confirmer mot de passe`}
-                  />
+                  <div>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      onChange={(e) =>
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.password = e.target.value;
+                          return nwe;
+                        })
+                      }
+                      value={newUser.password}
+                      required
+                      placeholder={`Mot de passe`}
+                    />
+                    <button>
+                      {showPassword ? (
+                        <IoMdEye
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPassword(false);
+                          }}
+                          className="try1"
+                        />
+                      ) : (
+                        <IoMdEyeOff
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPassword(true);
+                          }}
+                          className="try1"
+                        />
+                      )}
+                    </button>
+                  </div>
+                  <div>
+                    <input
+                      type={showCPassword ? "text" : "password"}
+                      ref={cPass}
+                      onChange={(e) => {
+                        cPass.current.setCustomValidity("");
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.cPassword = e.target.value;
+                          return nwe;
+                        });
+                      }}
+                      value={newUser.cPassword}
+                      required
+                      placeholder={`Confirmer mot de passe`}
+                    />
+                    <button>
+                      {showCPassword ? (
+                        <IoMdEye
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowCPassword(false);
+                          }}
+                          className="try1"
+                        />
+                      ) : (
+                        <IoMdEyeOff
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowCPassword(true);
+                          }}
+                          className="try1"
+                        />
+                      )}
+                    </button>
+                  </div>
                 </div>
                 <div className={!newUser.valid ? "pen" : null}>
                   <button
@@ -771,103 +1236,6 @@ export default function Fail() {
             {/* login errors */}
 
             {error.invalidLoginEmailError && (
-              <>
-                <div className={styles.title}>
-                  <h1>
-                    La connexion à votre compte a échoué pour la raison suivante
-                    :
-                  </h1>
-                </div>
-                <div className={styles.rais}>
-                  <label htmlFor="mail">
-                    L{"'"}adresse email :{" "}
-                    <span className={styles.mail}>{initialData.email}</span> que
-                    vous avez entrée n{"'"}est pas encore enregistrée ou est
-                    incorrecte. Veuillez réessayer.
-                  </label>
-                </div>
-                <div className={styles.inputs}>
-                  <input
-                    type="text"
-                    id="mail"
-                    onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.email = e.target.value;
-                        return nwe;
-                      })
-                    }
-                    value={newUser.email}
-                    required
-                    placeholder={`Adresse email`}
-                  />
-                  <input
-                    type="password"
-                    id="password"
-                    onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.password = e.target.value;
-                        return nwe;
-                      })
-                    }
-                    value={newUser.password}
-                    required
-                    placeholder={`Mot de passe`}
-                  />
-                </div>
-                {!initialData.remember && (
-                  <label htmlFor="remember" className={styles.remember}>
-                    <input
-                      type="checkbox"
-                      checked={newUser.remember}
-                      id="remember"
-                      onChange={() =>
-                        setNewUser((prev) => {
-                          let nwe = { ...prev };
-                          nwe.remember === true
-                            ? (nwe.remember = false)
-                            : (nwe.remember = true);
-                          return nwe;
-                        })
-                      }
-                    />
-                    <span>Se souvenir de moi</span>
-                  </label>
-                )}
-                <div className={!newUser.valid ? "pen" : null}>
-                  <button
-                    className={
-                      isLoading
-                        ? `${styles.submit} ${styles.submitLoading}`
-                        : `${styles.submit}`
-                    }
-                    disabled={isLoading || !newUser.valid}
-                    type="submit"
-                  >
-                    Valider
-                  </button>
-                </div>
-                <div className={styles.hr} />
-                <div className={styles.notRegistered}>
-                  <label>Vous n{"'"}avez pas de compte ?</label>
-                </div>
-                <Link
-                  onClick={() => {
-                    setLoadLink(true);
-                  }}
-                  href={"/register"}
-                  className={
-                    loadLink
-                      ? `${styles.switch} ${styles.register} ${styles.loadLink}`
-                      : `${styles.switch} ${styles.register}`
-                  }
-                >
-                  <span>S{"'"}inscrire</span>
-                </Link>
-              </>
-            )}
-            {error.ukEmailLoginError && (
               <>
                 <div className={styles.title}>
                   <h1>
@@ -957,18 +1325,17 @@ export default function Fail() {
                 )}
                 <div className={!newUser.valid ? "pen" : null}>
                   <button
-                    disabled={isLoading || !newUser.valid}
                     className={
                       isLoading
                         ? `${styles.submit} ${styles.submitLoading}`
                         : `${styles.submit}`
                     }
+                    disabled={isLoading || !newUser.valid}
                     type="submit"
                   >
                     Valider
                   </button>
                 </div>
-                {initialData.remember && <div className={styles.hr} />}
                 <div className={styles.hr} />
                 <div className={styles.notRegistered}>
                   <label>Vous n{"'"}avez pas de compte ?</label>
@@ -988,6 +1355,7 @@ export default function Fail() {
                 </Link>
               </>
             )}
+
             {error.invalidLoginPasswordError && (
               <>
                 <div className={styles.title}>
@@ -1016,20 +1384,43 @@ export default function Fail() {
                     required
                     placeholder={`Adresse email`}
                   />
-                  <input
-                    type="password"
-                    id="password"
-                    onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.password = e.target.value;
-                        return nwe;
-                      })
-                    }
-                    value={newUser.password}
-                    required
-                    placeholder={`Mot de passe`}
-                  />
+                  <div>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      onChange={(e) =>
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.password = e.target.value;
+                          return nwe;
+                        })
+                      }
+                      value={newUser.password}
+                      required
+                      placeholder={`Mot de passe`}
+                    />
+                    <button>
+                      {showPassword ? (
+                        <IoMdEye
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPassword(false);
+                          }}
+                          className="try1"
+                        />
+                      ) : (
+                        <IoMdEyeOff
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPassword(true);
+                          }}
+                          className="try1"
+                        />
+                      )}
+                    </button>
+                  </div>
                 </div>
                 {!initialData.remember && (
                   <label htmlFor="remember" className={styles.remember}>

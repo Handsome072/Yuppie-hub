@@ -133,9 +133,7 @@ export default function Offres({
   return (
     <ClientOnly>
       <div
-        className={
-          isSubmit.is ? `${styles.container} pen` : `${styles.container}`
-        }
+        className={isSubmit ? `${styles.container} pen` : `${styles.container}`}
       >
         {/* lienPro */}
         <div>
