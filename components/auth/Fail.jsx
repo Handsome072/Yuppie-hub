@@ -235,20 +235,21 @@ export default function Fail() {
         userType: newUser.userType,
         remember: newUser.remember,
       }).catch((error) => console.log(error));
-      setSpinner(true);
+      // setSpinner(true);
       setIsLoading(false);
-      if (res?.error) {
-        push(`/fail?t=${res.error}`);
-      } else {
-        dispatch(updateUserInfos({ user: res.user }));
-        dispatch(
-          updatePersistInfos({
-            authToken: res.token,
-            userType: newUser.userType,
-          })
-        );
-        push("/home");
-      }
+      console.log("res", res);
+      // if (res?.error) {
+      //   push(`/fail?t=${res.error}`);
+      // } else {
+      //   dispatch(updateUserInfos({ user: res.user }));
+      //   dispatch(
+      //     updatePersistInfos({
+      //       authToken: res.token,
+      //       userType: newUser.userType,
+      //     })
+      //   );
+      //   push("/home");
+      // }
     } else if (newUser.password === newUser.cPassword && error.register) {
       setIsLoading(true);
       const res = await registerController({
@@ -1507,7 +1508,43 @@ export default function Fail() {
                     required
                     placeholder={`Adresse email`}
                   />
-
+                  <div>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      onChange={(e) =>
+                        setNewUser((prev) => {
+                          let nwe = { ...prev };
+                          nwe.password = e.target.value;
+                          return nwe;
+                        })
+                      }
+                      value={newUser.password}
+                      required
+                      placeholder={`Mot de passe`}
+                    />
+                    <button>
+                      {showPassword ? (
+                        <IoMdEye
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPassword(false);
+                          }}
+                          className="try1"
+                        />
+                      ) : (
+                        <IoMdEyeOff
+                          size={"1.25rem"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowPassword(true);
+                          }}
+                          className="try1"
+                        />
+                      )}
+                    </button>
+                  </div>
                   <button
                     type="button"
                     onClick={(e) => {
