@@ -1275,7 +1275,7 @@ export default function Fail() {
                   </button>
                 </div>
 
-                <div className={styles.hr} />
+                {/* <div className={styles.hr} /> */}
                 <div className={styles.notRegistered}>
                   <label>Vous n{"'"}avez pas de compte ?</label>
                 </div>

@@ -6,13 +6,10 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useState } from "react";
-import { AiOutlineCopy } from "react-icons/ai";
 import { FaCircleArrowLeft } from "react-icons/fa6";
-import { VscCheckAll } from "react-icons/vsc";
 import styles from "../../styles/auth/Reset.module.css";
 import ClientOnly from "../ClientOnly";
 import Spinner from "../Spinner";
-const contactEmail = process.env.CONTACT_EMAIL;
 
 export default function Reset() {
   const token = useSearchParams().get("t");
@@ -20,19 +17,17 @@ export default function Reset() {
   const [spinner, setSpinner] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [loadLink, setLoadLink] = useState(false);
-  const [copied, setCopied] = useState(false);
   const [newUser, setNewUser] = useState({ email: "" });
   const [error, setError] = useState({
     invalidResetEmailError: false,
     userNotFound: false,
-    sendEmailError: false,
     expiredTokenError: false,
     notAnymoreValidToken: false,
-    resetError: false,
+
     // success
     emailSent: false,
     isReset: false,
-    resetError: false,
+    fail: false,
   });
   useEffect(() => {
     (async () => {
@@ -49,6 +44,7 @@ export default function Reset() {
                 nwe[key] = false;
               }
               nwe.invalidResetEmailError = true;
+              nwe.fail = true;
               return nwe;
             });
           } else if (res.infos?.userNotFound) {
@@ -58,15 +54,8 @@ export default function Reset() {
                 nwe[key] = false;
               }
               nwe.userNotFound = true;
-              return nwe;
-            });
-          } else if (res.infos?.sendEmailError) {
-            setError((prev) => {
-              let nwe = { ...prev };
-              for (const key in nwe) {
-                nwe[key] = false;
-              }
-              nwe.sendEmailError = true;
+              nwe.fail = true;
+
               return nwe;
             });
           } else if (res.infos?.emailSent) {
@@ -76,6 +65,7 @@ export default function Reset() {
                 nwe[key] = false;
               }
               nwe.emailSent = true;
+
               return nwe;
             });
           } else if (res.infos?.passwordReset) {
@@ -87,15 +77,6 @@ export default function Reset() {
               nwe.isReset = true;
               return nwe;
             });
-          } else if (res.infos?.resetError) {
-            setError((prev) => {
-              let nwe = { ...prev };
-              for (const key in nwe) {
-                nwe[key] = false;
-              }
-              nwe.resetError = true;
-              return nwe;
-            });
           }
         } else if (res?.notAnymoreValidToken) {
           setError((prev) => {
@@ -104,6 +85,8 @@ export default function Reset() {
               nwe[key] = false;
             }
             nwe.notAnymoreValidToken = true;
+            nwe.fail = true;
+
             return nwe;
           });
         } else if (res?.expiredTokenError) {
@@ -113,6 +96,8 @@ export default function Reset() {
               nwe[key] = false;
             }
             nwe.expiredTokenError = true;
+            nwe.fail = true;
+
             return nwe;
           });
         } else {
@@ -149,16 +134,16 @@ export default function Reset() {
         <form onSubmit={handleSubmit}>
           <div className={styles.switchBtn}>
             <Link
-              href={error.emailSent ? "/login" : "/reset"}
-              onClick={() => {
+              href={error.fail ? "/reset" : "/login"}
+              onClick={() =>
                 setError((prev) => {
                   let nwe = { ...prev };
                   for (const key in nwe) {
                     nwe[key] = false;
                   }
                   return nwe;
-                });
-              }}
+                })
+              }
             >
               <div className={styles.switchIcon}>
                 <FaCircleArrowLeft size={"2rem"} />
@@ -270,76 +255,14 @@ export default function Reset() {
                 </Link>
               </>
             )}
-            {error.sendEmailError && (
-              <>
-                <div className={styles.title}>
-                  <label htmlFor="email">
-                    Votre demande de réinitialisation de mot de passe a échoué.
-                  </label>
-                </div>
-                {!isEmpty(contactEmail) && (
-                  <div className={styles.rais}>
-                    <label htmlFor="email">
-                      Vous pouvez retenter en cliquant sur revalider ou si le
-                      problème persiste vous pouvez nous contacter par l{"'"}
-                      adresse email :{" "}
-                      <label
-                        onClick={() => {
-                          navigator.clipboard.writeText(contactEmail);
-                          setCopied(true);
-                          setTimeout(() => {
-                            setCopied(false);
-                          }, 1500);
-                        }}
-                        className={styles.adr}
-                      >
-                        {contactEmail}{" "}
-                        <span className={styles.copy}>
-                          {copied ? <VscCheckAll /> : <AiOutlineCopy />}
-                          <span className={styles.badge}>
-                            {copied ? "Copié" : "Copier"}
-                          </span>
-                        </span>
-                      </label>
-                    </label>
-                  </div>
-                )}
-                <div className={styles.inputs}>
-                  <input
-                    onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.email = e.target.value;
-                        return nwe;
-                      })
-                    }
-                    type="text"
-                    id="email"
-                    value={newUser.email}
-                    required
-                    placeholder={`Adresse email`}
-                  />
-                  <button
-                    disabled={isLoading}
-                    className={
-                      isLoading
-                        ? `${styles.submit} ${styles.submitLoading}`
-                        : `${styles.submit}`
-                    }
-                    type="submit"
-                  >
-                    Revalider
-                  </button>
-                </div>
-              </>
-            )}
             {/* email sent */}
             {error.emailSent && (
               <>
                 <div className={styles.title}>
                   <label htmlFor="email">
-                    Votre demande de réinitialisation de mot de passe est
-                    réussie.
+                    Votre demande de réinitialisation de mot de passe
+                    <br />
+                    est réussie.
                   </label>
                 </div>
                 <div className={styles.rais}>
@@ -365,42 +288,7 @@ export default function Reset() {
                 </Link>
               </>
             )}
-            {error.resetError && (
-              <>
-                <div className={styles.title}>
-                  <label htmlFor="email">
-                    La modification de votre mot de passe a échoué.
-                  </label>
-                </div>
-                {!isEmpty(contactEmail) && (
-                  <div className={styles.rais}>
-                    <label htmlFor="email">
-                      Vous pouvez retenter en cliquant sur revalider ou si le
-                      problème persiste vous pouvez nous contacter par l{"'"}
-                      adresse email :{" "}
-                      <label
-                        onClick={() => {
-                          navigator.clipboard.writeText(contactEmail);
-                          setCopied(true);
-                          setTimeout(() => {
-                            setCopied(false);
-                          }, 1500);
-                        }}
-                        className={styles.adr}
-                      >
-                        {contactEmail}{" "}
-                        <span className={styles.copy}>
-                          {copied ? <VscCheckAll /> : <AiOutlineCopy />}
-                          <span className={styles.badge}>
-                            {copied ? "Copié" : "Copier"}
-                          </span>
-                        </span>
-                      </label>
-                    </label>
-                  </div>
-                )}
-              </>
-            )}
+
             {/* reset password */}
             {error.expiredTokenError && (
               <>

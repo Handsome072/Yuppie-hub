@@ -65,6 +65,12 @@
   font-style: italic;
   font-size: 1.3rem;
 }
+.title label {
+  color: var(--blue);
+  font-weight: var(--medium);
+  font-size: 1.1rem;
+}
+
 .rais label {
   font-weight: var(--regular);
   color: var(--gris);
@@ -72,10 +78,6 @@
 .rais label span {
   font-weight: var(--medium);
   text-decoration: underline;
-}
-.title label {
-  color: var(--blue);
-  font-weight: var(--medium);
 }
 
 .inputs {

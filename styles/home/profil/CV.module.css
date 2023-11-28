@@ -77,7 +77,8 @@
   position: relative;
   flex-direction: column;
 }
-.container input:hover,.container input:focus {
+.container input:hover,
+.container input:focus {
   outline: 1px solid var(--gris-v-2);
 }
 .container .ina::placeholder {
@@ -150,10 +151,6 @@
 }
 .stat div:hover {
   background: var(--gris-v-4);
-}
-.po {
-  pointer-events: none;
-  color: var(--blue);
 }
 
 .container .r .pays {
@@ -258,19 +255,8 @@
   background: var(--gris-v-4);
 }
 .container .r .menuDeroulant .po {
-  pointer-events: none;
-}
-.container .r .menuDeroulant div.bg h1 > span,
-.container .r .menuDeroulant .bl {
   color: var(--blue);
 }
-
-.container .r .menuDeroulant div.bg.ch {
+.container .r .menuDeroulant .bg {
   background: var(--gris-v-4);
-}
-.container .r .menuDeroulant div.bg .h2 span {
-  color: var(--gris);
-}
-.container .r .menuDeroulant div.bg .cl span {
-  color: var(--blue);
 }

@@ -172,16 +172,13 @@ export default function Statut({
                             <div
                               key={p}
                               className={
-                                newStatutPro.obj === p
-                                  ? `${styles.bg} ${styles.po}`
-                                  : null
+                                newStatutPro.obj === p ? `${styles.bg}` : null
                               }
                               onClick={() => {
-                                setNewStatutPro((prev) => {
-                                  let nwe = { ...prev };
-                                  nwe.obj = p;
-                                  return nwe;
-                                });
+                                setNewStatutPro((prev) => ({
+                                  ...prev,
+                                  obj: prev.obj === p ? "" : p,
+                                }));
                                 setShowMenu(() => ({
                                   obj: "",
                                   value: false,
@@ -197,16 +194,13 @@ export default function Statut({
                             <div
                               key={p}
                               className={
-                                newStatutPro.obj === p
-                                  ? `${styles.bg} ${styles.po}`
-                                  : null
+                                newStatutPro.obj === p ? `${styles.bg}` : null
                               }
                               onClick={() => {
-                                setNewStatutPro((prev) => {
-                                  let nwe = { ...prev };
-                                  nwe.obj = p;
-                                  return nwe;
-                                });
+                                setNewStatutPro((prev) => ({
+                                  ...prev,
+                                  obj: prev.obj === p ? "" : p,
+                                }));
                                 setShowMenu(() => ({
                                   obj: "",
                                   value: false,

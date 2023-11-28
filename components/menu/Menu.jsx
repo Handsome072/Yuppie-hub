@@ -106,7 +106,11 @@ export default function Menu() {
                 <span>
                   <GoBellFill size={"1.35rem"} />{" "}
                 </span>
-                <label>Mes avis</label>
+                {userType === "client" ? (
+                  <label>Mes projets</label>
+                ) : (
+                  <label>Mes avis</label>
+                )}
               </Link>
             </div>
             <div

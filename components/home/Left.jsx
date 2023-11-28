@@ -288,13 +288,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                   )}
                 </div>
               </div>
-              <div
-                className={
-                  active.obj === "disp" && active.value === true
-                    ? `${styles.moreInfos} ${styles.pdm}`
-                    : `${styles.moreInfos}`
-                }
-              >
+              <div className={styles.moreInfos}>
                 <div className={styles.op}>
                   <div>
                     <label htmlFor="cp" className={styles.lab}>

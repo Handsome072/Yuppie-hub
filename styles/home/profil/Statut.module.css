@@ -164,13 +164,7 @@
   text-overflow: ellipsis;
   cursor: default;
 }
-
-.container .r .menuDeroulant .notTogglePays {
-  height: 0;
-  overflow: hidden;
+.container .r .menuDeroulant .bg {
   background: var(--gris-v-4);
-}
-.container .r .menuDeroulant div.po {
-  pointer-events: none;
   color: var(--blue);
 }

@@ -152,7 +152,7 @@ export default function CV({
                       type="text"
                       placeholder={`Compétence  ${i + 1}`}
                       id={i === lastIndex ? "cmp" : `cmp${i}`}
-                      defaultValue={c.obj}
+                      value={c.obj}
                       readOnly
                       onFocus={() => {
                         showMenu.obj === `cmp${i}` &&
@@ -211,20 +211,25 @@ export default function CV({
                                 <div
                                   key={p}
                                   className={
-                                    (c.obj === p && newCmp[i] === c) ||
-                                    invalidOptions.includes(p)
-                                      ? `${styles.bl} ${styles.po}`
+                                    c.obj === p && newCmp[i] === c
+                                      ? `${styles.po} ${styles.bg}`
+                                      : invalidOptions.includes(p)
+                                      ? `${styles.po}`
                                       : null
                                   }
                                   onClick={() => {
                                     setNewCmp((prev) => {
-                                      const newCmp = [...prev];
-                                      newCmp[i] = { obj: p, value: true };
+                                      let newCmp = [...prev];
+                                      newCmp[i] = {
+                                        obj: newCmp[i].obj === p ? "" : p,
+                                        value: true,
+                                      };
                                       return newCmp;
                                     });
                                     setInvalidOptions((prev) => {
-                                      const newInvalidOptions = [...prev];
-                                      newInvalidOptions[i] = p;
+                                      let newInvalidOptions = [...prev];
+                                      newInvalidOptions[i] =
+                                        newInvalidOptions[i] === p ? "" : p;
                                       return newInvalidOptions;
                                     });
                                     setShowMenu({
@@ -313,11 +318,10 @@ export default function CV({
                               : null
                           }
                           onClick={() => {
-                            setNewApp((prev) => {
-                              let nwe = { ...prev };
-                              nwe.obj = p;
-                              return nwe;
-                            });
+                            setNewApp((prev) => ({
+                              ...prev,
+                              obj: prev.obj === p ? "" : p,
+                            }));
                             setShowMenu({
                               obj: "",
                               value: false,
@@ -398,15 +402,14 @@ export default function CV({
                           key={p}
                           className={
                             newExpPro.obj === p
-                              ? `${styles.bg} ${styles.po}`
+                              ? `${styles.bg}  ${styles.po}`
                               : null
                           }
                           onClick={() => {
-                            setNewExpPro((prev) => {
-                              let nwe = { ...prev };
-                              nwe.obj = p;
-                              return nwe;
-                            });
+                            setNewExpPro((prev) => ({
+                              ...prev,
+                              obj: prev.obj === p ? "" : p,
+                            }));
                             setShowMenu({
                               obj: "",
                               value: false,

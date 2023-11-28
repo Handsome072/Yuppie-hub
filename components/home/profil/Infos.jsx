@@ -274,25 +274,27 @@ export default function Infos({
                                 key={p.pays}
                                 className={
                                   newPays.obj === p.pays
-                                    ? `${styles.bg} ${styles.po} ${styles.np}`
+                                    ? `${styles.bg} ${styles.np}`
                                     : `${styles.np}`
                                 }
                               >
                                 <h1
                                   onClick={() => {
-                                    newPays.obj === p.pays
-                                      ? setNewPays((prev) => ({
-                                          ...prev,
-                                          obj: "",
-                                        }))
-                                      : setNewPays((prev) => ({
-                                          ...prev,
-                                          obj: p.pays,
-                                        }));
+                                    setNewPays((prev) => ({
+                                      ...prev,
+                                      obj: prev.obj === p.pays ? "" : p.pays,
+                                    }));
                                     setResidence({
-                                      pays: p.pays,
-                                      ville: p.ville,
-                                      province: p.province ? p.province : "",
+                                      pays:
+                                        newPays.obj === p.pays ? "" : p.pays,
+                                      ville:
+                                        newPays.obj === p.pays ? "" : p.ville,
+                                      province:
+                                        newPays.obj === p.pays
+                                          ? ""
+                                          : p.province
+                                          ? p.province
+                                          : "",
                                     });
                                     setShowMenu(() => ({
                                       obj: "",
@@ -319,25 +321,27 @@ export default function Infos({
                                 key={p.pays}
                                 className={
                                   newPays.obj === p.pays
-                                    ? `${styles.bg} ${styles.po} ${styles.np}`
+                                    ? `${styles.bg} ${styles.np}`
                                     : `${styles.np}`
                                 }
                               >
                                 <h1
                                   onClick={() => {
-                                    newPays.obj === p.pays
-                                      ? setNewPays((prev) => ({
-                                          ...prev,
-                                          obj: "",
-                                        }))
-                                      : setNewPays((prev) => ({
-                                          ...prev,
-                                          obj: p.pays,
-                                        }));
+                                    setNewPays((prev) => ({
+                                      ...prev,
+                                      obj: prev.obj === p.pays ? "" : p.pays,
+                                    }));
                                     setResidence({
-                                      pays: p.pays,
-                                      ville: p.ville,
-                                      province: p.province ? p.province : "",
+                                      pays:
+                                        newPays.obj === p.pays ? "" : p.pays,
+                                      ville:
+                                        newPays.obj === p.pays ? "" : p.ville,
+                                      province:
+                                        newPays.obj === p.pays
+                                          ? ""
+                                          : p.province
+                                          ? p.province
+                                          : "",
                                     });
                                     setShowMenu(() => ({
                                       obj: "",
@@ -425,17 +429,10 @@ export default function Infos({
                                 >
                                   <h1
                                     onClick={() => {
-                                      if (newPays.obj === p.pays) {
-                                        setNewPays((prev) => ({
-                                          ...prev,
-                                          obj: "",
-                                        }));
-                                      } else {
-                                        setNewPays((prev) => ({
-                                          ...prev,
-                                          obj: p.pays,
-                                        }));
-                                      }
+                                      setNewPays((prev) => ({
+                                        ...prev,
+                                        obj: prev.obj === p.pays ? "" : p.pays,
+                                      }));
                                     }}
                                   >
                                     <span>{p.pays}</span>
@@ -498,11 +495,17 @@ export default function Infos({
                                             onClick={() => {
                                               setNewVille((prev) => ({
                                                 ...prev,
-                                                obj: v,
+                                                obj: prev.obj === v ? "" : v,
                                               }));
                                               setResidence(() => ({
-                                                pays: p.pays,
-                                                ville: p.ville,
+                                                pays:
+                                                  newVille.obj === v
+                                                    ? ""
+                                                    : p.pays,
+                                                ville:
+                                                  newVille.obj === v
+                                                    ? ""
+                                                    : p.ville,
                                                 province: "",
                                               }));
                                               setShowMenu(() => ({
@@ -531,15 +534,10 @@ export default function Infos({
                                 >
                                   <h1
                                     onClick={() =>
-                                      newPays.obj === p.pays
-                                        ? setNewPays((prev) => ({
-                                            ...prev,
-                                            obj: "",
-                                          }))
-                                        : setNewPays((prev) => ({
-                                            ...prev,
-                                            obj: p.pays,
-                                          }))
+                                      setNewPays((prev) => ({
+                                        ...prev,
+                                        obj: prev.obj === p.pays ? "" : p.pays,
+                                      }))
                                     }
                                   >
                                     <span>{p.pays}</span>
@@ -566,18 +564,27 @@ export default function Infos({
                                           onClick={() => {
                                             setNewVille((prev) => ({
                                               ...prev,
-                                              obj: v,
+                                              obj: prev.obj === v ? "" : v,
                                             }));
                                             setShowMenu(() => ({
                                               obj: "",
                                               value: false,
                                             }));
                                             setResidence({
-                                              pays: p.pays,
-                                              ville: p.ville,
-                                              province: p.province
-                                                ? p.province
-                                                : "",
+                                              pays:
+                                                newVille.obj === p.pays
+                                                  ? ""
+                                                  : p.pays,
+                                              ville:
+                                                newVille.obj === p.pays
+                                                  ? ""
+                                                  : p.ville,
+                                              province:
+                                                newVille.obj === p.pays
+                                                  ? ""
+                                                  : p.province
+                                                  ? p.province
+                                                  : "",
                                             });
                                           }}
                                         >
@@ -602,15 +609,10 @@ export default function Infos({
                               >
                                 <h1
                                   onClick={() =>
-                                    newPays.obj === p.pays
-                                      ? setNewPays((prev) => ({
-                                          ...prev,
-                                          obj: "",
-                                        }))
-                                      : setNewPays((prev) => ({
-                                          ...prev,
-                                          obj: p.pays,
-                                        }))
+                                    setNewPays((prev) => ({
+                                      ...prev,
+                                      obj: prev.obj === p.pays ? "" : p.pays,
+                                    }))
                                   }
                                 >
                                   <span>{p.pays}</span>
@@ -637,18 +639,23 @@ export default function Infos({
                                         onClick={() => {
                                           setNewVille((prev) => ({
                                             ...prev,
-                                            obj: v,
+                                            obj: prev.obj === v ? "" : v,
                                           }));
                                           setShowMenu(() => ({
                                             obj: "",
                                             value: false,
                                           }));
                                           setResidence({
-                                            pays: p.pays,
-                                            ville: p.ville,
-                                            province: p.province
-                                              ? p.province
-                                              : "",
+                                            pays:
+                                              newVille.obj === v ? "" : p.pays,
+                                            ville:
+                                              newVille.obj === v ? "" : p.ville,
+                                            province:
+                                              newVille.obj === v
+                                                ? ""
+                                                : p.province
+                                                ? p.province
+                                                : "",
                                           });
                                         }}
                                       >
@@ -722,7 +729,7 @@ export default function Infos({
                                       });
                                       setNewVille((prev) => ({
                                         ...prev,
-                                        obj: v,
+                                        obj: prev.obj === v ? "" : v,
                                       }));
                                     }}
                                   >
@@ -748,7 +755,7 @@ export default function Infos({
                                     }));
                                     setNewVille((prev) => ({
                                       ...prev,
-                                      obj: v,
+                                      obj: prev.obj === v ? "" : v,
                                     }));
                                   }}
                                 >

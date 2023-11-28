@@ -5,7 +5,7 @@
   align-items: center;
   position: relative;
   color: var(--white);
-  padding: 1.85% 0;
+  padding: 0.3rem 0;
 }
 
 .left {
@@ -55,7 +55,6 @@
 .left div span,
 .right div label {
   color: var(--white);
-  font-size: 0.9rem;
   text-align: right;
   font-weight: var(--bold);
 }
@@ -63,8 +62,8 @@
   display: flex;
   justify-content: center;
   position: relative;
-  gap: 2.5%;
-  flex: 6;
+  gap: 0.45rem;
+  flex: 7;
   min-width: max-content;
 }
 .right .dt {
@@ -86,10 +85,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 1.2rem;
-  width: 1.4rem;
+  height: 1.3rem;
+  width: 1.5rem;
   border-radius: 0.2rem;
-  margin-top: 22%;
+  margin-top: 0.4rem;
   overflow: hidden;
   box-shadow: 1px 1px 1px var(--black-25);
   cursor: pointer;
