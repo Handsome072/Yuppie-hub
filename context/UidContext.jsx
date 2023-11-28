@@ -5,13 +5,10 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, createContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { protecedPaths } from "@/lib/utils/paths";
-import { removeUserInfos, updateUserInfos } from "@/redux/slices/userSlice";
+import { removeUserInfos, fetchUserInfos } from "@/redux/slices/userSlice";
 import { updatePersistInfos } from "@/redux/slices/persistSlice";
 import { fetchUserInfosController } from "@/lib/controllers/user.controller";
-import {
-  activeUserCompteController,
-  logoutController,
-} from "@/lib/controllers/auth.controller";
+import { logoutController } from "@/lib/controllers/auth.controller";
 
 export const UidContext = createContext();
 export const UidContextProvider = ({ children }) => {
@@ -36,7 +33,7 @@ export const UidContextProvider = ({ children }) => {
             const res = await verifyJWTController(activeToken);
             if (res?.active) {
               setAcceptConfetti(true);
-              dispatch(updateUserInfos({ user: res.user }));
+              dispatch(fetchUserInfos({ user: res.user }));
               dispatch(
                 updatePersistInfos({
                   authToken: res.token,
@@ -73,7 +70,7 @@ export const UidContextProvider = ({ children }) => {
               setIsLoadingJWT(false);
               push("/login");
             } else {
-              dispatch(updateUserInfos({ user }));
+              dispatch(fetchUserInfos({ user }));
               setIsLoadingJWT(false);
             }
           }

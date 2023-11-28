@@ -186,7 +186,7 @@ export default function Offres({
               <input
                 type="text"
                 id="tarif"
-                value={!isEmpty(newTh.obj) ? newTh.obj + "$ / h" : ""}
+                defaultValue={!isEmpty(newTh.obj) ? newTh.obj + "$ / h" : ""}
                 readOnly
                 onClick={() =>
                   setShowMenu((prev) => ({

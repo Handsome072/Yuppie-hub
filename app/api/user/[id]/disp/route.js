@@ -9,7 +9,6 @@ export const PUT = async (req, { params }) => {
     let user;
     const { id } = params;
     const body = await req.json();
-
     if (
       isEmpty(id) ||
       !isValidObjectId(id) ||
@@ -44,9 +43,7 @@ export const PUT = async (req, { params }) => {
     user = await UserModel.findByIdAndUpdate(id, userInfosToUpdate, {
       new: true,
     }).catch((err) => console.log(err));
-    return new NextResponse(
-      JSON.stringify({ user: { ...body } }, { status: 200 })
-    );
+    return new NextResponse(JSON.stringify({ user: body }, { status: 200 }));
   } catch (err) {
     return new NextResponse(
       JSON.stringify({ error: err.message }, { status: 500 })

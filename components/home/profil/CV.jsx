@@ -152,7 +152,7 @@ export default function CV({
                       type="text"
                       placeholder={`Compétence  ${i + 1}`}
                       id={i === lastIndex ? "cmp" : `cmp${i}`}
-                      value={c.obj}
+                      defaultValue={c.obj}
                       readOnly
                       onFocus={() => {
                         showMenu.obj === `cmp${i}` &&
@@ -267,7 +267,7 @@ export default function CV({
               <input
                 type="text"
                 id="appli"
-                value={newApp.obj}
+                defaultValue={newApp.obj}
                 readOnly
                 onFocus={() => {
                   showMenu.obj === "appWeb" && showMenu.value && showMenu.focus
@@ -356,7 +356,7 @@ export default function CV({
               <input
                 type="text"
                 id="experience"
-                value={newExpPro.obj}
+                defaultValue={newExpPro.obj}
                 readOnly
                 onFocus={() => {
                   showMenu.obj === "expPro" && showMenu.value && showMenu.focus

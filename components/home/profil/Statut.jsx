@@ -142,7 +142,7 @@ export default function Statut({
               <input
                 type="text"
                 id="statutPro"
-                value={newStatutPro.obj}
+                defaultValue={newStatutPro.obj}
                 readOnly
                 onClick={() =>
                   setShowMenu((prev) => ({

@@ -75,7 +75,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
   };
   const handlesubmit = async (e) => {
     e.preventDefault();
-    if (!isEmpty(infosToUpdate)) {
+    if (!isEmpty(infosToUpdate) && !isEmpty(user._id)) {
       setIsLoading(true);
       const res = await updateDispController({
         ...infosToUpdate,
@@ -85,15 +85,11 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
       setIsLoading(false);
       if (!isEmpty(res?.user)) {
         dispatch(updateUserInfos({ user: res.user }));
-        setNewNote({ obj: user.note, value: false });
-        setNewDisp({ obj: user.disponibilite, value: false });
         setInfosToUpdate({});
         setCanUpdate(false);
       }
     } else {
       setCanUpdate(false);
-      setNewNote({ obj: user.note, value: false });
-      setNewDisp({ obj: user.disponibilite, value: false });
       setInfosToUpdate({});
     }
   };
@@ -199,7 +195,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                   readOnly
                   id="portfolio"
                   className={styles.shrInput}
-                  value={
+                  defaultValue={
                     removeHTTPPrefixController(user?.lienProfessionnelle) ||
                     "Lien professionnel"
                   }
@@ -249,7 +245,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                   {active.obj === "bio" || active.obj === "" ? (
                     <textarea
                       readOnly
-                      value={user.bio}
+                      defaultValue={user.bio}
                       className={`${styles.textarea} scr`}
                     />
                   ) : (
@@ -264,7 +260,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                           isLoading={isLoading}
                           setInfosToUpdate={setInfosToUpdate}
                         />
-                        <div className={styles.note}>
+                        {/* <div className={styles.note}>
                           <div>
                             <label htmlFor="note" className={styles.ntlab}>
                               Note :
@@ -286,7 +282,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                               )}
                             </div>
                           </div>
-                        </div>
+                        </div> */}
                       </form>
                     )
                   )}
@@ -308,7 +304,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                       readOnly
                       id="cp"
                       className={`${styles.textarea} ${styles.def} scr`}
-                      value={
+                      defaultValue={
                         user.competenceVirtuelle
                           ?.map((c, index, array) =>
                             index === array?.length - 1 ? c : c + "\n"
@@ -324,7 +320,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                     <textarea
                       readOnly
                       id="tar"
-                      value={
+                      defaultValue={
                         !isEmpty(user?.tauxHoraire)
                           ? user.tauxHoraire + "$/h"
                           : ""
@@ -338,13 +334,21 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                     <label htmlFor="web" className={styles.lab}>
                       <span>Application web</span>
                     </label>
-                    <input readOnly id="web" value={user.applicationWeb} />
+                    <input
+                      readOnly
+                      id="web"
+                      defaultValue={user.applicationWeb}
+                    />
                   </div>
                   <div>
                     <label htmlFor="exp" className={styles.lab}>
                       <span>Expérience professionnelle</span>
                     </label>
-                    <input readOnly id="exp" value={user.experiencePro} />
+                    <input
+                      readOnly
+                      id="exp"
+                      defaultValue={user.experiencePro}
+                    />
                   </div>
                 </div>
                 <div className={styles.op}>
@@ -357,7 +361,9 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                         readOnly
                         id="portfolio"
                         className={styles.shrInput}
-                        value={removeHTTPPrefixController(user.portfolio) || ""}
+                        defaultValue={
+                          removeHTTPPrefixController(user.portfolio) || ""
+                        }
                       />
                       <Link
                         target={"_blank"}
@@ -376,7 +382,9 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                       <input
                         readOnly
                         id="offre"
-                        value={removeHTTPPrefixController(user.offresDeService)}
+                        defaultValue={removeHTTPPrefixController(
+                          user.offresDeService
+                        )}
                         className={styles.shrInput}
                       />
                       <Link
@@ -422,7 +430,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                   <div className={styles.add}>
                     <textarea
                       readOnly
-                      value={user?.bio}
+                      defaultValue={user.bio}
                       className={`${styles.textarea} scr`}
                     />
                   </div>
@@ -446,7 +454,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                       isLoading={isLoading}
                       setInfosToUpdate={setInfosToUpdate}
                     />
-                    {/* <div className={styles.note}>
+                    <div className={styles.note}>
                       <div>
                         <label htmlFor="note" className={styles.ntlab}>
                           Note :
@@ -474,11 +482,11 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                           )}
                         </div>
                       </div>
-                    </div> */}
+                    </div>
                   </form>
                 </div>
               </div>
-              <div className={`${styles.moreInfos} `}>
+              <div className={`${styles.moreInfos} ${styles.mrf} `}>
                 <div className={styles.op}>
                   <div>
                     <div className={styles.lab}>
@@ -491,7 +499,7 @@ export default function Left({ setIsEditProfil, isEditProfil }) {
                         readOnly
                         id="portfolio"
                         className={styles.shrInput}
-                        value={user?.portfolio}
+                        defaultValue={user?.portfolio}
                       />
                       <Link
                         target={"_blank"}

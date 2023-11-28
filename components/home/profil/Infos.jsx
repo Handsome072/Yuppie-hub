@@ -247,7 +247,7 @@ export default function Infos({
                       value: prev.obj === "pays" ? !prev.value : true,
                     }))
                   }
-                  value={newPays.obj}
+                  defaultValue={newPays.obj}
                   readOnly
                   placeholder="Pays"
                   className={styles.ina}
@@ -378,7 +378,7 @@ export default function Infos({
               >
                 <input
                   type="text"
-                  value={
+                  defaultValue={
                     !isEmpty(newProvince.obj) && !isEmpty(newVille.obj)
                       ? newProvince.obj + " - " + newVille.obj
                       : !isEmpty(newProvince.obj) && isEmpty(newVille.obj)
@@ -797,7 +797,7 @@ export default function Infos({
               <input
                 type="text"
                 id="lang"
-                value={newLang.sgl}
+                defaultValue={newLang.sgl}
                 readOnly
                 onClick={() =>
                   setShowMenu((prev) => ({
