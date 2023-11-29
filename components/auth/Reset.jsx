@@ -18,6 +18,7 @@ export default function Reset() {
   const [isLoading, setIsLoading] = useState(false);
   const [loadLink, setLoadLink] = useState(false);
   const [newUser, setNewUser] = useState({ email: "" });
+  const [initialData, setInitialData] = useState(null);
   const [error, setError] = useState({
     invalidResetEmailError: false,
     userNotFound: false,
@@ -36,6 +37,7 @@ export default function Reset() {
         const res = await verifyJWTController(token);
         setSpinner(false);
         if (!isEmpty(res?.infos)) {
+          setInitialData(res.infos);
           setNewUser(res.infos);
           if (res.infos?.invalidResetEmailError) {
             setError((prev) => {
@@ -205,7 +207,7 @@ export default function Reset() {
                 <div className={styles.rais}>
                   <label htmlFor="mail">
                     L{"'"}adresse email :{" "}
-                    <span className={styles.mail}>{newUser.email}</span> que
+                    <span className={styles.mail}>{initialData.email}</span> que
                     vous avez entré n{"'"}est pas encore enregistré.
                   </label>
                 </div>

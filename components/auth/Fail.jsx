@@ -11,10 +11,8 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { useState } from "react";
-import { AiOutlineCopy } from "react-icons/ai";
 import { FaCircleArrowLeft } from "react-icons/fa6";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
-import { VscCheckAll } from "react-icons/vsc";
 import { useDispatch } from "react-redux";
 import styles from "../../styles/auth/Fail.module.css";
 import ClientOnly from "../ClientOnly";
@@ -29,7 +27,6 @@ export default function Fail() {
   const [spinner, setSpinner] = useState(false);
   const [initialData, setInitialData] = useState(null);
   const [loadLink, setLoadLink] = useState(false);
-  const [copied, setCopied] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState({
     // register errors
