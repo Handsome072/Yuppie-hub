@@ -1,9 +1,13 @@
 "use client";
+
+// controllers
 import {
   loginController,
   registerController,
 } from "@/lib/controllers/auth.controller";
+import { sendMailActivateUserCompteController } from "@/lib/controllers/reset.controller";
 import { verifyJWTController } from "@/lib/controllers/jwt.controller";
+
 import { isEmpty } from "@/lib/utils/isEmpty";
 import { updatePersistInfos } from "@/redux/slices/persistSlice";
 import { updateUserInfos } from "@/redux/slices/userSlice";
@@ -17,7 +21,6 @@ import { useDispatch } from "react-redux";
 import styles from "../../styles/auth/Fail.module.css";
 import ClientOnly from "../ClientOnly";
 import Spinner from "../Spinner";
-const contactEmail = process.env.CONTACT_EMAIL;
 export default function Fail() {
   const token = useSearchParams().get("t");
   const { push } = useRouter();
@@ -170,7 +173,6 @@ export default function Fail() {
             }
             nwe.login = true;
             nwe.notActive = true;
-
             return nwe;
           });
           setNewUser({
@@ -231,27 +233,20 @@ export default function Fail() {
       cPass.current.reportValidity();
     } else if (error.login && error.notActive) {
       setIsLoading(true);
-      const res = await loginController({
-        email: newUser.email,
-        password: newUser.password,
-        userType: newUser.userType,
-        remember: newUser.remember,
-      }).catch((error) => console.log(error));
+      const res = await sendMailActivateUserCompteController(
+        newUser.email
+      ).catch((error) => console.log(error));
       setSpinner(true);
       setIsLoading(false);
       if (res?.error) {
         push(`/fail?t=${res.error}`);
+      } else if (res?.token) {
+        push(`/activate?t=${res.token}`);
       } else {
-        dispatch(updateUserInfos({ user: res.user }));
-        dispatch(
-          updatePersistInfos({
-            authToken: res.token,
-            userType: newUser.userType,
-          })
-        );
+        setSpinner(false);
         push("/home");
       }
-    } else if (error.login) {
+    } else if (error.login && !error.notActive) {
       setIsLoading(true);
       const res = await loginController({
         email: newUser.email,
@@ -331,11 +326,10 @@ export default function Fail() {
                     type="text"
                     id="name"
                     onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.name = e.target.value;
-                        return nwe;
-                      })
+                      setNewUser((prev) => ({
+                        ...prev,
+                        name: e.target.value,
+                      }))
                     }
                     value={newUser.name}
                     required
@@ -346,11 +340,10 @@ export default function Fail() {
                     type={showPassword ? "text" : "password"}
                     id="password"
                     onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.password = e.target.value;
-                        return nwe;
-                      })
+                      setNewUser((prev) => ({
+                        ...prev,
+                        password: e.target.value,
+                      }))
                     }
                     value={newUser.password}
                     required
@@ -362,11 +355,10 @@ export default function Fail() {
                     ref={cPass}
                     onChange={(e) => {
                       cPass.current.setCustomValidity("");
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.cPassword = e.target.value;
-                        return nwe;
-                      });
+                      setNewUser((prev) => ({
+                        ...prev,
+                        cPassword: e.target.value,
+                      }));
                     }}
                     value={newUser.cPassword}
                     required
@@ -424,11 +416,10 @@ export default function Fail() {
                     type="text"
                     id="name"
                     onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.name = e.target.value;
-                        return nwe;
-                      })
+                      setNewUser((prev) => ({
+                        ...prev,
+                        name: e.target.value,
+                      }))
                     }
                     value={newUser.name}
                     required
@@ -439,11 +430,10 @@ export default function Fail() {
                     type={showPassword ? "text" : "password"}
                     id="password"
                     onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.password = e.target.value;
-                        return nwe;
-                      })
+                      setNewUser((prev) => ({
+                        ...prev,
+                        password: e.target.value,
+                      }))
                     }
                     value={newUser.password}
                     required
@@ -455,11 +445,10 @@ export default function Fail() {
                     ref={cPass}
                     onChange={(e) => {
                       cPass.current.setCustomValidity("");
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.cPassword = e.target.value;
-                        return nwe;
-                      });
+                      setNewUser((prev) => ({
+                        ...prev,
+                        cPassword: e.target.value,
+                      }));
                     }}
                     value={newUser.cPassword}
                     required
@@ -516,11 +505,10 @@ export default function Fail() {
                     type="text"
                     id="username"
                     onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.username = e.target.value;
-                        return nwe;
-                      })
+                      setNewUser((prev) => ({
+                        ...prev,
+                        username: e.target.value,
+                      }))
                     }
                     value={newUser.username}
                     required
@@ -531,11 +519,10 @@ export default function Fail() {
                     type={showPassword ? "text" : "password"}
                     id="password"
                     onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.password = e.target.value;
-                        return nwe;
-                      })
+                      setNewUser((prev) => ({
+                        ...prev,
+                        password: e.target.value,
+                      }))
                     }
                     value={newUser.password}
                     required
@@ -547,11 +534,10 @@ export default function Fail() {
                     ref={cPass}
                     onChange={(e) => {
                       cPass.current.setCustomValidity("");
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.cPassword = e.target.value;
-                        return nwe;
-                      });
+                      setNewUser((prev) => ({
+                        ...prev,
+                        cPassword: e.target.value,
+                      }));
                     }}
                     value={newUser.cPassword}
                     required
@@ -608,11 +594,10 @@ export default function Fail() {
                     type="text"
                     id="username"
                     onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.username = e.target.value;
-                        return nwe;
-                      })
+                      setNewUser((prev) => ({
+                        ...prev,
+                        username: e.target.value,
+                      }))
                     }
                     value={newUser.username}
                     required
@@ -623,11 +608,10 @@ export default function Fail() {
                     type={showPassword ? "text" : "password"}
                     id="password"
                     onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.password = e.target.value;
-                        return nwe;
-                      })
+                      setNewUser((prev) => ({
+                        ...prev,
+                        password: e.target.value,
+                      }))
                     }
                     value={newUser.password}
                     required
@@ -639,11 +623,10 @@ export default function Fail() {
                     ref={cPass}
                     onChange={(e) => {
                       cPass.current.setCustomValidity("");
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.cPassword = e.target.value;
-                        return nwe;
-                      });
+                      setNewUser((prev) => ({
+                        ...prev,
+                        cPassword: e.target.value,
+                      }));
                     }}
                     value={newUser.cPassword}
                     required
@@ -702,11 +685,10 @@ export default function Fail() {
                     type="text"
                     id="mail"
                     onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.email = e.target.value;
-                        return nwe;
-                      })
+                      setNewUser((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
                     }
                     value={newUser.email}
                     required
@@ -717,11 +699,10 @@ export default function Fail() {
                     type={showPassword ? "text" : "password"}
                     id="password"
                     onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.password = e.target.value;
-                        return nwe;
-                      })
+                      setNewUser((prev) => ({
+                        ...prev,
+                        password: e.target.value,
+                      }))
                     }
                     value={newUser.password}
                     required
@@ -733,11 +714,10 @@ export default function Fail() {
                     ref={cPass}
                     onChange={(e) => {
                       cPass.current.setCustomValidity("");
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.cPassword = e.target.value;
-                        return nwe;
-                      });
+                      setNewUser((prev) => ({
+                        ...prev,
+                        cPassword: e.target.value,
+                      }));
                     }}
                     value={newUser.cPassword}
                     required
@@ -796,11 +776,7 @@ export default function Fail() {
                     type="text"
                     id="mail"
                     onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.email = e.target.value;
-                        return nwe;
-                      })
+                      setNewUser((prev) => ({ ...prev, email: e.target.value }))
                     }
                     value={newUser.email}
                     required
@@ -811,11 +787,10 @@ export default function Fail() {
                     type={showPassword ? "text" : "password"}
                     id="password"
                     onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.password = e.target.value;
-                        return nwe;
-                      })
+                      setNewUser((prev) => ({
+                        ...prev,
+                        password: e.target.value,
+                      }))
                     }
                     value={newUser.password}
                     required
@@ -827,11 +802,10 @@ export default function Fail() {
                     ref={cPass}
                     onChange={(e) => {
                       cPass.current.setCustomValidity("");
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.cPassword = e.target.value;
-                        return nwe;
-                      });
+                      setNewUser((prev) => ({
+                        ...prev,
+                        cPassword: e.target.value,
+                      }));
                     }}
                     value={newUser.cPassword}
                     required
@@ -889,11 +863,10 @@ export default function Fail() {
                     type={showPassword ? "text" : "password"}
                     id="password"
                     onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.password = e.target.value;
-                        return nwe;
-                      })
+                      setNewUser((prev) => ({
+                        ...prev,
+                        password: e.target.value,
+                      }))
                     }
                     value={newUser.password}
                     required
@@ -905,11 +878,10 @@ export default function Fail() {
                     ref={cPass}
                     onChange={(e) => {
                       cPass.current.setCustomValidity("");
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.cPassword = e.target.value;
-                        return nwe;
-                      });
+                      setNewUser((prev) => ({
+                        ...prev,
+                        cPassword: e.target.value,
+                      }));
                     }}
                     value={newUser.cPassword}
                     required
@@ -971,11 +943,10 @@ export default function Fail() {
                     type="text"
                     id="mail"
                     onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.email = e.target.value;
-                        return nwe;
-                      })
+                      setNewUser((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
                     }
                     value={newUser.email}
                     required
@@ -986,11 +957,10 @@ export default function Fail() {
                       type={showPassword ? "text" : "password"}
                       id="password"
                       onChange={(e) =>
-                        setNewUser((prev) => {
-                          let nwe = { ...prev };
-                          nwe.password = e.target.value;
-                          return nwe;
-                        })
+                        setNewUser((prev) => ({
+                          ...prev,
+                          password: e.target.value,
+                        }))
                       }
                       value={newUser.password}
                       required
@@ -1089,11 +1059,10 @@ export default function Fail() {
                     type="text"
                     id="mail"
                     onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.email = e.target.value;
-                        return nwe;
-                      })
+                      setNewUser((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
                     }
                     value={newUser.email}
                     required
@@ -1104,11 +1073,10 @@ export default function Fail() {
                       type={showPassword ? "text" : "password"}
                       id="password"
                       onChange={(e) =>
-                        setNewUser((prev) => {
-                          let nwe = { ...prev };
-                          nwe.password = e.target.value;
-                          return nwe;
-                        })
+                        setNewUser((prev) => ({
+                          ...prev,
+                          password: e.target.value,
+                        }))
                       }
                       value={newUser.password}
                       required
@@ -1212,11 +1180,10 @@ export default function Fail() {
                     type="text"
                     id="mail"
                     onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.email = e.target.value;
-                        return nwe;
-                      })
+                      setNewUser((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
                     }
                     value={newUser.email}
                     required
@@ -1227,11 +1194,10 @@ export default function Fail() {
                       type={showPassword ? "text" : "password"}
                       id="password"
                       onChange={(e) =>
-                        setNewUser((prev) => {
-                          let nwe = { ...prev };
-                          nwe.password = e.target.value;
-                          return nwe;
-                        })
+                        setNewUser((prev) => ({
+                          ...prev,
+                          password: e.target.value,
+                        }))
                       }
                       value={newUser.password}
                       required

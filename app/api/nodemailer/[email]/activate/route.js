@@ -1,9 +1,9 @@
 import { nodeMailer } from "@/components/nodemailer";
-import { resetPassword } from "@/components/nodemailer/resetPassword";
+import { activateUserCompte } from "@/components/nodemailer/activateUserCompte";
 import {
+  activateUserCompteTokenName,
   maxAgeErrorToken,
   maxResetPassword,
-  resetPasswordTokenName,
 } from "@/lib/constants";
 import { emailController } from "@/lib/controllers/email.controller";
 import connectToMongo from "@/lib/db";
@@ -20,8 +20,8 @@ export const GET = async (req, { params }) => {
     const { email } = params;
 
     // error invalid email
-    if (!emailController(email)) {
-      infos = { email, invalidResetEmailError: true };
+    if (isEmpty(email) || !emailController(email)) {
+      infos = { email, invalidEmailError: true };
       token = createToken(infos, maxAgeErrorToken);
       return new NextResponse(JSON.stringify({ token }, { status: 400 }));
     }
@@ -37,20 +37,20 @@ export const GET = async (req, { params }) => {
     }
 
     infos = {
-      resetPassword: true,
-      email: user.email,
+      activateUserCompte: true,
       id: user._id,
+      email,
     };
     token = createToken(infos, maxResetPassword);
 
     // sending reset password email
     res = await nodeMailer({
-      to: user.email,
-      subject: "Réinitialisation de mot de passe",
-      ...resetPassword({
-        email: user.email,
+      to: email,
+      subject: "Activation de compte",
+      ...activateUserCompte({
         userType: user.userType,
         lang: user.lang,
+        email,
         token,
       }),
     });
@@ -63,16 +63,16 @@ export const GET = async (req, { params }) => {
     }
 
     user = await addNewToken({
+      id: user._id,
+      tokenName: activateUserCompteTokenName,
       email,
       token,
-      id: user._id,
-      tokenName: resetPasswordTokenName,
     });
 
     infos = {
       emailSent: true,
-      email: user.email,
       id: user._id,
+      email,
     };
     token = createToken(infos, maxAgeErrorToken);
 

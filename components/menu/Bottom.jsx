@@ -6,10 +6,18 @@ import { IoMdInformationCircle } from "react-icons/io";
 import { ImBooks } from "react-icons/im";
 import { FaCopyright } from "react-icons/fa";
 import ClientOnly from "../ClientOnly";
+import { UidContext } from "@/context/UidContext";
+import { useContext } from "react";
 export default function Bottom() {
+  const { isLoadingLogout } = useContext(UidContext);
+
   return (
     <ClientOnly>
-      <div className={styles.container}>
+      <div
+        className={
+          isLoadingLogout ? `${styles.container} pen` : `${styles.container}`
+        }
+      >
         <div className={styles.left}></div>
         <div className={styles.div}>
           <Link href={"/contact"} className={styles.link}>

@@ -90,16 +90,16 @@ export const POST = async (req) => {
     }
 
     infos = {
-      id: user._doc._id,
-      userType: user._doc.userType,
-      isAdmin: user._doc.isAdmin,
-      lang: user._doc.lang,
+      id: user._id,
+      userType: user.userType,
+      isAdmin: user.isAdmin,
+      lang: user.lang,
     };
     const authToken = createToken(infos, maxAgeAuthToken);
 
     // add new auth token
     const { tokenAdded } = await addNewToken({
-      id: user._doc._id,
+      id: user._id,
       token: authToken,
       tokenName: authTokenName,
       persist: body.remember,

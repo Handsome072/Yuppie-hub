@@ -43,7 +43,33 @@ export const UidContextProvider = ({ children }) => {
               );
               setIsActive(true);
             } else {
-              push("/home");
+              setIsLoadingJWT(true);
+              const { infos } = await verifyJWTController(authToken);
+              if (isEmpty(infos)) {
+                await logoutController(authToken);
+                dispatch(updatePersistInfos({ authToken: null }));
+                dispatch(removeUserInfos());
+                setIsLoadingJWT(false);
+                push("/login");
+              } else {
+                if (userType !== infos.userType) {
+                  dispatch(updatePersistInfos({ userType: infos.userType }));
+                }
+                if (lang !== infos.lang) {
+                  dispatch(updatePersistInfos({ lang: infos.lang }));
+                }
+                const { user } = await fetchUserInfosController(infos.id);
+                if (isEmpty(user)) {
+                  await logoutController(authToken);
+                  dispatch(updatePersistInfos({ authToken: null }));
+                  dispatch(removeUserInfos());
+                  setIsLoadingJWT(false);
+                  push("/login");
+                } else {
+                  dispatch(fetchUserInfos({ user }));
+                  setIsLoadingJWT(false);
+                }
+              }
             }
           })();
         } else {

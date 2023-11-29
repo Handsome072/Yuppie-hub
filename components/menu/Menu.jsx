@@ -16,6 +16,10 @@ import { GoBellFill } from "react-icons/go";
 import { IoMdSettings } from "react-icons/io";
 // plus
 import { AiFillPlusCircle } from "react-icons/ai";
+
+// ampoule
+import { TbBulb } from "react-icons/tb";
+
 import { useDispatch, useSelector } from "react-redux";
 import { removeUserInfos } from "@/redux/slices/userSlice";
 import { updatePersistInfos } from "@/redux/slices/persistSlice";
@@ -39,7 +43,11 @@ export default function Menu() {
   const handleProjet = async () => {};
   return (
     <ClientOnly>
-      <div className={styles.container}>
+      <div className={
+        isLoadingLogout ?
+        `${styles.container} pen`
+      :  `${styles.container}`
+      }>
         <div className={styles.top}>
           <div className={styles.left}>
             <div className={styles.logo}>
@@ -88,31 +96,53 @@ export default function Menu() {
                 </button>
               </div>
             )}
-            <div
-              className={
-                path === "/avis"
-                  ? `${styles.active} ${styles.div}`
-                  : `${styles.div}`
-              }
-            >
-              <Link
-                href={"/avis"}
+            {userType === "client" ? (
+              <div
                 className={
-                  path === "/avis"
-                    ? `${styles.link} ${styles.active}  ${styles.mi}`
-                    : `${styles.link} ${styles.mi}`
+                  path === "/projet"
+                    ? `${styles.active} ${styles.div}`
+                    : `${styles.div}`
                 }
               >
-                <span>
-                  <GoBellFill size={"1.35rem"} />{" "}
-                </span>
-                {userType === "client" ? (
+                <Link
+                  href={"/projet"}
+                  className={
+                    path === "/projet"
+                      ? `${styles.link} ${styles.active}  ${styles.mi}`
+                      : `${styles.link} ${styles.mi}`
+                  }
+                >
+                  <span>
+                    <TbBulb size={"1.5rem"} />{" "}
+                  </span>
+
                   <label>Mes projets</label>
-                ) : (
+                </Link>
+              </div>
+            ) : (
+              <div
+                className={
+                  path === "/avis"
+                    ? `${styles.active} ${styles.div}`
+                    : `${styles.div}`
+                }
+              >
+                <Link
+                  href={"/avis"}
+                  className={
+                    path === "/avis"
+                      ? `${styles.link} ${styles.active}  ${styles.mi}`
+                      : `${styles.link} ${styles.mi}`
+                  }
+                >
+                  <span>
+                    <GoBellFill size={"1.35rem"} />{" "}
+                  </span>
+
                   <label>Mes avis</label>
-                )}
-              </Link>
-            </div>
+                </Link>
+              </div>
+            )}
             <div
               className={
                 path === "/infos"

@@ -20,12 +20,13 @@ export default function Reset() {
   const [newUser, setNewUser] = useState({ email: "" });
   const [initialData, setInitialData] = useState(null);
   const [error, setError] = useState({
-    invalidResetEmailError: false,
+    invalidEmailError: false,
     userNotFound: false,
     expiredTokenError: false,
     notAnymoreValidToken: false,
 
     // success
+    notActive: false,
     emailSent: false,
     isReset: false,
     fail: false,
@@ -39,13 +40,13 @@ export default function Reset() {
         if (!isEmpty(res?.infos)) {
           setInitialData(res.infos);
           setNewUser(res.infos);
-          if (res.infos?.invalidResetEmailError) {
+          if (res.infos?.invalidEmailError) {
             setError((prev) => {
               let nwe = { ...prev };
               for (const key in nwe) {
                 nwe[key] = false;
               }
-              nwe.invalidResetEmailError = true;
+              nwe.invalidEmailError = true;
               nwe.fail = true;
               return nwe;
             });
@@ -117,11 +118,13 @@ export default function Reset() {
       );
       setSpinner(true);
       setIsLoading(false);
-      if (res?.token) {
+      if (res?.notActive) {
+        push(`/fail?t=${res.error}`);
+      } else if (res?.token) {
         push(`/reset?t=${res.token}`);
       } else {
-        push("/reset");
         setSpinner(false);
+        push("/reset");
       }
     }
   };
@@ -154,7 +157,7 @@ export default function Reset() {
           </div>
           <div className={styles.contenu}>
             {/* sending email */}
-            {error.invalidResetEmailError && (
+            {error.invalidEmailError && (
               <>
                 <div className={styles.title}>
                   <h1>
@@ -170,11 +173,10 @@ export default function Reset() {
                 <div className={styles.inputs}>
                   <input
                     onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.email = e.target.value;
-                        return nwe;
-                      })
+                      setNewUser((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
                     }
                     type="text"
                     id="email"
@@ -214,11 +216,10 @@ export default function Reset() {
                 <div className={styles.inputs}>
                   <input
                     onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.email = e.target.value;
-                        return nwe;
-                      })
+                      setNewUser((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
                     }
                     type="text"
                     id="email"
@@ -269,7 +270,7 @@ export default function Reset() {
                 </div>
                 <div className={styles.rais}>
                   <label htmlFor="email">
-                    Cliquer sur le lien qui vous a été envoyé par email.{" "}
+                    Veuillez consulter votre email.{" "}
                   </label>
                 </div>
               </>
@@ -365,11 +366,10 @@ export default function Reset() {
                 <div className={styles.inputs}>
                   <input
                     onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.email = e.target.value;
-                        return nwe;
-                      })
+                      setNewUser((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
                     }
                     type="text"
                     id="email"

@@ -73,9 +73,8 @@ export const GET = async (req, { params }) => {
           JSON.stringify({ notAnymoreValidToken: true }, { status: 200 })
         );
       }
-
-      // remove existToken
       const { id } = verify.infos;
+      // remove existToken
       user = await UserModel.findByIdAndUpdate(
         id,
         {
@@ -83,6 +82,12 @@ export const GET = async (req, { params }) => {
         },
         { new: true }
       ).catch((error) => console.log(error.message));
+
+      if (user.isActive) {
+        return new NextResponse(
+          JSON.stringify({ error: "Already active" }, { status: 200 })
+        );
+      }
 
       // login
       const { password, tokens, isAdmin, image, ...userInfos } = Object.assign(

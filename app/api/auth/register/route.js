@@ -8,7 +8,7 @@ import { isEmpty } from "@/lib/utils/isEmpty";
 import { NextResponse } from "next/server";
 import { addNewToken, createToken } from "@/lib/jwt";
 import { nodeMailer } from "@/components/nodemailer";
-import { registerConfirmation } from "@/components/nodemailer/registerConfirmation";
+import { registerConfirmation } from "@/components/nodemailer/activateUserCompte";
 import { emailController } from "@/lib/controllers/email.controller";
 import connectToMongo from "@/lib/db";
 import {
