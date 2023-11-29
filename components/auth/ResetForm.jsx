@@ -6,13 +6,10 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { useState } from "react";
-import { AiOutlineCopy } from "react-icons/ai";
 import { FaCircleArrowLeft } from "react-icons/fa6";
-import { VscCheckAll } from "react-icons/vsc";
 import styles from "../../styles/auth/ResetForm.module.css";
 import ClientOnly from "../ClientOnly";
 import Spinner from "../Spinner";
-const contactEmail = process.env.CONTACT_EMAIL;
 
 export default function ResetPassword({ token }) {
   const { push } = useRouter();
@@ -24,7 +21,6 @@ export default function ResetPassword({ token }) {
   const [error, setError] = useState({
     expiredTokenError: false,
     notAnymoreValidToken: false,
-    resetError: false,
     minPasswordRegisterError: false,
     // success
     resetPassword: false,

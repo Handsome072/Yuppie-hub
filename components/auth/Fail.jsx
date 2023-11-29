@@ -48,9 +48,9 @@ export default function Fail() {
     invalidLoginEmailError: false,
     invalidLoginPasswordError: false,
     invalidLoginUserTypeError: false,
+    notActive: false,
 
     // options
-    failToCreateNewUser: false,
     expiredTokenError: false,
     login: false,
     register: false,
@@ -165,16 +165,22 @@ export default function Fail() {
             nwe.invalidLoginUserTypeError = true;
             return nwe;
           });
-        } else if (res.infos?.failToCreateNewUser) {
+        } else if (res.infos?.notActive) {
           setError((prev) => {
             let nwe = { ...prev };
             for (const key in nwe) {
               nwe[key] = false;
             }
-            nwe.register = true;
-            nwe.valid = true;
-            nwe.failToCreateNewUser = true;
+            nwe.login = true;
+            nwe.notActive = true;
+
             return nwe;
+          });
+          setNewUser({
+            valid: true,
+            password: "",
+            cPassword: "",
+            ...res.infos,
           });
         }
       } else if (res?.invalidTokenSession) {
@@ -226,6 +232,28 @@ export default function Fail() {
         "Les mots de passes ne correspondent pas."
       );
       cPass.current.reportValidity();
+    } else if (error.login && error.notActive) {
+      setIsLoading(true);
+      const res = await loginController({
+        email: newUser.email,
+        password: newUser.password,
+        userType: newUser.userType,
+        remember: newUser.remember,
+      }).catch((error) => console.log(error));
+      setSpinner(true);
+      setIsLoading(false);
+      if (res?.error) {
+        push(`/fail?t=${res.error}`);
+      } else {
+        dispatch(updateUserInfos({ user: res.user }));
+        dispatch(
+          updatePersistInfos({
+            authToken: res.token,
+            userType: newUser.userType,
+          })
+        );
+        push("/home");
+      }
     } else if (error.login) {
       setIsLoading(true);
       const res = await loginController({
@@ -1294,75 +1322,35 @@ export default function Fail() {
                 </Link>
               </>
             )}
-
-            {/* failToCreateNewUser */}
-            {error.failToCreateNewUser && (
+            {error.notActive && (
               <>
                 <div className={styles.title}>
-                  <h1>Désolé, La création de votre compte a échoué</h1>
+                  <h1>
+                    La connexion à votre compte a échoué pour la raison suivante
+                    :
+                  </h1>
                 </div>
-                {!isEmpty(contactEmail) && (
-                  <div className={styles.rais}>
-                    <label htmlFor="email">
-                      Vous pouvez essayer de retenter l{"'"}inscription en
-                      cliquant sur revalider ou si le problème persiste vous
-                      pouvez nous contacter par l{"'"}adresse email :{" "}
-                      <label
-                        onClick={() => {
-                          navigator.clipboard.writeText(contactEmail);
-                          setCopied(true);
-                          setTimeout(() => {
-                            setCopied(false);
-                          }, 1500);
-                        }}
-                        className={styles.adr}
-                      >
-                        {contactEmail}{" "}
-                        <span className={styles.copy}>
-                          {copied ? <VscCheckAll /> : <AiOutlineCopy />}
-                          <span className={styles.badge}>
-                            {copied ? "Copié" : "Copier"}
-                          </span>
-                        </span>
-                      </label>
-                    </label>
-                  </div>
-                )}
+                <div className={styles.rais}>
+                  <label htmlFor="mail">
+                    Votre compte n{"'"}est pas encore activé.
+                    <br />
+                    Veuillez consultez votre email ou redemander l{"'"}
+                    activation.
+                  </label>
+                </div>
                 <div className={styles.inputs}>
                   <input
                     type="text"
-                    id="email"
+                    id="mail"
                     onChange={(e) =>
-                      setNewUser((prev) => {
-                        let nwe = { ...prev };
-                        nwe.email = e.target.value;
-                        return nwe;
-                      })
+                      setNewUser((prev) => ({ ...prev, email: e.target.value }))
                     }
                     value={newUser.email}
                     required
                     placeholder={`Adresse email`}
                   />
                 </div>
-                {!initialData.remember && (
-                  <label htmlFor="remember" className={styles.remember}>
-                    <input
-                      type="checkbox"
-                      checked={newUser.remember}
-                      id="remember"
-                      onChange={() =>
-                        setNewUser((prev) => {
-                          let nwe = { ...prev };
-                          nwe.remember === true
-                            ? (nwe.remember = false)
-                            : (nwe.remember = true);
-                          return nwe;
-                        })
-                      }
-                    />
-                    <span>Se souvenir de moi</span>
-                  </label>
-                )}
+
                 <div>
                   <button
                     className={
@@ -1370,18 +1358,21 @@ export default function Fail() {
                         ? `${styles.submit} ${styles.submitLoading}`
                         : `${styles.submit}`
                     }
-                    disabled={isLoading}
+                    disabled={isLoading || !newUser.valid}
                     type="submit"
                   >
-                    Revalider
+                    Activer mon compte
                   </button>
                 </div>
                 <div className={styles.hr} />
+                <div className={styles.notRegistered}>
+                  <label>Vous n{"'"}avez pas de compte ?</label>
+                </div>
                 <Link
                   onClick={() => {
                     setLoadLink(true);
                   }}
-                  href={"/login"}
+                  href={"/register"}
                   className={
                     loadLink
                       ? `${styles.switch} ${styles.register} ${styles.loadLink}`

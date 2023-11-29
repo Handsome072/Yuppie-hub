@@ -14,7 +14,6 @@ import connectToMongo from "@/lib/db";
 import {
   activateUserCompteTokenName,
   maxAgeActivateUserCompte,
-  maxAgeAuthToken,
   maxAgeErrorToken,
 } from "@/lib/constants";
 export const POST = async (req) => {

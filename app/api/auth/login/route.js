@@ -75,6 +75,20 @@ export const POST = async (req) => {
       );
     }
 
+    // error not active
+    if (!user.isActive) {
+      const { password, ...infosToReturn } = body;
+      infos = {
+        ...infosToReturn,
+        login: true,
+        notActive: true,
+      };
+      token = createToken(infos, maxAgeErrorToken);
+      return new NextResponse(
+        JSON.stringify({ error: token }, { status: 403 }) // Changed status to 403 for invalid password
+      );
+    }
+
     infos = {
       id: user._doc._id,
       userType: user._doc.userType,

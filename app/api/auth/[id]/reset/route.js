@@ -55,7 +55,7 @@ export const POST = async (req, { params }) => {
       email: user.email,
       id,
     };
-    token = (infos, maxAgeErrorToken);
+    token = createToken(infos, maxAgeErrorToken);
 
     return new NextResponse(JSON.stringify({ token }, { status: 200 }));
   } catch (err) {
