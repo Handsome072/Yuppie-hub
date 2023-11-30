@@ -73,8 +73,21 @@ export const GET = async (req, { params }) => {
           JSON.stringify({ notAnymoreValidToken: true }, { status: 200 })
         );
       }
+
+      
       const { id } = verify.infos;
       // remove existToken
+      user = await UserModel.findById(id).catch((error) =>
+        console.log(error.message)
+      );
+
+      // error token not valid anymore
+      if (isEmpty(user) || user?.isActive) {
+        return new NextResponse(
+          JSON.stringify({ error: true }, { status: 403 })
+        );
+      }
+
       user = await UserModel.findByIdAndUpdate(
         id,
         {
