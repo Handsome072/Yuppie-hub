@@ -35,6 +35,7 @@ export default function ActivateUserCompte() {
         setSpinner(true);
         const res = await verifyJWTController(token);
         setSpinner(false);
+        console.log("res verify jwt", res);
         if (!isEmpty(res?.infos)) {
           setInitialData(res.infos);
           setNewUser(res.infos);
@@ -93,7 +94,7 @@ export default function ActivateUserCompte() {
             return nwe;
           });
         } else {
-          push("/login");
+          // push("/login");
         }
       }
     })();
@@ -106,6 +107,7 @@ export default function ActivateUserCompte() {
       const res = await sendMailActivateUserCompteController(
         newUser.email
       ).catch((error) => console.log(error));
+      console.log("res send email", res);
       setSpinner(true);
       setIsLoading(false);
       if (res?.error) {
@@ -114,7 +116,7 @@ export default function ActivateUserCompte() {
         push(`/activate?t=${res.token}`);
       } else {
         setSpinner(false);
-        push("/home");
+        // push("/home");
       }
     }
   };
