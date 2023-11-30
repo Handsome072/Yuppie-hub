@@ -79,15 +79,10 @@ export const GET = async (req, { params }) => {
         id,
         {
           $pull: { tokens: existToken },
+          $set: { isActive: true },
         },
         { new: true }
       ).catch((error) => console.log(error.message));
-
-      if (user.isActive) {
-        return new NextResponse(
-          JSON.stringify({ error: "Already active" }, { status: 200 })
-        );
-      }
 
       // login
       const { password, tokens, isAdmin, image, ...userInfos } = Object.assign(
